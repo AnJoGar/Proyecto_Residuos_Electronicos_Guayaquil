@@ -20,11 +20,9 @@ pd.set_option('display.max_rows', None)  # Mostrar todas las filas
 pd.set_option('display.max_columns', None)  # Mostrar todas las columnas
 
 # Imprimir el dataframe completo
-print(df)
-
+#print(df)
 
 # Definir los mapeos de las categorías
-
 # Mapeos de categorías
 edad_map = {
     '18-24 años': 1, '25-34 años': 2, '35-44 años': 3, 
@@ -75,6 +73,13 @@ frecuencia_reciclaje_map = {
     'Siempre': 1, 'A veces': 2, 'Nunca': 3
 }
 
+dispositivos_adquiridos_año_map = {
+    0: 0, 1: 1, 2: 2, 3: 3, '4 o más': 4
+}
+
+dispositivos_desuso_año_map = {
+    0: 0, 1: 1, 2: 2, 3: 3, '4 o más': 4
+}
 tipos_dispositivos_reciclados_map = {
     'Televisor': 1, 'Computadora': 2, 'Baterías': 3,
      'Teléfono móvil inteligente':4, 'Teléfono móvil básico': 5,
@@ -156,6 +161,8 @@ df['Vivienda'] = df['¿En qué tipo de vivienda reside?'].map(vivienda_map)
 df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map)
 df['AreaResidencia'] = df['¿En qué área o zona de la ciudad reside?'].map(area_residencia_map)
 df['FrecuenciaActualizacion'] = df['¿Con qué frecuencia actualiza o reemplaza estos dispositivos?'].map(frecuencia_actualizacion_map)
+df['DispositivosaAdquiridos'] = df['¿Cuántos dispositivos electrónicos ha adquirido en el último año?'].map(dispositivos_adquiridos_año_map)
+df['DispositivosDesuso'] = df['¿Cuántos dispositivos electrónicos tiene en desuso actualmente?'].map(dispositivos_desuso_año_map )
 df['PrimeraAccion'] = df['Cuando un dispositivo electrónico deja de funcionar, ¿cuál es su primera acción?'].map(primera_accion_map)
 df['QueHaceConDispositivos'] = df['¿Qué hace con los dispositivos electrónicos cuando ya no los utiliza?'].map(que_hace_con_dispositivos_map)
 df['FrecuenciaReciclaje'] = df['¿Con qué frecuencia lleva sus dispositivos electrónicos al reciclaje?'].map(frecuencia_reciclaje_map)
@@ -165,11 +172,11 @@ df['InformadoCentrosReciclaje'] = df['¿Está informado sobre los centros de rec
 df['ParticipacionCampanas'] = df['¿Ha participado alguna vez en campañas de reciclaje de dispositivos electrónicos? '].map(participacion_campanas_map)
 df['ImportanciaReciclaje'] = df['¿Cuán importante considera el reciclaje de dispositivos electrónicos?'].map(importancia_reciclaje_map)
 df['BarrerasReciclaje'] = df['¿Qué barreras enfrenta para reciclar dispositivos electrónicos? '].map(barreras_reciclaje_map)
-df['FactoresMotivacion'] = df['¿Qué factores le motivarían a reciclar más sus dispositivos electrónicos? '].apply(lambda x: {k: (1 if k in x else 0) for k in factores_motivacion_map.keys()})#map(factores_motivacion_map)
-df['FamiliaridadTecnologias'] = df['¿Está familiarizado con tecnologías que monitorean el uso de dispositivos electrónicos?'].map(familiaridad_tecnologias_map)
+df['FactoresMotivacion'] = df['¿Qué factores le motivarían a reciclar más sus dispositivos electrónicos? '].apply(lambda x: {k: (1 if k in x else 0) for k in factores_motivacion_map.keys()})
+
 df['DisposicionApp'] = df['¿Estaría dispuesto a utilizar una aplicación móvil que le ayude a gestionar y reciclar sus dispositivos electrónicos?'].map(disposicion_app_map)
 df['ComodidadApps'] = df['¿Qué tan cómodo se sentiría usando aplicaciones o dispositivos que ayudan a gestionar el reciclaje de electrónicos?'].map(comodidad_apps_map)
-df['CaracteristicasDeseadas'] = df['¿Qué características le gustaría ver en una aplicación de gestión de residuos electrónicos?'].map(caracteristicas_deseadas_map)
+df['CaracteristicasDeseadas'] = df['¿Qué características le gustaría ver en una aplicación de gestión de residuos electrónicos?'].apply(lambda x: {k: (1 if k in x else 0) for k in caracteristicas_deseadas_map.keys()})
 df['FamiliaridadCiudadInteligente'] = df['¿Está familiarizado con el concepto de "Ciudad Inteligente"?'].map(familiaridad_ciudad_inteligente_map)
 df['DispositivosReemplazadosReparados'] = df['¿Cuántos dispositivos electrónicos ha reemplazado o reparado en el último año?']
 df['PracticasSostenibles'] = df['¿Qué tipo de prácticas sostenibles sigue con respecto a sus dispositivos electrónicos? '].map({
@@ -190,10 +197,42 @@ print(df[['Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaRe
           'FrecuenciaActualizacion','Televisor',
            'Computadora', 'TelefonoMovil', 'ElectrodomesticosInteligentes','TiposDispositivosDesechados']].head())
 
+# Seleccionar solo las columnas categorizadas para el DataFrame limpio
+columns_to_export = ['Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaResidencia', 
+                      'FrecuenciaActualizacion', 'PrimeraAccion', 'QueHaceConDispositivos', 
+                      'FrecuenciaReciclaje', 'DispositivosaAdquiridos', 'DispositivosDesuso', 
+                      'InformadoCentrosReciclaje', 'ParticipacionCampanas', 'ImportanciaReciclaje', 
+                      'BarrerasReciclaje', 'FactoresMotivacion', 'DisposicionApp', 
+                      'ComodidadApps', 'CaracteristicasDeseadas', 'FamiliaridadCiudadInteligente', 
+                      'DispositivosReemplazadosReparados', 'PracticasSostenibles', 
+                      'Televisor', 'Computadora', 'TelefonoMovil', 'ElectrodomesticosInteligentes']
 
-
+# Identificar valores nulos
 missing_values = df.isnull().sum()
-missing_values_df = pd.DataFrame({'Column': missing_values.index, 'Missing Values': missing_values.values})
+missing_values_df = pd.DataFrame({'Columna': missing_values.index, 'Valores faltantes': missing_values.values})
 
 # Mostrar el DataFrame de valores faltantes
-print(missing_values_df)
+print("Valores faltantes por columna:")
+print(missing_values_df.to_string(index=False))
+
+# Eliminar filas con valores nulos
+df_cleaned = df.dropna()
+# Filtrar el DataFrame para mantener solo las columnas relevantes
+df_cleaned = df[columns_to_export].dropna()
+
+# Verificar que no queden valores nulos
+missing_values_cleaned = df_cleaned.isnull().sum()
+missing_values_cleaned_df = pd.DataFrame({'Columna': missing_values_cleaned.index, 'Valores faltantes tras limpieza': missing_values_cleaned.values})
+
+# Mostrar los valores faltantes tras la limpieza
+print("\nValores faltantes tras limpieza:")
+print(missing_values_cleaned_df.to_string(index=False))
+
+# Mostrar una muestra del DataFrame limpio
+print("\nDataframe Limpio (primeras 5 filas):")
+print(df_cleaned.head().to_string(index=False))
+# Exportar el DataFrame limpio a un archivo CSV
+output_file = 'dataframe_limpio.csv'
+df_cleaned.to_csv(output_file, index=False)
+
+print(f"\nEl DataFrame limpio se ha exportado a '{output_file}'.")
