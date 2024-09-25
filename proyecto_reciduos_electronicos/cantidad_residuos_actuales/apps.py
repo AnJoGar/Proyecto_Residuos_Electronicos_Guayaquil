@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class DetecccionConfig(AppConfig):
+class CantidadResiduosActualesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'detecccion'
+    name = 'cantidad_residuos_actuales'

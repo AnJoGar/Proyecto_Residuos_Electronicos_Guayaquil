@@ -10,24 +10,33 @@ import os
 from joblib import dump
 
 # Cargar el archivo CSV
-# Cargar el archivo CSV
-url = 'https://raw.githubusercontent.com/AnJoGar/Reciclaje/refs/heads/main/Proyecto_Reciclaje%20(Respuestas)%20(1).csv'
-
+url="../data/Proyecto_Reciclaje (Respuestas) (3).csv"
 # Leer el archivo CSV con las configuraciones correctas
 df = pd.read_csv(url, sep=",", encoding='utf-8')
 # Configurar pandas para mostrar todas las filas y columnas
 pd.set_option('display.max_rows', None)  # Mostrar todas las filas
 pd.set_option('display.max_columns', None)  # Mostrar todas las columnas
 
-# Imprimir el dataframe completo
-#print(df)
 
 # Definir los mapeos de las categorías
-# Mapeos de categorías
+# Crear un mapa de categorías a rangos
 edad_map = {
-    '18-24 años': 1, '25-34 años': 2, '35-44 años': 3, 
-    '45-54 años': 4, '55-64 años': 5, '65 años o años': 6
+    '18-24 años': (18, 24),
+    '25-34 años': (25, 34),
+    '35-44 años': (35, 44),
+    '45-54 años': (45, 54),
+    '55-64 años': (55, 64),
+    '65 años o más': (65, float('inf'))
 }
+
+# Función para calcular el valor medio o límite inferior
+def obtener_edad_media(rango):
+    return (rango[0] + rango[1]) / 2 if rango[1] != float('inf') else rango[0]
+
+# Mapeo de categorías a valores
+df['Edad'] = df['¿Cuál es su edad?'].map(edad_map).apply(obtener_edad_media)
+
+
 
 nivel_educativo_map = {
     'Educación secundaria incompleta': 0, 'Educación secundaria completa': 1, 'Educación técnica o tecnológica': 2, 
@@ -44,10 +53,18 @@ vivienda_map = {
     'Vivienda compartida': 3, 'Otro': 4
 }
 
-ingresos_map = {
-    'Menos de $400': 1, '$400 - $800': 2, '$801 - $1200': 3, 'Más de $2000': 4,
-    'No genero ingreso': 0
+
+# Crear un diccionario que mapea las categorías de ingresos a sus valores numéricos.
+ingresos_map_num = {
+    'Menos de $400': 200,      # Valor medio entre 0 y 399
+    '$400 - $800': 600,        # Valor medio entre 400 y 800
+    '$801 - $1200': 1000,      # Valor medio entre 801 y 1200
+    'Más de $2000': 2000,      # Valor representativo para 2000+
+    'No genero ingreso': 0     # Para "No genero ingreso", se asigna 0
 }
+
+# Reemplazar las categorías con los valores numéricos
+df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map_num)
 
 area_residencia_map = {
     'Norte': 1, 'Sur': 2, 'Centro': 3, 'Este': 4, 'Otro': 5
@@ -70,7 +87,7 @@ que_hace_con_dispositivos_map = {
 }
 
 frecuencia_reciclaje_map = {
-    'Siempre': 1, 'A veces': 2, 'Nunca': 3
+    'Siempre': 1, 'A veces': 0.5, 'Nunca': 0
 }
 
 dispositivos_adquiridos_año_map = {
@@ -154,11 +171,11 @@ familiaridad_ciudad_inteligente_map = {
 }
 
 # Aplicar las categorías al DataFrame
-df['Edad'] = df['¿Cuál es su edad?'].map(edad_map)
+#df['Edad'] = df['¿Cuál es su edad?'].map(edad_map)
 df['NivelEducativo'] = df['¿Cuál es su nivel educativo?'].map(nivel_educativo_map)
 df['Ocupacion'] = df['¿Cuál es su ocupación?'].map(ocupacion_map)
 df['Vivienda'] = df['¿En qué tipo de vivienda reside?'].map(vivienda_map)
-df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map)
+#df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map)
 df['AreaResidencia'] = df['¿En qué área o zona de la ciudad reside?'].map(area_residencia_map)
 df['FrecuenciaActualizacion'] = df['¿Con qué frecuencia actualiza o reemplaza estos dispositivos?'].map(frecuencia_actualizacion_map)
 df['DispositivosaAdquiridos'] = df['¿Cuántos dispositivos electrónicos ha adquirido en el último año?'].map(dispositivos_adquiridos_año_map)
@@ -173,7 +190,7 @@ df['ParticipacionCampanas'] = df['¿Ha participado alguna vez en campañas de re
 df['ImportanciaReciclaje'] = df['¿Cuán importante considera el reciclaje de dispositivos electrónicos?'].map(importancia_reciclaje_map)
 df['BarrerasReciclaje'] = df['¿Qué barreras enfrenta para reciclar dispositivos electrónicos? '].map(barreras_reciclaje_map)
 df['FactoresMotivacion'] = df['¿Qué factores le motivarían a reciclar más sus dispositivos electrónicos? '].apply(lambda x: {k: (1 if k in x else 0) for k in factores_motivacion_map.keys()})
-
+df['FamiliaridadTecnologias'] = df['¿Está familiarizado con tecnologías que monitorean el uso de dispositivos electrónicos?'].map(familiaridad_tecnologias_map)
 df['DisposicionApp'] = df['¿Estaría dispuesto a utilizar una aplicación móvil que le ayude a gestionar y reciclar sus dispositivos electrónicos?'].map(disposicion_app_map)
 df['ComodidadApps'] = df['¿Qué tan cómodo se sentiría usando aplicaciones o dispositivos que ayudan a gestionar el reciclaje de electrónicos?'].map(comodidad_apps_map)
 df['CaracteristicasDeseadas'] = df['¿Qué características le gustaría ver en una aplicación de gestión de residuos electrónicos?'].apply(lambda x: {k: (1 if k in x else 0) for k in caracteristicas_deseadas_map.keys()})
@@ -194,18 +211,56 @@ df['ElectrodomesticosInteligentes'] = df['¿Qué dispositivos electrónicos pose
 
 # Mostrar algunas columnas categorizadas para verificar
 print(df[['Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaResidencia', 
-          'FrecuenciaActualizacion','Televisor',
-           'Computadora', 'TelefonoMovil', 'ElectrodomesticosInteligentes','TiposDispositivosDesechados']].head())
+            'FrecuenciaActualizacion', 'PrimeraAccion', 'QueHaceConDispositivos', 
+            'FrecuenciaReciclaje', 'DispositivosaAdquiridos', 'DispositivosDesuso', 
+            'InformadoCentrosReciclaje', 'ParticipacionCampanas', 'ImportanciaReciclaje', 
+            'BarrerasReciclaje', 'FactoresMotivacion','FamiliaridadTecnologias', 'DisposicionApp', 
+            'ComodidadApps', 'CaracteristicasDeseadas', 'FamiliaridadCiudadInteligente', 
+            'DispositivosReemplazadosReparados', 'PracticasSostenibles', 
+            'Televisor', 'Computadora', 'TelefonoMovil', 'ElectrodomesticosInteligentes']].head())
 
+# Agregar la columna 'Año de Proyección' con valores ficticios o calculados
+df['AñoProyeccion'] = 2024
+
+# Sumar las cantidades de dispositivos adquiridos y desechados como una medida total de "producto"
+df['TotalDispositivos'] = df['DispositivosaAdquiridos'] + df['DispositivosDesuso']
+
+# Columnas binarias para los tipos de dispositivos reciclados y desechados
+for dispositivo in tipos_dispositivos_reciclados_map.keys():
+    df[f'{dispositivo}_Reciclado'] = df['¿Qué tipo de dispositivos electrónicos ha reciclado en el último año?'].apply(lambda x: 1 if dispositivo in x else 0)
+
+for dispositivo in tipos_dispositivos_desechados_map.keys():
+    df[f'{dispositivo}_Desechado'] = df['¿Qué tipo de dispositivos electrónicos ha desechado en el último año?'].apply(lambda x: 1 if dispositivo in x else 0)
+
+# Crear una nueva columna de producto como el total de dispositivos reciclados y desechados
+df['TotalProductosReciclados'] = df[[f'{dispositivo}_Reciclado' for dispositivo in tipos_dispositivos_reciclados_map.keys()]].sum(axis=1)
+df['TotalProductosDesechados'] = df[[f'{dispositivo}_Desechado' for dispositivo in tipos_dispositivos_desechados_map.keys()]].sum(axis=1)
+
+# Agregar columna de productos totales (reciclados y desechados)
+df['TotalProductos'] = df['TotalProductosReciclados'] + df['TotalProductosDesechados']
+
+# Verificar las nuevas columnas
+print(df[['TotalDispositivos', 'TotalProductosReciclados', 'TotalProductosDesechados', 'TotalProductos']].head())
 # Seleccionar solo las columnas categorizadas para el DataFrame limpio
-columns_to_export = ['Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaResidencia', 
+columns_to_export = ['AñoProyeccion','Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaResidencia', 
                       'FrecuenciaActualizacion', 'PrimeraAccion', 'QueHaceConDispositivos', 
                       'FrecuenciaReciclaje', 'DispositivosaAdquiridos', 'DispositivosDesuso', 
                       'InformadoCentrosReciclaje', 'ParticipacionCampanas', 'ImportanciaReciclaje', 
-                      'BarrerasReciclaje', 'FactoresMotivacion', 'DisposicionApp', 
+                      'BarrerasReciclaje', 'FactoresMotivacion', 'FamiliaridadTecnologias', 'DisposicionApp', 
                       'ComodidadApps', 'CaracteristicasDeseadas', 'FamiliaridadCiudadInteligente', 
                       'DispositivosReemplazadosReparados', 'PracticasSostenibles', 
-                      'Televisor', 'Computadora', 'TelefonoMovil', 'ElectrodomesticosInteligentes']
+                      'Televisor', 'Computadora', 'TelefonoMovil', 'ElectrodomesticosInteligentes',
+                      'TiposDispositivosDesechados','TiposDispositivosReciclados','TotalDispositivos',
+                      'TotalProductosReciclados',
+                      'TotalProductosDesechados','TotalProductos','Televisor_Desechado','Computadora_Desechado',
+                      'Baterías_Desechado','Teléfono móvil básico_Desechado','Console de videojuegos_Desechado',
+                      'Tablet_Desechado','Teléfono móvil inteligente_Desechado',
+                      'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',
+                      'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado',
+                        'Otra_Desechado'
+                      
+                      ]
+
 
 # Identificar valores nulos
 missing_values = df.isnull().sum()
