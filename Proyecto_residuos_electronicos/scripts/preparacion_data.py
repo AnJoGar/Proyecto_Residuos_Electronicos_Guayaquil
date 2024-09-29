@@ -63,6 +63,19 @@ ingresos_map_num = {
     'No genero ingreso': 0     # Para "No genero ingreso", se asigna 0
 }
 
+ingresos_map_num1 = {
+    'Menos de $400': (0, 399),
+    '$400 - $800': (400, 800),
+    '$801 - $1200': (801, 1200),
+    'Más de $2000': (2000, float('inf')),
+    'No genero ingreso': (0, 0)
+}
+# Función para calcular el valor medio o límite inferior
+def obtener_ingreso_media(rango):
+    return (rango[0] + rango[1]) / 2 if rango[1] != float('inf') else rango[0]
+
+# Mapeo de categorías a valores
+#df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map_num).apply(obtener_ingreso_media)
 # Reemplazar las categorías con los valores numéricos
 df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map_num)
 

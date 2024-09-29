@@ -17,7 +17,7 @@ print(df)
 
 # Variables predictoras (entrantes)
 X = df[[  'AñoProyeccion'
-          ,'Ingresos','NivelEducativo','Edad','Ocupacion','AreaResidencia','FrecuenciaReciclaje','Televisor_Desechado','Computadora_Desechado',
+          ,'Ingresos','NivelEducativo','Ocupacion','AreaResidencia','FrecuenciaReciclaje','Televisor_Desechado','Computadora_Desechado',
                       'Baterías_Desechado','Teléfono móvil básico_Desechado','Console de videojuegos_Desechado',
                       'Tablet_Desechado','Teléfono móvil inteligente_Desechado',
                        'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',

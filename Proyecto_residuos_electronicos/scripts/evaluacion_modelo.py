@@ -11,11 +11,11 @@ scaler_cargado = load('scaler.joblib')
 # Preparar nuevos datos
 X_nuevos_datos = pd.DataFrame({
     'AñoProyeccion': [2025, 2026, 2024],
-    'Ingresos': [2000, 47000, 49000],
-    'Edad': [25, 30, 35],
+    'Ingresos': [600, 47000, 49000],
+   # 'Edad': [25, 30, 35],
     'Ocupacion': [1, 1, 1],
     'AreaResidencia': [1, 1, 1],
-    'NivelEducativo':[1, 1, 1],
+    'NivelEducativo':[2, 1, 1],
     'FrecuenciaReciclaje':[1, 1, 1],
     'Televisor_Desechado': [1, 1, 1],
     'Computadora_Desechado': [1, 1, 1],
