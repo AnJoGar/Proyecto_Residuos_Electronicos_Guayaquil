@@ -10,7 +10,7 @@ import os
 from joblib import dump
 
 # Cargar el archivo CSV
-url="../data/Proyecto_Reciclaje (Respuestas) (3).csv"
+url="../data/Proyecto_Reciclaje (Respuestas) (5).csv"
 # Leer el archivo CSV con las configuraciones correctas
 df = pd.read_csv(url, sep=",", encoding='utf-8')
 # Configurar pandas para mostrar todas las filas y columnas
@@ -57,7 +57,7 @@ vivienda_map = {
 # Crear un diccionario que mapea las categorías de ingresos a sus valores numéricos.
 ingresos_map_num = {
     'Menos de $400': 200,      # Valor medio entre 0 y 399
-    '$400 - $800': 600,        # Valor medio entre 400 y 800
+    '$400 - $800': 400,        # Valor medio entre 400 y 800
     '$801 - $1200': 1000,      # Valor medio entre 801 y 1200
     'Más de $2000': 2000,      # Valor representativo para 2000+
     'No genero ingreso': 0     # Para "No genero ingreso", se asigna 0
@@ -183,6 +183,8 @@ familiaridad_ciudad_inteligente_map = {
     'Sí': 1, 'No': 0
 }
 
+df['Tasa_Crecimiento'] = 0.33 
+
 # Aplicar las categorías al DataFrame
 #df['Edad'] = df['¿Cuál es su edad?'].map(edad_map)
 df['NivelEducativo'] = df['¿Cuál es su nivel educativo?'].map(nivel_educativo_map)
@@ -270,7 +272,7 @@ columns_to_export = ['AñoProyeccion','Edad', 'NivelEducativo', 'Ocupacion', 'Vi
                       'Tablet_Desechado','Teléfono móvil inteligente_Desechado',
                       'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',
                       'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado',
-                        'Otra_Desechado'
+                        'Otra_Desechado','Tasa_Crecimiento'
                       
                       ]
 

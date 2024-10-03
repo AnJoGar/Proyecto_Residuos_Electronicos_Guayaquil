@@ -55,3 +55,29 @@ header {
     background-color: rgb(45, 139, 102);
     color: #fff;
   }
+
+  .statistics-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .statistic-card {
+    background-color: #fafdfd; /* Light turquoise background */
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .statistic-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .statistic-card p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00796b; /* Teal color */
+  }

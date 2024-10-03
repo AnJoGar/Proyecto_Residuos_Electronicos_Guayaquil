@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from joblib import dump
 
 # Cargar el archivo CSV
-url = '../data/dataframe_limpio.csv'
+url = '../data/dataframe_limpio copy.csv'
 
 # Leer el archivo CSV con las configuraciones correctas
 df = pd.read_csv(url)
@@ -12,8 +12,19 @@ df = pd.read_csv(url)
 pd.set_option('display.max_rows', None)  # Mostrar todas las filas
 pd.set_option('display.max_columns', None)  # Mostrar todas las columnas
 
+# Verificar columnas y valores nulos
+valores_nulos = df.isnull().sum()
+print("Valores nulos por columna:")
+print(valores_nulos[valores_nulos > 0])
+
 # Imprimir el dataframe completo (opcional, para verificar los datos)
-print(df)
+##print(df)
+# Agregar una nueva columna para el crecimiento proyectado de productos desechados
+# Suponiendo que ya has definido Tasa_Crecimiento
+Tasa_Crecimiento = 0.33  # Ejemplo de tasa de crecimiento
+
+# Crear una nueva columna en df antes de definir X y y
+df['Tasa_Crecimiento'] = Tasa_Crecimiento
 
 # Variables predictoras (entrantes)
 X = df[[  'AñoProyeccion'
@@ -27,8 +38,8 @@ X = df[[  'AñoProyeccion'
   ]]
 
 # Variable de salida (cantidad de residuos electrónicos desechados)
-y = df['TotalProductosDesechados']  # Asegúrate de que esta columna exista
-
+#y = df['TotalProductosDesechados']  # Asegúrate de que esta columna exista
+y = df['TotalProductosDesechados'] * (1 + Tasa_Crecimiento) 
 # Dividir en conjuntos de entrenamiento y prueba
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
