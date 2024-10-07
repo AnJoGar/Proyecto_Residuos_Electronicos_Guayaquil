@@ -1,62 +1,100 @@
-from keras.models import load_model
-from joblib import load
+import numpy as np
 import pandas as pd
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
+from joblib import load, dump
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.models import load_model
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+# Cargar las variables
+X = load('X_variables.joblib')
+y = load('y_variable.joblib')
 
-# Cargar el modelo
-modelo_cargado = load_model('modelo_red_neuronal.h5')
+# Normalizar los datos
+scaler = load('scaler.joblib')
+X_scaled = scaler.transform(X)
 
-# Cargar el scaler
-scaler_cargado = load('scaler.joblib')
+# Dividir los datos en conjuntos de entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-# Preparar nuevos datos
-X_nuevos_datos = pd.DataFrame({
-    'AñoProyeccion': [2025, 2026, 2024],
-    'Ingresos': [600, 47000, 49000],
-   # 'Edad': [25, 30, 35],
-    'Ocupacion': [1, 1, 1],
-    'AreaResidencia': [2, 1, 1],
-    'NivelEducativo':[2, 1, 1],
-    'FrecuenciaReciclaje':[1, 1, 1],
-    'Televisor_Desechado': [1, 1, 1],
-    'Computadora_Desechado': [1, 1, 1],
-    'Baterías_Desechado': [1, 1, 1],
-    'Teléfono móvil básico_Desechado': [1, 1, 1],
-    'Console de videojuegos_Desechado': [1, 1, 1],
-    'Tablet_Desechado': [1, 1, 1],
-    'Teléfono móvil inteligente_Desechado': [1, 1, 1],
-    'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado': [1, 1, 1],
-    'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado': [0, 0, 0],
-    'Otra_Desechado': [0, 0, 0]
-})
+# Configuración de la tasa de crecimiento
+Tasa_Crecimiento = 0.33  
 
-# Comprobar nombres de características del scaler
-print("Nombres de características usados durante el entrenamiento:")
-print(scaler_cargado.feature_names_in_)
+# Preguntar al usuario por el año de proyección
+año_proyeccion = 2024
 
-# Asegurarse de que los nombres y el orden de las características coincidan
-X_nuevos_datos = X_nuevos_datos[scaler_cargado.feature_names_in_]
+# Cargar el modelo de la red neuronal previamente entrenado
+modelo_nn = load_model('modelo_residuos_electronicos.h5')
 
-# Normalizar los nuevos datos
-X_nuevos_datos_scaled = scaler_cargado.transform(X_nuevos_datos)
+# Realizar predicciones en el conjunto de prueba (red neuronal)
+predicciones_nn = modelo_nn.predict(X_test)
 
-# Realizar predicciones
-y_pred_nuevos = modelo_cargado.predict(X_nuevos_datos_scaled)
+# Calcular métricas de evaluación usando el conjunto de prueba (red neuronal)
+mse_nn = mean_squared_error(y_test, predicciones_nn)
+rmse_nn = np.sqrt(mse_nn)
+r2_nn = r2_score(y_test, predicciones_nn)
 
-# Añadir las predicciones al DataFrame original
-X_nuevos_datos['Prediccion_Residuos'] = y_pred_nuevos
+# Crear y entrenar el modelo de regresión lineal
+modelo_lr = LinearRegression()
+modelo_lr.fit(X_train, y_train)
 
-# Simular los valores reales (estos deben ser reemplazados por tus valores reales para calcular las métricas)
-# Aquí simplemente se coloca un ejemplo para fines demostrativos
-y_true = [5.905727,73.665573, 76.601913]  # Debes reemplazar estos valores con los reales que tengas
+# Realizar predicciones en el conjunto de prueba (regresión lineal)
+predicciones_lr = modelo_lr.predict(X_test)
 
-# Calcular R² y MSE
-r2 = r2_score(y_true, y_pred_nuevos)
-mse = mean_squared_error(y_true, y_pred_nuevos)
+# Calcular métricas de evaluación usando el conjunto de prueba (regresión lineal)
+mse_lr = mean_squared_error(y_test, predicciones_lr)
+rmse_lr = np.sqrt(mse_lr)
+r2_lr = r2_score(y_test, predicciones_lr)
 
-# Mostrar las métricas de rendimiento
-print(f"R² Score: {r2}")
-print(f"Mean Squared Error: {mse}")
-# Mostrar todas las predicciones
-print("Predicciones:")
-print(X_nuevos_datos[['AñoProyeccion', 'Ingresos', 'Prediccion_Residuos']])
+# Comparar los resultados
+print("\n--- Comparación de Modelos ---")
+print("\nRed Neuronal (Cargada):")
+print(f"Error Cuadrático Medio (MSE): {mse_nn:.4f}")
+print(f"Raíz del Error Cuadrático Medio (RMSE): {rmse_nn:.4f}")
+print(f"Coeficiente de Determinación (R²): {r2_nn:.4f}")
+
+print("\nRegresión Lineal:")
+print(f"Error Cuadrático Medio (MSE): {mse_lr:.4f}")
+print(f"Raíz del Error Cuadrático Medio (RMSE): {rmse_lr:.4f}")
+print(f"Coeficiente de Determinación (R²): {r2_lr:.4f}")
+
+# Realizar predicciones en el conjunto de entrenamiento para la red neuronal
+predicciones_train_nn = modelo_nn.predict(X_train)
+# Calcular la proyección total de productos desechados para la red neuronal
+total_proyectado_nn = np.sum(predicciones_train_nn) * (1 + Tasa_Crecimiento) ** (año_proyeccion - 2024)
+
+# Realizar predicciones en el conjunto de entrenamiento para la regresión lineal
+predicciones_train_lr = modelo_lr.predict(X_train)
+# Calcular la proyección total de productos desechados para la regresión lineal
+total_proyectado_lr = np.sum(predicciones_train_lr) * (1 + Tasa_Crecimiento) ** (año_proyeccion - 2024)
+
+# Imprimir las proyecciones totales para el año ingresado
+print(f"\nProyección total de residuos electrónicos para {año_proyeccion} (Red Neuronal): {total_proyectado_nn:.2f}")
+print(f"Proyección total de residuos electrónicos para {año_proyeccion} (Regresión Lineal): {total_proyectado_lr:.2f}")
+
+
+# Graficar los resultados de la Red Neuronal y Regresión Lineal en el conjunto de prueba
+plt.figure(figsize=(12, 6))
+
+# Gráfico para la Red Neuronal
+plt.subplot(1, 2, 1)
+plt.scatter(y_test, predicciones_nn, color='blue', label='Predicciones (Red Neuronal)')
+plt.plot(y_test, y_test, color='red', label='Valores Reales')
+plt.title(f"Red Neuronal: Predicciones vs Reales\nR² = {r2_nn:.4f}")
+plt.xlabel("Valores Reales")
+plt.ylabel("Predicciones")
+plt.legend()
+
+# Gráfico para la Regresión Lineal
+plt.subplot(1, 2, 2)
+plt.scatter(y_test, predicciones_lr, color='green', label='Predicciones (Regresión Lineal)')
+plt.plot(y_test, y_test, color='red', label='Valores Reales')
+plt.title(f"Regresión Lineal: Predicciones vs Reales\nR² = {r2_lr:.4f}")
+plt.xlabel("Valores Reales")
+plt.ylabel("Predicciones")
+plt.legend()
+
+# Mostrar las gráficas
+plt.tight_layout()
+plt.show()

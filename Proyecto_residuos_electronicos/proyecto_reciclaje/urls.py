@@ -18,7 +18,15 @@ from django.contrib import admin
 from django.urls import path
 from red_neuronal.views import PredecirResiduosView # Importa correctamente desde el archivo views.py
 from cantidad_residuos_actuales.views import obtener_estadisticas
+from red_neuronal.views import PrediccionTotalGuayaquilView    
+ 
 urlpatterns = [
-     path('predecir_residuos/', PredecirResiduosView.as_view(), name='predecir_residuos'), 
-        path('obtener_estadisticas/', obtener_estadisticas, name='obtener_estadisticas'), # Define la URL
+    # Ruta para predecir residuos con parámetros específicos
+    path('predecir_residuos/', PredecirResiduosView.as_view(), name='predecir_residuos'),
+    
+    # Ruta para obtener estadísticas
+    path('obtener_estadisticas/', obtener_estadisticas, name='obtener_estadisticas'),
+    
+    # Ruta para la predicción total de residuos en Guayaquil
+    path('predecir_residuos_guayaquil/', PrediccionTotalGuayaquilView.as_view(), name='predecir_residuos_guayaquil'),
 ]

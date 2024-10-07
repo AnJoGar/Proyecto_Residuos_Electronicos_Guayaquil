@@ -10,7 +10,7 @@ import os
 from joblib import dump
 
 # Cargar el archivo CSV
-url="../data/Proyecto_Reciclaje (Respuestas) (5).csv"
+url="../data/Proyecto_Reciclaje (Respuestas) (6).csv"
 # Leer el archivo CSV con las configuraciones correctas
 df = pd.read_csv(url, sep=",", encoding='utf-8')
 # Configurar pandas para mostrar todas las filas y columnas
@@ -113,7 +113,7 @@ dispositivos_desuso_año_map = {
 tipos_dispositivos_reciclados_map = {
     'Televisor': 1, 'Computadora': 2, 'Baterías': 3,
      'Teléfono móvil inteligente':4, 'Teléfono móvil básico': 5,
-     'Tablet':6, 'Console de videojuegos':7, 
+     'Tablet':6, 'Consola de videojuegos':7, 
      'Electrodomésticos inteligentes (nevera, lavadora, etc.)': 8,
      'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 9,
      'Ninguno':10, 'Otra':11
@@ -122,7 +122,7 @@ tipos_dispositivos_reciclados_map = {
 tipos_dispositivos_desechados_map = {
     'Televisor': 1, 'Computadora': 2, 'Baterías': 3,
      'Teléfono móvil inteligente':4, 'Teléfono móvil básico': 5,
-     'Tablet':6, 'Console de videojuegos':7, 
+     'Tablet':6, 'Consola de videojuegos':7, 
      'Electrodomésticos inteligentes (nevera, lavadora, etc.)': 8,
      'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 9,
        'Otra':10
@@ -185,12 +185,10 @@ familiaridad_ciudad_inteligente_map = {
 
 df['Tasa_Crecimiento'] = 0.33 
 
-# Aplicar las categorías al DataFrame
-#df['Edad'] = df['¿Cuál es su edad?'].map(edad_map)
+# Aplicar las categorías al DataFrameS
 df['NivelEducativo'] = df['¿Cuál es su nivel educativo?'].map(nivel_educativo_map)
 df['Ocupacion'] = df['¿Cuál es su ocupación?'].map(ocupacion_map)
 df['Vivienda'] = df['¿En qué tipo de vivienda reside?'].map(vivienda_map)
-#df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map)
 df['AreaResidencia'] = df['¿En qué área o zona de la ciudad reside?'].map(area_residencia_map)
 df['FrecuenciaActualizacion'] = df['¿Con qué frecuencia actualiza o reemplaza estos dispositivos?'].map(frecuencia_actualizacion_map)
 df['DispositivosaAdquiridos'] = df['¿Cuántos dispositivos electrónicos ha adquirido en el último año?'].map(dispositivos_adquiridos_año_map)
@@ -268,11 +266,11 @@ columns_to_export = ['AñoProyeccion','Edad', 'NivelEducativo', 'Ocupacion', 'Vi
                       'TiposDispositivosDesechados','TiposDispositivosReciclados','TotalDispositivos',
                       'TotalProductosReciclados',
                       'TotalProductosDesechados','TotalProductos','Televisor_Desechado','Computadora_Desechado',
-                      'Baterías_Desechado','Teléfono móvil básico_Desechado','Console de videojuegos_Desechado',
+                      'Baterías_Desechado','Teléfono móvil básico_Desechado','Consola de videojuegos_Desechado',
                       'Tablet_Desechado','Teléfono móvil inteligente_Desechado',
                       'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',
                       'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado',
-                        'Otra_Desechado','Tasa_Crecimiento'
+                      'Otra_Desechado','Tasa_Crecimiento'
                       
                       ]
 

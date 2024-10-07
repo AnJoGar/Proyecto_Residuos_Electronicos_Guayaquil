@@ -13,7 +13,7 @@ def obtener_estadisticas(request):
         'Computadora_Desechado',
         'Baterías_Desechado',
         'Teléfono móvil básico_Desechado',
-        'Console de videojuegos_Desechado',
+        'Consola de videojuegos_Desechado',
         'Tablet_Desechado',
         'Teléfono móvil inteligente_Desechado',
         'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',
@@ -25,7 +25,7 @@ def obtener_estadisticas(request):
         'Computadora_Desechado',
         'Baterías_Desechado',
         'Teléfono móvil básico_Desechado',
-        'Console de videojuegos_Desechado',
+        'Consola de videojuegos_Desechado',
         'Tablet_Desechado',
         'Teléfono móvil inteligente_Desechado',
         'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',
@@ -50,7 +50,7 @@ def obtener_estadisticas(request):
             'Computadora_Desechado', 
             'Baterías_Desechado', 
             'Teléfono móvil básico_Desechado', 
-            'Console de videojuegos_Desechado', 
+            'Consola de videojuegos_Desechado', 
             'Tablet_Desechado', 
             'Teléfono móvil inteligente_Desechado',
             'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado', 
@@ -133,7 +133,7 @@ def obtener_estadisticas(request):
         'residuos_electronicos_por_sector': productos_desechados_por_sector.to_dict(orient='records'),
         'count': df.shape[0],
         'conteo_reciclados': conteo_reciclados, 
-        'conteo_reciclados': conteo_reciclados,
+       # 'conteo_reciclados': conteo_reciclados,
         'total_productos_desechados': int(total_productos_desechados),  # Total de productos desechados
         'porcentaje_total_contaminacion': round(porcentaje_total_contaminacion, 2),  # Porcentaje total de contaminación # Porcentaje total de contaminación # Número total de filas
         'promedio_residuos_por_persona': round(promedio_residuos_por_persona, 2), 
@@ -141,7 +141,7 @@ def obtener_estadisticas(request):
         'total_residuos_sector_max': int(total_residuos_sector_max),
         'producto_mas_contaminante': producto_mas_contaminante['Producto'],  # Nombre del producto
         'total_residuos_producto_max': int(producto_mas_contaminante['TotalDesechado']),
-          'nivel_educativo_mas_contaminante': nivel_educativo_max['NivelEducativo']  # Nombre del nivel educativo  # Total de resid
+        'nivel_educativo_mas_contaminante': nivel_educativo_max['NivelEducativo']  # Nombre del nivel educativo  # Total de resid
     }
 
     # Convertir las estadísticas a JSON
