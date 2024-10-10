@@ -1,0 +1,170 @@
+
+
+
+<head>
+  <title>Modelo predictivo V1</title>
+</head>
+
+<header class="mat-elevation-z3" style="background-color: rgb(70, 218, 159)">
+  <div class="texto">
+    <div class="info">
+      <div class="titulo">
+        <p>Modelo predictivo de residuos electrónicos en Guayaquil</p>
+      </div>
+      <!-- prediccion.component.html -->
+
+
+
+    </div>
+  </div>
+</header>
+
+<body style="background-color: rgb(207, 233, 212)">
+  <section class="seccionDeOpciones">
+    <div class="opciones">
+      <a id="acercaDe" routerLink="/acercaDe">Acerca de</a>
+      <a id="datosEstadisticos" routerLink="/datosEstadisticos">Datos estadísticos actuales</a>
+      <a id="modeloPrediccion" routerLink="/modeloPrediccion" routerLinkActive="active">Modelo de predicción por año</a>
+      <a id="modeloPrediccion" routerLink="/prediccionFiltro">Modelo de predicción por filtros</a>
+
+    </div>
+  </section>
+<!-- HTML Formulario Angular -->
+<mat-card class="container">
+  <mat-toolbar class="toolbar">
+    <h3 >Formulario de Predicción de Residuos Electrónicos</h3>
+  </mat-toolbar>
+  <form (ngSubmit)="submitPredictionForm()" class="p-3">
+  
+    <div class="form-group">
+      <!-- Año de Proyección -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Año de Proyección</mat-label>
+        <input matInput type="number" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nivel Educativo</mat-label>
+        <mat-select required>
+          <mat-option value="Educación secundaria incompleta">Educación secundaria incompleta</mat-option>
+          <mat-option value="Educación secundaria completa">Educación secundaria completa</mat-option>
+          <mat-option value="Educación técnica o tecnológica">Educación técnica o tecnológica</mat-option>
+          <mat-option value="Educación universitaria">Educación universitaria</mat-option>
+          <mat-option value="Educación de posgrado">Educación de posgrado</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Sector</mat-label>
+        <mat-select required>
+          <mat-option value="Norte">Norte</mat-option>
+          <mat-option value="Sur">Sur</mat-option>
+          <mat-option value="Centro">Centro</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
+
+    <div class="form-group">
+      <!-- Televisor -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Televisor</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Computadora -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Computadora</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Baterías -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Baterías</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Teléfono móvil inteligente -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Teléfono móvil inteligente</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Teléfono móvil básico -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Teléfono móvil básico</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Tablet -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Tablet</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Consola de videojuegos -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Consola de videojuegos</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Electrodomésticos inteligentes -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Electrodomésticos inteligentes</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Dispositivos de domótica -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Dispositivos de domótica</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Otra -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Otra</mat-label>
+        <mat-select>
+          <mat-option value="Sí">Sí</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Botón para enviar -->
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit">Predecir Residuos</button>
+    </div>
+    
+  </form>
+</mat-card>
+
+</body>

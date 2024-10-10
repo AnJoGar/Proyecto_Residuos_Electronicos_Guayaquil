@@ -64,40 +64,55 @@ header {
   }
   
   .full-width {
-    width: 100%; 
+    width: 30%; 
+    margin: 1% 1%; 
   }
   
   .resultados {
     margin-top: 20px; 
   }
-  .mat-card {
+
+  .container{
     background-color: white;
-    color: black;
-}
-.result-container {
-  background-color: #f9f9f9; 
-  border-radius: 8px; 
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-  padding: 16px; 
-  margin: 16px; 
-  text-align: center;
-}
+    max-width: 600px;
+    margin: auto; 
+    padding: 16px; 
+  }
+  .mat-select {
+    background-color: white !important; 
+  }
+  
 
-h3 {
-  color: #2a596a;
-  text-align: center;
-}
+  .mat-select .mat-select-value {
+    color: black; 
+  }
+  
 
-p {
-  font-size: 1.1em; 
-}
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: white; 
+    border-color: #ccc; 
+  }
+  
 
-strong {
-  color: #ff9800; 
-}
+  .mat-form-field-appearance-fill .mat-form-field-flex:focus {
+    border-color: #3f51b5; 
+  }
 
+  .form-field {
+    width: 300px; 
+    margin: 0 auto; 
+  }
 
-.button-container {
-  text-align: center; 
+  .titulo2{
 
-}
+    background-color: white;
+  }
+
+  .button-container{
+
+    text-align: center;
+  }
+  .toolbar{
+
+    background-color: #5fa28f;
+  }

@@ -11,13 +11,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-
+import { PrediccionPorFiltroComponent } from './components/prediccion-por-filtro/prediccion-por-filtro.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
 @NgModule({
   declarations: [
     AppComponent,
     AcercaDeComponent,
     DatosEstadisticosActualesComponent,
-    ModeloPrediccionComponent
+    ModeloPrediccionComponent,
+    PrediccionPorFiltroComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +30,10 @@ import { MatCardModule } from '@angular/material/card';
     FormsModule,
     MatInputModule,
     MatButtonModule, 
-    MatCardModule
+    MatCardModule,
+    MatSelectModule,
+    MatToolbarModule,
+    MatFormFieldModule
   ],
   providers: [
     provideAnimationsAsync()

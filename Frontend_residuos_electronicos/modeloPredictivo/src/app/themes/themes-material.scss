@@ -1,0 +1,19 @@
+@import '~@angular/material/theming';
+
+// Define tu color personalizado
+$custom-toolbar-color: #4caf50; // Cambia este valor al color que desees
+
+// Crea un tema de Angular Material
+@include mat-core();
+
+$theme: mat-light-theme((
+  color: (
+    primary: mat-palette($mat-indigo),
+    accent: mat-palette($mat-pink),
+    warn: mat-palette($mat-red),
+    custom: $custom-toolbar-color // Añade tu color aquí
+  )
+));
+
+// Aplicar el tema
+@include angular-material-theme($theme);

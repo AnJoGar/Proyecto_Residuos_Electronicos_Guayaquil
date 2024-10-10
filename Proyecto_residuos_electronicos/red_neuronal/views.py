@@ -7,6 +7,7 @@ from django.conf import settings  # Para obtener BASE_DIR
 from keras.models import load_model
 from joblib import load
 
+#Prediccion total de residuos electrónicos en Guayaquil dependiendo de los filtros seleccionados
 class PredecirResiduosView(APIView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -33,7 +34,7 @@ class PredecirResiduosView(APIView):
                     'Teléfono móvil inteligente': 4,
                     'Teléfono móvil básico': 5,
                     'Tablet': 6,
-                    'Console de videojuegos': 7,
+                    'Consola de videojuegos': 7,
                     'Electrodomésticos inteligentes (nevera, lavadora, etc.)': 8,
                     'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 9,
                     'Otra': 10
@@ -54,7 +55,7 @@ class PredecirResiduosView(APIView):
     def transformar_si_no_a_binario(self, datos):
         # Reemplazar 'si'/'no' por 1/0
         for clave in self.tipos_dispositivos_desechados_map:
-            if clave + '_Desechado' in datos:  # Asegúrate de usar la clave correcta con el sufijo
+            if clave + '_Desechado' in datos: 
                 datos[clave + '_Desechado'] = 1 if datos[clave + '_Desechado'] == 'si' else 0
         return datos
 
@@ -63,17 +64,17 @@ class PredecirResiduosView(APIView):
         try:
             # Parsear los datos enviados por el cliente
             datos = request.data
-            print("Datos recibidos:", datos)  # Imprimir datos recibidos
+            print("Datos recibidos:", datos) 
             
             # Convertir valores binarios de dispositivos desechados a 1/0
             datos = self.transformar_si_no_a_binario(datos)
 
             # Obtener los filtros de año y producto
-            año_proyeccion = datos.get('AñoProyeccion')
+            año_proyeccion = datos.get('PrediccionAnual')
             año = datos.get('año')
             producto = datos.get('producto')
             sector = datos.get('sector')
-
+            poblacion_total = 2650000
              # Configurar la tasa de crecimiento
             tasa_crecimiento = 0.33  # 33% de aumento anual
             año_base = 2024  # Año base para la tasa de crecimiento
@@ -89,7 +90,7 @@ class PredecirResiduosView(APIView):
             # Verificar si faltan columnas opcionales y agregar columnas vacías si no están presentes
             for columna in self.feature_columns:
                 if columna not in df_datos.columns:
-                    df_datos[columna] = 0  # Asignar un valor predeterminado
+                    df_datos[columna] = 0  
 
             # Asegurarse de que las columnas coincidan con las esperadas por el modelo
             df_datos = df_datos[self.feature_columns]
@@ -107,7 +108,7 @@ class PredecirResiduosView(APIView):
             df_datos['Peso_Total_kg'] = sum(df_datos[producto] * self.pesos_dispositivos[producto] for producto in self.pesos_dispositivos)
 
                         # Ajustar la predicción aplicando la tasa de crecimiento y multiplicando por 90
-            df_datos['Proyeccion_Total'] = df_datos['Peso_Total_kg'] * 92* (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
+            df_datos['Proyeccion_Total'] = df_datos['Peso_Total_kg'] * poblacion_total* (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
 
 
              # Convertir la proyección a toneladas (suponiendo que las predicciones están en kg)
@@ -125,6 +126,9 @@ class PredecirResiduosView(APIView):
                 resultado_filtrado = df_datos
 
             # Preparar los datos para devolver en formato JSON
+            resultado_filtrado['Proyeccion_Total'] = resultado_filtrado['Proyeccion_Total'].apply(lambda x: f"{x:.2f} toneladas")
+
+            # Luego, convierte el DataFrame a un diccionario
             resultado_json = resultado_filtrado[['PrediccionAnual', 'Proyeccion_Total']].to_dict(orient='records')
 
             return Response({'predicciones': resultado_json}, status=status.HTTP_200_OK)
@@ -133,18 +137,8 @@ class PredecirResiduosView(APIView):
             return Response({'error': f'Columna faltante: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': f'Error en la predicción: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        # Nuevo método POST para la predicción total de residuos en Guayaquil
-    # Segundo método: Predicción total de residuos en Guayaquil
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-import os
-import pandas as pd
-from django.conf import settings  # Para obtener BASE_DIR
-from keras.models import load_model
-from joblib import load
-
+               
+#Prediccion total de residuos electrónicos en Guayaquil solo tomando en cuenta el año de predicción
 class PrediccionTotalGuayaquilView(APIView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -193,7 +187,7 @@ class PrediccionTotalGuayaquilView(APIView):
             # Configurar los parámetros
             tasa_crecimiento = 0.055
             año_base = 2024
-            poblacion_total = 2000000  # Población total de Guayaquil
+            poblacion_total = 2650000  # Población total de Guayaquil
 
             pesos_dispositivos_kg = {
             'Televisor': 15,
