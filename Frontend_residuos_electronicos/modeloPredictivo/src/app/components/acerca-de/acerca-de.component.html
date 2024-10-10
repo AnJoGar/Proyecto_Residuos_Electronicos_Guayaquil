@@ -16,7 +16,21 @@
         <div class="opciones">
             <a id="acercaDe" routerLink="/acercaDe" routerLinkActive="active">Acerca de</a>
             <a id="datosEstadisticos" routerLink="/datosEstadisticos">Datos estadísticos actuales</a>
-            <a id="modeloPrediccion" routerLink="/modeloPrediccion">Modelo de predicción</a>
+            <a id="modeloPrediccion" routerLink="/modeloPrediccion">Modelo de predicción por año</a>
+            <a id="modeloPrediccion" routerLink="/modeloPrediccion">Modelo de predicción por filtros</a>
         </div>
       </section>
+
+
+      <mat-card class="prediccion-card mat-elevation-z4">
+        <mat-card-content>
+          <p>
+            Estas vistas permiten realizar predicciones sobre residuos electrónicos tanto a nivel individual como para la ciudad de Guayaquil. 
+            <strong>PredecirResiduosView</strong> se enfoca en proyecciones personalizadas, recibiendo datos del usuario como nivel educativo y dispositivos desechados, 
+            para predecir la cantidad de residuos electrónicos que generará, aplicando una tasa de crecimiento del 33% y devolviendo el resultado en toneladas. 
+            Por otro lado, <strong>PrediccionTotalGuayaquilView</strong> proyecta el total de residuos electrónicos para la población de Guayaquil (2 millones de habitantes), 
+            considerando un crecimiento anual del 5.5% y un promedio de residuos por persona, devolviendo la proyección en toneladas a nivel global.
+          </p>
+        </mat-card-content>
+      </mat-card>
 </body>

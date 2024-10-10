@@ -15,8 +15,9 @@
     <section class="seccionDeOpciones">
         <div class="opciones">
             <a id="acercaDe" routerLink="/acercaDe">Acerca de</a>
-            <a id="datosEstadisticos" routerLink="/datosEstadisticos" routerLinkActive="active">Datos estadísticos actuales</a>
-            <a id="modeloPrediccion" routerLink="/modeloPrediccion">Modelo de predicción</a>
+            <a id="datosEstadisticos" routerLink="/datosEstadisticos" routerLinkActive="active">Datos estadísticos de la muestra</a>
+            <a id="modeloPrediccion" routerLink="/modeloPrediccion">Modelo de predicción por año</a>
+            <a id="modeloPrediccion" routerLink="/modeloPrediccion">Modelo de predicción por filtros</a>
         </div>
       </section>
 
@@ -38,19 +39,21 @@
       <h3>Sector con mayor contaminación</h3>
       <p>{{ datosActuales.sector_mas_contaminacion }}</p>
     </div>
-  
+
+    <div class="statistic-card">
+      <h3>Total residuos sector más contaminante</h3>
+      <p>{{ datosActuales.total_residuos_sector_max }}</p>
+    </div>
+
     <div class="statistic-card">
       <h3>Producto más contaminante</h3>
       <p>{{ datosActuales.producto_mas_contaminante }}</p>
     </div>
   
-    <div class="statistic-card">
-      <h3>Total residuos sector máximo</h3>
-      <p>{{ datosActuales.total_residuos_sector_max }}</p>
-    </div>
+
   
     <div class="statistic-card">
-      <h3>Total residuos producto máximo</h3>
+      <h3>Total residuos producto mas contaminante</h3>
       <p>{{ datosActuales.total_residuos_producto_max }}</p>
     </div>
   

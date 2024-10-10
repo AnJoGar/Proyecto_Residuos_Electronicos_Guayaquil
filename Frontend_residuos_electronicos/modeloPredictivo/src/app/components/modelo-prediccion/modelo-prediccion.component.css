@@ -57,15 +57,46 @@ header {
   }
 
   .prediccion-card {
-    max-width: 600px; /* Máximo ancho para la tarjeta */
-    margin: 20px auto; /* Centrando la tarjeta */
-    padding: 20px; /* Espaciado interno */
+    max-width: 600px;
+    margin: 20px auto; 
+    padding: 20px; 
+    background-color: white;
   }
   
   .full-width {
-    width: 100%; /* Hacer que el campo ocupe el 100% del contenedor */
+    width: 100%; 
   }
   
   .resultados {
-    margin-top: 20px; /* Espaciado superior para los resultados */
+    margin-top: 20px; 
   }
+  .mat-card {
+    background-color: white;
+    color: black;
+}
+.result-container {
+  background-color: #f9f9f9; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+  padding: 16px; 
+  margin: 16px; 
+  text-align: center;
+}
+
+h3 {
+  color: #2a596a;
+  text-align: center;
+}
+
+p {
+  font-size: 1.1em; 
+}
+
+strong {
+  color: #ff9800; 
+}
+
+
+.button-container {
+  text-align: center; 
+}
