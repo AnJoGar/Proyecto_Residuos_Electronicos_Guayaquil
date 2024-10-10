@@ -17,14 +17,10 @@ X_scaled = scaler.fit_transform(X)
 
 # Guardar el scaler
 dump(scaler, 'scaler.joblib')
+
 # Dividir los datos en conjuntos de entrenamiento y prueba
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-# Configuración de la tasa de crecimiento
-Tasa_Crecimiento = 0.33  
-
-# Preguntar al usuario por el año de proyección
-año_proyeccion = 2024
 
 # Crear el modelo de la red neuronal
 modelo_nn = keras.Sequential([
@@ -60,13 +56,4 @@ print(f"Coeficiente de Determinación (R²): {r2:.4f}")
 
 print("Número de características:", scaler.n_features_in_)
 print("Nombres de características:", scaler.feature_names_in_)
-# Realizar predicciones en el conjunto de entrenamiento
-predicciones_train = modelo_nn.predict(X_train)
-# Calcular la proyección total de productos desechados
-# Sumar las predicciones y ajustar por la tasa de crecimiento
-total_proyectado = np.sum(predicciones_train) * (1 + Tasa_Crecimiento) ** (año_proyeccion - 2024)
-
-# Imprimir el total proyectado para el año ingresado
-print(f"Proyección total de residuos electrónicos para {año_proyeccion}: {total_proyectado:.2f}")
-
 modelo_nn.save('modelo_residuos_electronicos.h5')

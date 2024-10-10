@@ -8,6 +8,10 @@
           <div class="titulo">
             <p>Modelo predictivo de residuos electrónicos en Guayaquil</p>
           </div>
+          <!-- prediccion.component.html -->
+
+
+
         </div>
       </div>
 </header>
@@ -16,7 +20,28 @@
         <div class="opciones">
             <a id="acercaDe" routerLink="/acercaDe">Acerca de</a>
             <a id="datosEstadisticos" routerLink="/datosEstadisticos">Datos estadísticos actuales</a>
-            <a id="modeloPrediccion" routerLink="/modeloPrediccion" routerLinkActive="active">Modelo de predicción</a>
+            <a id="modeloPrediccion" routerLink="/modeloPrediccion" routerLinkActive="active">Modelo de predicción por año</a>
         </div>
       </section>
+
+      <mat-card class="prediccion-card">
+        <mat-card-title>
+          <h3>Predicción de Residuos Electrónicos</h3>
+        </mat-card-title>
+        <mat-card-content>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Año de Proyección</mat-label>
+            <input matInput type="number" [(ngModel)]="PrediccionAnual" />
+          </mat-form-field>
+          
+          <button mat-raised-button color="primary" (click)="realizarPrediccion()">Realizar Predicción</button>
+          
+          <div *ngIf="resultado" class="resultados">
+            <h2>Resultados:</h2>
+            <p>Año de Proyección: {{ resultado.PrediccionAnual }}</p> <!-- Asegúrate de usar Proyeccion -->
+            <p>Total Proyectado: {{ resultado.Proyeccion_Total }}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
 </body>

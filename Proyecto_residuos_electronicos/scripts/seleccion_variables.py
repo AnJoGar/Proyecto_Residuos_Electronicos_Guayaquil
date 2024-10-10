@@ -18,12 +18,11 @@ print("Tipos de datos en el DataFrame:")
 print(df.dtypes)
 
 # Variables predictoras (entrantes)
-X = df[[ 'AñoProyeccion',
-         'Ingresos',
+X = df[[  'PrediccionAnual',
+          'Ingresos',
           'NivelEducativo',
-         #'Ocupacion',
-         'AreaResidencia',
-         'FrecuenciaReciclaje',
+          'AreaResidencia',
+          'FrecuenciaReciclaje',
           'Televisor_Desechado',
           'Computadora_Desechado',
           'Baterías_Desechado',

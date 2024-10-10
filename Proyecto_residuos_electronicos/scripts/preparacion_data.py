@@ -10,7 +10,7 @@ import os
 from joblib import dump
 
 # Cargar el archivo CSV
-url="../data/Proyecto_Reciclaje (Respuestas) (6).csv"
+url="../data/Proyecto_Reciclaje (Respuestas).csv"
 # Leer el archivo CSV con las configuraciones correctas
 df = pd.read_csv(url, sep=",", encoding='utf-8')
 # Configurar pandas para mostrar todas las filas y columnas
@@ -63,20 +63,6 @@ ingresos_map_num = {
     'No genero ingreso': 0     # Para "No genero ingreso", se asigna 0
 }
 
-ingresos_map_num1 = {
-    'Menos de $400': (0, 399),
-    '$400 - $800': (400, 800),
-    '$801 - $1200': (801, 1200),
-    'Más de $2000': (2000, float('inf')),
-    'No genero ingreso': (0, 0)
-}
-# Función para calcular el valor medio o límite inferior
-def obtener_ingreso_media(rango):
-    return (rango[0] + rango[1]) / 2 if rango[1] != float('inf') else rango[0]
-
-# Mapeo de categorías a valores
-#df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map_num).apply(obtener_ingreso_media)
-# Reemplazar las categorías con los valores numéricos
 df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map_num)
 
 area_residencia_map = {
@@ -126,8 +112,6 @@ tipos_dispositivos_desechados_map = {
      'Electrodomésticos inteligentes (nevera, lavadora, etc.)': 8,
      'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 9,
        'Otra':10
-
-
 
 }
 
@@ -233,7 +217,7 @@ print(df[['Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaRe
             'Televisor', 'Computadora', 'TelefonoMovil', 'ElectrodomesticosInteligentes']].head())
 
 # Agregar la columna 'Año de Proyección' con valores ficticios o calculados
-df['AñoProyeccion'] = 2024
+df['PrediccionAnual'] = 2024
 
 # Sumar las cantidades de dispositivos adquiridos y desechados como una medida total de "producto"
 df['TotalDispositivos'] = df['DispositivosaAdquiridos'] + df['DispositivosDesuso']
@@ -255,7 +239,7 @@ df['TotalProductos'] = df['TotalProductosReciclados'] + df['TotalProductosDesech
 # Verificar las nuevas columnas
 print(df[['TotalDispositivos', 'TotalProductosReciclados', 'TotalProductosDesechados', 'TotalProductos']].head())
 # Seleccionar solo las columnas categorizadas para el DataFrame limpio
-columns_to_export = ['AñoProyeccion','Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaResidencia', 
+columns_to_export = ['PrediccionAnual','Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaResidencia', 
                       'FrecuenciaActualizacion', 'PrimeraAccion', 'QueHaceConDispositivos', 
                       'FrecuenciaReciclaje', 'DispositivosaAdquiridos', 'DispositivosDesuso', 
                       'InformadoCentrosReciclaje', 'ParticipacionCampanas', 'ImportanciaReciclaje', 
@@ -300,7 +284,8 @@ print(missing_values_cleaned_df.to_string(index=False))
 print("\nDataframe Limpio (primeras 5 filas):")
 print(df_cleaned.head().to_string(index=False))
 # Exportar el DataFrame limpio a un archivo CSV
-output_file = 'dataframe_limpio.csv'
-df_cleaned.to_csv(output_file, index=False)
 
-print(f"\nEl DataFrame limpio se ha exportado a '{output_file}'.")
+
+# Exportar el DataFrame limpio a un archivo CSV
+output_file = '../data/dataframe_limpio.csv'
+df_cleaned.to_csv(output_file, index=False)

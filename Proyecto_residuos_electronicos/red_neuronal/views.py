@@ -38,6 +38,18 @@ class PredecirResiduosView(APIView):
                     'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 9,
                     'Otra': 10
                 }
+        self.pesos_dispositivos = {
+                    'Televisor_Desechado': 15,  # Peso promedio en kg
+                    'Computadora_Desechado': 10,  # Peso promedio en kg
+                    'Baterías_Desechado': 0.5,  # Peso promedio en kg
+                    'Teléfono móvil inteligente_Desechado': 0.2,  # Peso promedio en kg
+                    'Teléfono móvil básico_Desechado': 0.15,  # Peso promedio en kg
+                    'Tablet_Desechado': 0.4,  # Peso promedio en kg
+                    'Consola de videojuegos_Desechado': 1.5,  # Peso promedio en kg
+                    'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado': 20,  # Peso promedio en kg
+                    'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado': 2,  # Peso promedio en kg
+                    'Otra_Desechado': 1  # Peso promedio en kg
+                }
         
     def transformar_si_no_a_binario(self, datos):
         # Reemplazar 'si'/'no' por 1/0
@@ -90,12 +102,19 @@ class PredecirResiduosView(APIView):
 
             # Agregar las predicciones al DataFrame
             df_datos['Prediccion_Residuos'] = predicciones
-                        # Ajustar la predicción aplicando la tasa de crecimiento y multiplicando por 90
-            df_datos['Proyeccion_Total'] = df_datos['Prediccion_Residuos'] * 1* (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
 
+             # Calcular el peso total en kg usando los pesos promedio
+            df_datos['Peso_Total_kg'] = sum(df_datos[producto] * self.pesos_dispositivos[producto] for producto in self.pesos_dispositivos)
+
+                        # Ajustar la predicción aplicando la tasa de crecimiento y multiplicando por 90
+            df_datos['Proyeccion_Total'] = df_datos['Peso_Total_kg'] * 92* (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
+
+
+             # Convertir la proyección a toneladas (suponiendo que las predicciones están en kg)
+            df_datos['Proyeccion_Total_Toneladas'] = df_datos['Proyeccion_Total'] / 1000  # Convertir a toneladas
             # Filtrar por el año solicitado si existe
             if año:
-                df_datos = df_datos[df_datos['AñoProyeccion'] == año]
+                df_datos = df_datos[df_datos['PrediccionAnual'] == año]
             if sector:
                 df_datos = df_datos[df_datos['AreaResidencia'] == sector]
 
@@ -106,7 +125,7 @@ class PredecirResiduosView(APIView):
                 resultado_filtrado = df_datos
 
             # Preparar los datos para devolver en formato JSON
-            resultado_json = resultado_filtrado[['AñoProyeccion', 'Proyeccion_Total']].to_dict(orient='records')
+            resultado_json = resultado_filtrado[['PrediccionAnual', 'Proyeccion_Total']].to_dict(orient='records')
 
             return Response({'predicciones': resultado_json}, status=status.HTTP_200_OK)
 
@@ -164,7 +183,7 @@ class PrediccionTotalGuayaquilView(APIView):
             print("Datos recibidos en predicción total Guayaquil:", datos)
 
             # Obtener el año de proyección
-            año_proyeccion = datos.get('AñoProyeccion')
+            año_proyeccion = datos.get('PrediccionAnual')
             if not año_proyeccion:
                 return Response({'error': 'Debe proporcionar el año para la proyección.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -172,9 +191,23 @@ class PrediccionTotalGuayaquilView(APIView):
             año_proyeccion = int(año_proyeccion)
 
             # Configurar los parámetros
-            tasa_crecimiento = 0.33
+            tasa_crecimiento = 0.055
             año_base = 2024
             poblacion_total = 2000000  # Población total de Guayaquil
+
+            pesos_dispositivos_kg = {
+            'Televisor': 15,
+            'Computadora': 7,
+            'Baterías': 0.1,
+            'Teléfono móvil inteligente': 0.2,
+            'Teléfono móvil básico': 0.1,
+            'Tablet': 0.5,
+            'Consola de videojuegos': 3,
+            'Electrodomésticos inteligentes (nevera, lavadora, etc.)': 50,
+            'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 0.3,
+            'Otra': 1  # Promedio para otros dispositivos
+            }
+
 
             # Usar los datos de entrenamiento
             df_datos_guayaquil = self.df_entrenamiento.copy()  # Copiar el DataFrame de entrenamiento
@@ -187,14 +220,20 @@ class PrediccionTotalGuayaquilView(APIView):
 
             # Calcular el promedio de residuos por persona
             promedio_residuos_por_persona = predicciones_guayaquil.mean()
+              
+            # Calcular el total de residuos en kilogramos por tipo de dispositivo
+            total_residuos_kg = 0
+            for dispositivo, peso in pesos_dispositivos_kg.items():
+            # Multiplicar la cantidad de dispositivos por su peso en kilogramos
+                total_residuos_kg += promedio_residuos_por_persona * poblacion_total * peso
 
             # Calcular la proyección total para la población de Guayaquil
             total_residuos_proyectados = promedio_residuos_por_persona * poblacion_total * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
-
+            total_residuos_proyectados_toneladas = (total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)) / 1000  # Convertir a toneladas
             # Preparar el resultado en formato JSON
             resultado_json_guayaquil = {
-                'AñoProyeccion': año_proyeccion,
-                'Proyeccion_Total': total_residuos_proyectados  # Total proyectado para la población
+                'PrediccionAnual': año_proyeccion,
+                'Proyeccion_Total': f"{total_residuos_proyectados_toneladas:.2f} t" # Total proyectado para la población
             }
            
             return Response({'predicciones_guayaquil': resultado_json_guayaquil}, status=status.HTTP_200_OK)

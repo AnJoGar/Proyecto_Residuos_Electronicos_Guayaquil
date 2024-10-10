@@ -55,3 +55,17 @@ header {
     background-color: rgb(45, 139, 102);
     color: #fff;
   }
+
+  .prediccion-card {
+    max-width: 600px; /* Máximo ancho para la tarjeta */
+    margin: 20px auto; /* Centrando la tarjeta */
+    padding: 20px; /* Espaciado interno */
+  }
+  
+  .full-width {
+    width: 100%; /* Hacer que el campo ocupe el 100% del contenedor */
+  }
+  
+  .resultados {
+    margin-top: 20px; /* Espaciado superior para los resultados */
+  }
