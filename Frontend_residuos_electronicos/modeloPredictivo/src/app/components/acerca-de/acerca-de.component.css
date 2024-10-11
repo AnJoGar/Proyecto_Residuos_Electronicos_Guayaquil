@@ -57,8 +57,23 @@ header {
   }
 
   .prediccion-card {
+    position: absolute;
     padding: 16px;
     margin: 16px;
+    margin-left: 55%;
+    margin-top: 10%;
     background-color: white;
-    margin: 5% 30%; 
+
+    background-size: 90px;
+  }
+  .custom-font-size {
+    font-size: 22px;
+  }
+  .custom-image {
+    position: absolute; 
+    margin-left: 1%;
+    margin-top: 2%;
+    width: 800px;
+    height: 70%;
+    border-radius: 10px;
   }

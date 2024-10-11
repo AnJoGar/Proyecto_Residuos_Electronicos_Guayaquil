@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+"""import matplotlib.pyplot as plt
 import networkx as nx
 
 # Crear el diagrama de flujo
@@ -288,3 +288,85 @@ def generar_graficos(estadisticas):
 if __name__ == "__main__":
     estadisticas = obtener_estadisticas()  # Obtener las estadísticas de los datos
     generar_graficos(estadisticas)  # Generar los gráficos con los datos obtenidos
+
+import matplotlib.pyplot as plt
+import numpy as np
+from joblib import load
+from sklearn.preprocessing import StandardScaler
+import pandas as pd
+
+# Cargar los datos
+X = load('X_variables.joblib')
+
+# Normalizando los datos
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Crear un gráfico para mostrar datos normalizados
+fig, ax = plt.subplots(figsize=(12, 6))
+
+# Datos normalizados
+ax.boxplot(X_scaled, vert=False, patch_artist=True)
+ax.set_title("Datos Normalizados (StandardScaler)")
+ax.set_xlabel("Valor de la Característica")
+ax.set_ylabel("Características")
+ax.set_yticklabels(['PrediccionAnual',
+                     'Ingresos',
+                     'NivelEducativo',
+                     'AreaResidencia',
+                     'FrecuenciaReciclaje',
+                     'Televisor_Desechado',
+                     'Computadora_Desechado',
+                     'Baterías_Desechado',
+                     'Teléfono móvil básico_Desechado',
+                     'Consola de videojuegos_Desechado',
+                     'Tablet_Desechado',
+                     'Teléfono móvil inteligente_Desechado',
+                     'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',
+                     'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado',
+                     'Otra_Desechado'])
+
+# Mostrar el gráfico
+plt.tight_layout()  # Ajustar el layout
+plt.show()
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+from joblib import load
+from sklearn.model_selection import train_test_split
+
+# Cargar las variables
+X = load('X_variables.joblib')
+y = load('y_variable.joblib')
+scaler = load('scaler.joblib')  # Cargar el scaler guardado
+
+# Normalizar los datos
+X_scaled = scaler.transform(X)
+
+# Dividir los datos en conjuntos de entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Calcular el tamaño de los conjuntos de entrenamiento y prueba
+train_size_real = len(X_train) / len(X_scaled) * 100
+test_size_real = len(X_test) / len(X_scaled) * 100
+
+# Redondear para que sean exactamente 80% y 20%
+train_size = round(train_size_real)
+test_size = round(test_size_real)
+
+
+
+# Etiquetas y tamaños
+labels = ['Entrenamiento', 'Prueba']
+sizes = [train_size, test_size]
+colors = ['#4CAF50', '#FF5722']  # Colores para el gráfico
+explode = (0.1, 0)  # Explode el primer segmento
+
+# Crear el gráfico de pastel
+plt.figure(figsize=(8, 5))
+plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+        autopct='%1.1f%%', shadow=True, startangle=140)
+
+plt.axis('equal')  # Igualar el aspecto del gráfico
+plt.title('Distribución de datos entre Entrenamiento y Prueba (80%/20%)')
+plt.show()
