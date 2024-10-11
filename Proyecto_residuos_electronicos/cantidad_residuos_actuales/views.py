@@ -46,16 +46,16 @@ def obtener_estadisticas(request):
     # Calcular el total de productos desechados por cada fila
     df['TotalProductosDesechados'] = df[
         [
-            'Televisor_Desechado', 
-            'Computadora_Desechado', 
-            'Baterías_Desechado', 
-            'Teléfono móvil básico_Desechado', 
-            'Consola de videojuegos_Desechado', 
-            'Tablet_Desechado', 
-            'Teléfono móvil inteligente_Desechado',
-            'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado', 
-            'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado',
-            'Otra_Desechado'
+                'Televisor_Desechado',
+                'Computadora_Desechado',
+                'Baterías_Desechado',
+                'Teléfono móvil básico_Desechado',
+                'Consola de videojuegos_Desechado',
+                'Tablet_Desechado',
+                'Teléfono móvil inteligente_Desechado',
+                'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',
+                'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado',
+                'Otra_Desechado'
         ]
     ].sum(axis=1)
     

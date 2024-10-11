@@ -1,4 +1,4 @@
-"""import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import networkx as nx
 
 # Crear el diagrama de flujo
@@ -93,11 +93,6 @@ plt.title('Diagrama de flujo del modelo de red neuronal', fontsize=14)
 plt.axis('off')  # Ocultar los ejes
 plt.savefig('diagrama_flujo_modelo_s.png', format='png', bbox_inches='tight')  # Guarda el diagrama como un archivo PNG
 plt.show()
-"""
-
-"""
-
-
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -152,8 +147,6 @@ plt.axis('off')
 plt.tight_layout()
 plt.show()
 
-"""
-"""
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -199,9 +192,6 @@ tabla.scale(1.2, 1.2)
 plt.title('Variables de Entrada y Variable de Salida', fontsize=16, fontweight='bold')
 plt.show()
 
-
-
-"""
 
 import pandas as pd
 

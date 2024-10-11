@@ -1,6 +1,3 @@
-
-
-
 <head>
   <title>Modelo predictivo V1</title>
 </head>
@@ -11,10 +8,6 @@
       <div class="titulo">
         <p>Modelo predictivo de residuos electrónicos en Guayaquil</p>
       </div>
-      <!-- prediccion.component.html -->
-
-
-
     </div>
   </div>
 </header>
@@ -26,145 +19,145 @@
       <a id="datosEstadisticos" routerLink="/datosEstadisticos">Datos estadísticos actuales</a>
       <a id="modeloPrediccion" routerLink="/modeloPrediccion" routerLinkActive="active">Modelo de predicción por año</a>
       <a id="modeloPrediccion" routerLink="/prediccionFiltro">Modelo de predicción por filtros</a>
-
     </div>
   </section>
-<!-- HTML Formulario Angular -->
-<mat-card class="container">
-  <mat-toolbar class="toolbar">
-    <h3 >Formulario de Predicción de Residuos Electrónicos</h3>
-  </mat-toolbar>
-  <form (ngSubmit)="submitPredictionForm()" class="p-3">
-  
-    <div class="form-group">
-      <!-- Año de Proyección -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Año de Proyección</mat-label>
-        <input matInput type="number" required>
-      </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Nivel Educativo</mat-label>
-        <mat-select required>
-          <mat-option value="Educación secundaria incompleta">Educación secundaria incompleta</mat-option>
-          <mat-option value="Educación secundaria completa">Educación secundaria completa</mat-option>
-          <mat-option value="Educación técnica o tecnológica">Educación técnica o tecnológica</mat-option>
-          <mat-option value="Educación universitaria">Educación universitaria</mat-option>
-          <mat-option value="Educación de posgrado">Educación de posgrado</mat-option>
-        </mat-select>
-      </mat-form-field>
+  <mat-card class="container">
+    <mat-toolbar class="toolbar">
+      <h3>Formulario de Predicción de Residuos Electrónicos</h3>
+    </mat-toolbar>
+    <form (ngSubmit)="submitPredictionForm()" class="p-3">
+      <div class="form-group">
+        <!-- Predicción Anual -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Año de prediccion</mat-label>
+          <input matInput type="number" [(ngModel)]="formData['PrediccionAnual']" name="PrediccionAnual" required />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Sector</mat-label>
-        <mat-select required>
-          <mat-option value="Norte">Norte</mat-option>
-          <mat-option value="Sur">Sur</mat-option>
-          <mat-option value="Centro">Centro</mat-option>
+        <!-- Área de Residencia -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Área de Residencia</mat-label>
+          <mat-select [(ngModel)]="formData['AreaResidencia']" name="AreaResidencia" required>
+            <mat-option value="1">Norte</mat-option>
+            <mat-option value="2">Sur</mat-option>
+            <mat-option value="3">Centro</mat-option>
+            <!-- Agrega más opciones según tus necesidades -->
+          </mat-select>
+        </mat-form-field>
 
-        </mat-select>
-      </mat-form-field>
-    </div>
+        <!-- Ingresos -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Ingresos</mat-label>
+          <input matInput type="number" [(ngModel)]="formData['Ingresos']" name="Ingresos" required />
+        </mat-form-field>
 
+        <!-- Nivel Educativo -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Nivel Educativo</mat-label>
+          <mat-select [(ngModel)]="formData['NivelEducativo']" name="NivelEducativo" required>
+            <mat-option value="Educación secundaria incompleta">Primaria</mat-option>
+            <mat-option value="Educación secundaria completa">Secundaria</mat-option>
+            <mat-option value="Educación técnica o tecnológica">Educación técnica</mat-option>
+            <mat-option value="Educación universitaria">Educación universitaria</mat-option>
+            <mat-option value="Educación de posgrado">Postgrado</mat-option>
+            <!-- Agrega más opciones según tus necesidades -->
+          </mat-select>
+        </mat-form-field>
 
+        <!-- Frecuencia de Reciclaje -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Frecuencia de Reciclaje</mat-label>
+          <mat-select [(ngModel)]="formData['FrecuenciaReciclaje']" name="FrecuenciaReciclaje" required>
+            <mat-option value="1">Siempre</mat-option>
+            <mat-option value="0">Nunca</mat-option>
+            <mat-option value="0.5">A veces</mat-option>
 
-    <div class="form-group">
-      <!-- Televisor -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Televisor</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+            <!-- Agrega más opciones según tus necesidades -->
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Computadora -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Computadora</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Baterías Desechadas -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Baterías Desechadas</mat-label>
+          <mat-select [(ngModel)]="formData['Baterías_Desechado']" name="Baterías_Desechado" required>
+            <mat-option value="si">Sí</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Baterías -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Baterías</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Teléfono Móvil Básico Desechado -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Teléfono Móvil Básico Desechado</mat-label>
+          <mat-select [(ngModel)]="formData['Teléfono móvil básico_Desechado']" name="Teléfono móvil básico_Desechado" required>
+            <mat-option value="si">Sí</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Teléfono móvil inteligente -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Teléfono móvil inteligente</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Consola de Videojuegos Desechada -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Consola de Videojuegos Desechada</mat-label>
+          <mat-select [(ngModel)]="formData['Console de videojuegos_Desechado']" name="Console de videojuegos_Desechado" required>
+            <mat-option value="si">Sí</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Teléfono móvil básico -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Teléfono móvil básico</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Teléfono Móvil Inteligente Desechado -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Teléfono Móvil Inteligente Desechado</mat-label>
+          <mat-select [(ngModel)]="formData['Teléfono móvil inteligente_Desechado']" name="Teléfono móvil inteligente_Desechado" required>
+            <mat-option value="si">Sí</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Tablet -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Tablet</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Electrodomésticos Inteligentes Desechados -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Electrodomésticos Inteligentes Desechados</mat-label>
+          <mat-select [(ngModel)]="formData['Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado']" name="Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado" required>
+            <mat-option value="si">Sí</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Consola de videojuegos -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Consola de videojuegos</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Dispositivos de Domótica Desechados -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Dispositivos de Domótica Desechados</mat-label>
+          <mat-select [(ngModel)]="formData['Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado']" name="Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado" required>
+            <mat-option value="si">Sí</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Electrodomésticos inteligentes -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Electrodomésticos inteligentes</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Otra Desechada -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Otra Desechada</mat-label>
+          <mat-select [(ngModel)]="formData.Otra_Desechado" name="Otra_Desechado" required>
+            <mat-option value="si">Sí</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-      <!-- Dispositivos de domótica -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Dispositivos de domótica</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <!-- Botón para enviar -->
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit">Enviar Predicción</button>
+      </div>
 
-      <!-- Otra -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Otra</mat-label>
-        <mat-select>
-          <mat-option value="Sí">Sí</mat-option>
-          <mat-option value="No">No</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+      <!-- Resultados de la predicción -->
+      <div *ngIf="resultado && resultado.predicciones.length">
+        <h3>Resultado de la Predicción teniendo de toda la población de Guayaquil:</h3>
+        <div *ngFor="let prediccion of resultado.predicciones">
+          <p><strong>Año de Predicción:</strong> {{ prediccion.PrediccionAnual }}</p>
+          <p><strong>Predicción de Residuos:</strong> {{ prediccion.Prediccion_Residuos }}</p>
+        </div>
+      </div>
 
-    <!-- Botón para enviar -->
-    <div class="button-container">
-      <button mat-raised-button color="primary" type="submit">Predecir Residuos</button>
-    </div>
-    
-  </form>
-</mat-card>
-
+      <!-- Mensaje de error -->
+      <div *ngIf="error" class="error">
+        <p>{{ error }}</p>
+      </div>
+    </form>
+  </mat-card>
 </body>
