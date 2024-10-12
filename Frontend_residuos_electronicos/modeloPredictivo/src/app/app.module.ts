@@ -15,6 +15,7 @@ import { PrediccionPorFiltroComponent } from './components/prediccion-por-filtro
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatCardModule,
     MatSelectModule,
     MatToolbarModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+
   ],
   providers: [
     provideAnimationsAsync()

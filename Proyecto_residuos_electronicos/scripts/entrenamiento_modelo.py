@@ -32,13 +32,15 @@ modelo_nn = keras.Sequential([
 # Compilar el modelo
 modelo_nn.compile(optimizer='adam', loss='mean_squared_error')
 
-# Entrenar el modelo utilizando solo el conjunto de entrenamiento
-modelo_nn.fit(X_train, y_train, epochs=200, batch_size=32, verbose=1)
-
+# Entrenar el modelo y guardar el historial
+historial = modelo_nn.fit(X_train, y_train, epochs=200, batch_size=32, verbose=1)
 # Realizar predicciones en el conjunto de prueba
 predicciones = modelo_nn.predict(X_test)
 
+# Guardar el historial en un archivo
+np.save('historial_entrenamiento.npy', historial.history)
 # Calcular métricas de evaluación usando el conjunto de prueba
+
 mse = mean_squared_error(y_test, predicciones)
 rmse = np.sqrt(mse)
 r2 = r2_score(y_test, predicciones)
@@ -57,3 +59,5 @@ print(f"Coeficiente de Determinación (R²): {r2:.4f}")
 print("Número de características:", scaler.n_features_in_)
 print("Nombres de características:", scaler.feature_names_in_)
 modelo_nn.save('modelo_residuos_electronicos.h5')
+# Guardar el historial en un archivo
+np.save('historial_entrenamiento.npy', historial.history)

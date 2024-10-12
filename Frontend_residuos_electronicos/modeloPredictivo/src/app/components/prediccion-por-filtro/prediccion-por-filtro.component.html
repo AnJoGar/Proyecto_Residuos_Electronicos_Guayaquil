@@ -36,12 +36,12 @@
 
         <!-- Área de Residencia -->
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Área de Residencia</mat-label>
-          <mat-select [(ngModel)]="formData['AreaResidencia']" name="AreaResidencia" required>
-            <mat-option value="1">Norte</mat-option>
-            <mat-option value="2">Sur</mat-option>
-            <mat-option value="3">Centro</mat-option>
-            <!-- Agrega más opciones según tus necesidades -->
+          <mat-label >Área de Residencia</mat-label>
+          <mat-select [(ngModel)]="formData.AreaResidencia"  name="AreaResidencia" required>
+            <mat-option [value]="1">Norte</mat-option>
+            <mat-option [value]="2">Sur</mat-option>
+            <mat-option [value]="3">Centro</mat-option>
+
           </mat-select>
         </mat-form-field>
 
@@ -60,19 +60,17 @@
             <mat-option value="Educación técnica o tecnológica">Educación técnica</mat-option>
             <mat-option value="Educación universitaria">Educación universitaria</mat-option>
             <mat-option value="Educación de posgrado">Postgrado</mat-option>
-            <!-- Agrega más opciones según tus necesidades -->
           </mat-select>
         </mat-form-field>
 
         <!-- Frecuencia de Reciclaje -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Frecuencia de Reciclaje</mat-label>
-          <mat-select [(ngModel)]="formData['FrecuenciaReciclaje']" name="FrecuenciaReciclaje" required>
-            <mat-option value="1">Siempre</mat-option>
-            <mat-option value="0">Nunca</mat-option>
-            <mat-option value="0.5">A veces</mat-option>
+          <mat-select [(ngModel)]="formData.FrecuenciaReciclaje" name="FrecuenciaReciclaje" required>
+            <mat-option [value]="1">Siempre</mat-option>
+            <mat-option [value]="0.5">A veces</mat-option>
+            <mat-option [value]="0">Nunca</mat-option>
 
-            <!-- Agrega más opciones según tus necesidades -->
           </mat-select>
         </mat-form-field>
 
@@ -97,7 +95,7 @@
         <!-- Consola de Videojuegos Desechada -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Consola de Videojuegos Desechada</mat-label>
-          <mat-select [(ngModel)]="formData['Console de videojuegos_Desechado']" name="Console de videojuegos_Desechado" required>
+          <mat-select [(ngModel)]="formData['Consola de videojuegos_Desechado']" name="Console de videojuegos_Desechado" required>
             <mat-option value="si">Sí</mat-option>
             <mat-option value="no">No</mat-option>
           </mat-select>

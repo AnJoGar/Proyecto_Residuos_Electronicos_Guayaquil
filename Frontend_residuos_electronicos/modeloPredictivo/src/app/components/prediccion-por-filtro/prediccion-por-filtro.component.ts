@@ -1,6 +1,7 @@
 import { PrediccionPorFiltro} from '../../interfaces/prediccion-por-filtro';
 import { Component, Input } from '@angular/core';
 import { PrediccionPorFilroService } from '../../services/prediccion-por-filro.service';
+
 @Component({
   selector: 'app-prediccion-por-filtro',
   templateUrl: './prediccion-por-filtro.component.html',
@@ -14,16 +15,16 @@ export class PrediccionPorFiltroComponent {
   constructor(private prediccionService: PrediccionPorFilroService) {}
 
   formData: PrediccionPorFiltro = {
-    PrediccionAnual: 0,
-    AreaResidencia: 0,
-    NivelEducativo: '',
+    PrediccionAnual:2025,
+    AreaResidencia: 1,
+    NivelEducativo: "Educación universitaria",
     FrecuenciaReciclaje: 0,
     Ingresos:0,
     Televisor_Desechado: 'no',
     Computadora_Desechado: 'no',
     'Baterías_Desechado': 'no',
     'Teléfono móvil básico_Desechado': 'no',
-    'Console de videojuegos_Desechado': 'no',
+    'Consola de videojuegos_Desechado': 'no',
     Tablet_Desechado: 'no',
     'Teléfono móvil inteligente_Desechado': 'no',
     'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado': 'no',
@@ -35,8 +36,8 @@ export class PrediccionPorFiltroComponent {
   submitPredictionForm() {
     this.prediccionService.predecirResiduos(this.formData).subscribe(
       response => {
-        this.resultado = response; // Guarda la respuesta en 'resultado'
-        this.error = null; // Resetea el error si la solicitud fue exitosa
+        this.resultado = response; 
+        this.error = null; 
       },
       error => {
         this.error = 'Hubo un error al realizar la predicción'; // Manejo de errores

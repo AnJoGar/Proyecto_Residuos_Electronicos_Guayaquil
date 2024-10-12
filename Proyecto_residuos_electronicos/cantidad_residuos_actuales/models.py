@@ -5,7 +5,6 @@ from django.db import models
 from django.db import models
 
 class Dispositivo(models.Model):
-    # Define the fields based on your CSV structure
     ingresos = models.FloatField()
     edad = models.IntegerField()
     dispositivos_adquiridos = models.IntegerField()

@@ -64,7 +64,7 @@ header {
   }
   
   .statistic-card {
-    background-color: #fafdfd; /* Light turquoise background */
+    background-color: #fafdfd; 
     border-radius: 10px;
     padding: 20px;
     text-align: center;
@@ -79,5 +79,5 @@ header {
   .statistic-card p {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #00796b; /* Teal color */
+    color: #00796b; 
   }

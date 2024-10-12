@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from red_neuronal.views import PredecirResiduosView # Importa correctamente desde el archivo views.py
+from red_neuronal.views import PredecirResiduosView 
 from cantidad_residuos_actuales.views import obtener_estadisticas
 from red_neuronal.views import PrediccionTotalGuayaquilView    
  

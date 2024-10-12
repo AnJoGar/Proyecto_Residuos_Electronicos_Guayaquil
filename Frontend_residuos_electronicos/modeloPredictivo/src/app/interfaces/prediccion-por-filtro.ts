@@ -8,7 +8,7 @@ export interface PrediccionPorFiltro {
     Computadora_Desechado: 'si' | 'no';
     'Baterías_Desechado': 'si' | 'no';
     'Teléfono móvil básico_Desechado': 'si' | 'no';
-    'Console de videojuegos_Desechado': 'si' | 'no';
+    'Consola de videojuegos_Desechado': 'si' | 'no';
     Tablet_Desechado: 'si' | 'no';
     'Teléfono móvil inteligente_Desechado': 'si' | 'no';
     'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado': 'si' | 'no';

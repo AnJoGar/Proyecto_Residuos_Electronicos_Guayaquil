@@ -19,7 +19,6 @@ class PredecirResiduosView(APIView):
         self.feature_columns = self.scaler.feature_names_in_  # Las columnas que espera el modelo
 
         # Reemplazar las categorías con los valores numéricos
-
         self.nivel_educativo_map = {
             'Educación secundaria incompleta': 0, 'Educación secundaria completa': 1, 
             'Educación técnica o tecnológica': 2, 'Educación universitaria': 3, 
@@ -65,7 +64,7 @@ class PredecirResiduosView(APIView):
         try:
             # Parsear los datos enviados por el cliente
             datos = request.data
-            print("Datos recibidos:", datos)  # Imprimir datos recibidos
+            print("Datos recibidos:", datos)  
             
             # Convertir valores binarios de dispositivos desechados a 1/0
             datos = self.transformar_si_no_a_binario(datos)
@@ -73,7 +72,7 @@ class PredecirResiduosView(APIView):
             año_proyeccion = datos.get('PrediccionAnual')
             poblacion_total = 2650000
              # Configurar la tasa de crecimiento
-            tasa_crecimiento = 0.55  # 33% de aumento anual
+            tasa_crecimiento = 0.55  # 5.5% de aumento anual
             año_base = 2024  # Año base para la tasa de crecimiento
 
             # Convertir las categorías de texto a valores numéricos usando los mapeos definidos
@@ -98,19 +97,18 @@ class PredecirResiduosView(APIView):
             # Hacer la predicción
             predicciones = self.modelo.predict(datos_escalados)
 
+            # Calcular el total de residuos en kilogramos
+            total_residuos_kg = 0
+            for dispositivo, peso in self.pesos_dispositivos.items():
+                total_residuos_kg += datos.get(dispositivo, 0) * peso
+
             # Agregar las predicciones al DataFrame
-            df_datos['Prediccion_Residuos'] = predicciones* poblacion_total
+            df_datos['Prediccion_Residuos'] = (predicciones * poblacion_total) + total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
 
-                        # Calcular el peso total en kg usando los pesos promedio
-            df_datos['Peso_Total_kg'] = sum(df_datos[producto] * self.pesos_dispositivos[producto] for producto in self.pesos_dispositivos)
+            # Convertir a toneladas
+            df_datos['Prediccion_Residuos'] = df_datos['Prediccion_Residuos'] / 1000  # Convertir kg a toneladas
 
-                        # Ajustar la predicción aplicando la tasa de crecimiento y multiplicando por 90
-            df_datos['Proyeccion_Total'] = df_datos['Peso_Total_kg'] * poblacion_total* (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
-
-
-             # Convertir la proyección a toneladas (suponiendo que las predicciones están en kg)
-            df_datos['Proyeccion_Total_Toneladas'] = df_datos['Proyeccion_Total'] / 1000  # Convertir a toneladas
-            
+            # Formatear la proyección total a toneladas para claridad
             df_datos['Prediccion_Residuos'] = df_datos['Prediccion_Residuos'].apply(lambda x: f"{x:.2f} toneladas")
 
             # Preparar los datos para devolver en formato JSON
@@ -122,6 +120,7 @@ class PredecirResiduosView(APIView):
             return Response({'error': f'Columna faltante: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': f'Error en la predicción: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 #Prediccion total de residuos electrónicos en Guayaquil solo tomando en cuenta el año de predicción
