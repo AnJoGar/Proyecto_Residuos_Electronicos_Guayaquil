@@ -996,7 +996,7 @@ plt.ylabel('Valor')
 plt.title('Parámetros de Evaluación del Modelo')
 plt.grid(axis='y')  # Opcional: agregar una cuadrícula horizontal
 plt.show()
-"""
+
 import numpy as np
 import pandas as pd
 from joblib import load
@@ -1029,3 +1029,232 @@ plt.xlim(0, num_features + 1)  # Ajustar el límite del eje X
 plt.grid(axis='x')  # Agregar una cuadrícula vertical
 plt.tight_layout()  # Ajustar el layout para evitar superposiciones
 plt.show()
+"""
+# Mapas para diferentes categorías
+# Cargar el archivo CSV
+url="../data/Proyecto_Reciclaje (Respuestas).csv"
+# Leer el archivo CSV con las configuraciones correctas
+df = pd.read_csv(url, sep=",", encoding='utf-8')
+# Edad
+edad_map = {...}  # Asumiendo que ya tienes este mapeo definido
+df['Edad'] = df['¿Cuál es su edad?'].map(edad_map).apply(obtener_edad_media)
+
+# Nivel educativo
+nivel_educativo_map = {
+    'Educación secundaria incompleta': 0,
+    'Educación secundaria completa': 1,
+    'Educación técnica o tecnológica': 2,
+    'Educación universitaria': 3,
+    'Educación de posgrado': 4
+}
+df['NivelEducativo'] = df['¿Cuál es su nivel educativo?'].map(nivel_educativo_map)
+
+# Ocupación
+ocupacion_map = {
+    'Estudiante': 1,
+    'Trabajador a tiempo completo': 2,
+    'Trabajador a tiempo parcial': 3,
+    'Desempleado': 4,
+    'Jubilado': 5
+}
+df['Ocupacion'] = df['¿Cuál es su ocupación?'].map(ocupacion_map)
+
+# Vivienda
+vivienda_map = {
+    'Apartamento': 1,
+    'Casa': 2,
+    'Vivienda compartida': 3,
+    'Otro': 4
+}
+df['Vivienda'] = df['¿En qué tipo de vivienda reside?'].map(vivienda_map)
+
+# Ingresos
+ingresos_map_num = {
+    'Menos de $400': 200,
+    '$400 - $800': 400,
+    '$801 - $1200': 1000,
+    'Más de $2000': 2000,
+    'No genero ingreso': 0
+}
+df['Ingresos'] = df['¿Cuál es su nivel de ingresos mensual?'].map(ingresos_map_num)
+
+# Área de residencia
+area_residencia_map = {
+    'Norte': 1,
+    'Sur': 2,
+    'Centro': 3,
+    'Este': 4,
+    'Otro': 5
+}
+df['AreaResidencia'] = df['¿En qué área o zona de la ciudad reside?'].map(area_residencia_map)
+
+# Frecuencia de actualización de dispositivos
+frecuencia_actualizacion_map = {
+    'Cada 1-2 años': 1,
+    'Cada 3-5 años': 2,
+    'Cada 6-10 años': 3,
+    'Más de 10 años': 4,
+    'Nunca': 5
+}
+df['FrecuenciaActualizacion'] = df['¿Con qué frecuencia actualiza o reemplaza estos dispositivos?'].map(frecuencia_actualizacion_map)
+
+# Primera acción con dispositivos electrónicos
+primera_accion_map = {
+    'Intenta repararlo usted mismo': 1,
+    'Lo lleva a un servicio técnico': 2,
+    'Lo reemplaza por uno nuevo': 3,
+    'Lo guarda sin usar': 4,
+    'Lo desecha': 5,
+    'Lo recicla': 6
+}
+df['PrimeraAccion'] = df['Cuando un dispositivo electrónico deja de funcionar, ¿cuál es su primera acción?'].map(primera_accion_map)
+
+# Qué hace con dispositivos
+que_hace_con_dispositivos_map = {
+    'Los guarda': 1,
+    'Los tira a la basura': 2,
+    'Los lleva a un centro de reciclaje': 3,
+    'Los dona': 4
+}
+df['QueHaceConDispositivos'] = df['¿Qué hace con los dispositivos electrónicos cuando ya no los utiliza?'].map(que_hace_con_dispositivos_map)
+
+# Frecuencia de reciclaje
+frecuencia_reciclaje_map = {
+    'Siempre': 1,
+    'A veces': 0.5,
+    'Nunca': 0
+}
+df['FrecuenciaReciclaje'] = df['¿Con qué frecuencia lleva sus dispositivos electrónicos al reciclaje?'].map(frecuencia_reciclaje_map)
+
+# Dispositivos adquiridos en el último año
+dispositivos_adquiridos_año_map = {
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    '4 o más': 4
+}
+df['DispositivosaAdquiridos'] = df['¿Cuántos dispositivos electrónicos ha adquirido en el último año?'].map(dispositivos_adquiridos_año_map)
+
+# Dispositivos en desuso
+dispositivos_desuso_año_map = {
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    '4 o más': 4
+}
+df['DispositivosDesuso'] = df['¿Cuántos dispositivos electrónicos tiene en desuso actualmente?'].map(dispositivos_desuso_año_map)
+
+# Otros mapeos similares
+# Continúa aplicando los demás mapas de la misma forma
+
+
+
+tipos_dispositivos_reciclados_map = {
+    'Televisor': 1, 'Computadora': 2, 'Baterías': 3,
+     'Teléfono móvil inteligente':4, 'Teléfono móvil básico': 5,
+     'Tablet':6, 'Consola de videojuegos':7, 
+     'Electrodomésticos inteligentes (nevera, lavadora, etc.)': 8,
+     'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 9,
+     'Ninguno':10, 'Otra':11
+}
+
+df['TiposDispositivosReciclados'] = df['¿Qué tipo de dispositivos electrónicos ha reciclado en el último año?'].apply(
+    lambda x: {k: (1 if k in x else 0) for k in tipos_dispositivos_reciclados_map.keys()})
+
+
+tipos_dispositivos_desechados_map = {
+     'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 9,
+}
+
+for dispositivo in tipos_dispositivos_desechados_map.keys():
+    df[f'{dispositivo}_Desechado'] = df['¿Qué tipo de dispositivos electrónicos ha desechado en el último año?'].apply(
+        lambda x: 1 if dispositivo in x else 0)
+    
+df['TotalProductosDesechados'] = df[[f'{dispositivo}_Desechado' for 
+                                     dispositivo in tipos_dispositivos_desechados_map.keys()]].sum(axis=1)
+
+
+
+# PrediccionAnual
+from joblib import dump
+X = df[['PrediccionAnual']]
+dump(X, 'X_variables.joblib')
+
+# Ingresos
+from joblib import dump
+X = df[['Ingresos']]
+dump(X, 'X_variables.joblib')
+
+# NivelEducativo
+from joblib import dump
+X = df[['NivelEducativo']]
+dump(X, 'X_variables.joblib')
+
+# AreaResidencia
+from joblib import dump
+X = df[['AreaResidencia']]
+dump(X, 'X_variables.joblib')
+
+# FrecuenciaReciclaje
+from joblib import dump
+X = df[['FrecuenciaReciclaje']]
+dump(X, 'X_variables.joblib')
+
+# Televisor_Desechado
+from joblib import dump
+X = df[['Televisor_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Computadora_Desechado
+from joblib import dump
+X = df[['Computadora_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Baterías_Desechado
+from joblib import dump
+X = df[['Baterías_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Teléfono móvil básico_Desechado
+from joblib import dump
+X = df[['Teléfono móvil básico_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Consola de videojuegos_Desechado
+from joblib import dump
+X = df[['Consola de videojuegos_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Tablet_Desechado
+from joblib import dump
+X = df[['Tablet_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Teléfono móvil inteligente_Desechado
+from joblib import dump
+X = df[['Teléfono móvil inteligente_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Electrodomésticos inteligentes_Desechado
+from joblib import dump
+X = df[[
+    'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Dispositivos de domótica_Desechado
+from joblib import dump
+X = df[[
+    'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Otra_Desechado
+from joblib import dump
+X = df[['Otra_Desechado']]
+dump(X, 'X_variables.joblib')
+
+# Variable de salida (TotalProductosDesechados)
+from joblib import dump
+y = df[['TotalProductosDesechados']]
+dump(y, 'y_variable.joblib')
