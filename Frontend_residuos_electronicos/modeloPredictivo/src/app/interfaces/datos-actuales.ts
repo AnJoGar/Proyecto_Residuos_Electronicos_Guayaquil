@@ -1,9 +1,9 @@
 export interface DatosActuales {
-        ingresos: number;                // Corresponde a FloatField en Django
-        edad: number;                    // Corresponde a IntegerField en Django
-        dispositivos_adquiridos: number; // Corresponde a IntegerField en Django
-        dispositivos_en_desuso: number;  // Corresponde a IntegerField en Django
-        tipo_dispositivo_reciclado: string;  // Corresponde a CharField en Django
-        tipo_dispositivo_desechado: string; // Corresponde a CharField en Django
+        ingresos: number;               
+        edad: number;                   
+        dispositivos_adquiridos: number; 
+        dispositivos_en_desuso: number;  
+        tipo_dispositivo_reciclado: string;  
+        tipo_dispositivo_desechado: string; 
       
 }

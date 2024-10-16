@@ -36,8 +36,8 @@
 
         <!-- Área de Residencia -->
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label >Área de Residencia</mat-label>
-          <mat-select [(ngModel)]="formData.AreaResidencia"  name="AreaResidencia" required>
+          <mat-label>Área de Residencia</mat-label>
+          <mat-select [(ngModel)]="formData.AreaResidencia" name="AreaResidencia" required>
             <mat-option [value]="1">Norte</mat-option>
             <mat-option [value]="2">Sur</mat-option>
             <mat-option [value]="3">Centro</mat-option>
@@ -86,7 +86,8 @@
         <!-- Teléfono Móvil Básico Desechado -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Teléfono Móvil Básico Desechado</mat-label>
-          <mat-select [(ngModel)]="formData['Teléfono móvil básico_Desechado']" name="Teléfono móvil básico_Desechado" required>
+          <mat-select [(ngModel)]="formData['Teléfono móvil básico_Desechado']" name="Teléfono móvil básico_Desechado"
+            required>
             <mat-option value="si">Sí</mat-option>
             <mat-option value="no">No</mat-option>
           </mat-select>
@@ -95,7 +96,8 @@
         <!-- Consola de Videojuegos Desechada -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Consola de Videojuegos Desechada</mat-label>
-          <mat-select [(ngModel)]="formData['Consola de videojuegos_Desechado']" name="Console de videojuegos_Desechado" required>
+          <mat-select [(ngModel)]="formData['Consola de videojuegos_Desechado']" name="Console de videojuegos_Desechado"
+            required>
             <mat-option value="si">Sí</mat-option>
             <mat-option value="no">No</mat-option>
           </mat-select>
@@ -104,7 +106,8 @@
         <!-- Teléfono Móvil Inteligente Desechado -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Teléfono Móvil Inteligente Desechado</mat-label>
-          <mat-select [(ngModel)]="formData['Teléfono móvil inteligente_Desechado']" name="Teléfono móvil inteligente_Desechado" required>
+          <mat-select [(ngModel)]="formData['Teléfono móvil inteligente_Desechado']"
+            name="Teléfono móvil inteligente_Desechado" required>
             <mat-option value="si">Sí</mat-option>
             <mat-option value="no">No</mat-option>
           </mat-select>
@@ -113,7 +116,8 @@
         <!-- Electrodomésticos Inteligentes Desechados -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Electrodomésticos Inteligentes Desechados</mat-label>
-          <mat-select [(ngModel)]="formData['Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado']" name="Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado" required>
+          <mat-select [(ngModel)]="formData['Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado']"
+            name="Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado" required>
             <mat-option value="si">Sí</mat-option>
             <mat-option value="no">No</mat-option>
           </mat-select>
@@ -122,7 +126,9 @@
         <!-- Dispositivos de Domótica Desechados -->
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Dispositivos de Domótica Desechados</mat-label>
-          <mat-select [(ngModel)]="formData['Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado']" name="Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado" required>
+          <mat-select
+            [(ngModel)]="formData['Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado']"
+            name="Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado" required>
             <mat-option value="si">Sí</mat-option>
             <mat-option value="no">No</mat-option>
           </mat-select>
@@ -140,7 +146,7 @@
 
       <!-- Botón para enviar -->
       <div class="button-container">
-        <button mat-raised-button color="primary" type="submit">Enviar Predicción</button>
+        <button mat-raised-button color="primary" type="submit">Predecir</button>
       </div>
 
       <!-- Resultados de la predicción -->

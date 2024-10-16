@@ -18,7 +18,6 @@ class PredecirResiduosView(APIView):
         self.scaler = load(scaler_path)
         self.feature_columns = self.scaler.feature_names_in_  # Las columnas que espera el modelo
 
-        # Reemplazar las categorías con los valores numéricos
         self.nivel_educativo_map = {
             'Educación secundaria incompleta': 0, 'Educación secundaria completa': 1, 
             'Educación técnica o tecnológica': 2, 'Educación universitaria': 3, 
@@ -55,7 +54,7 @@ class PredecirResiduosView(APIView):
     def transformar_si_no_a_binario(self, datos):
         # Reemplazar 'si'/'no' por 1/0
         for clave in self.tipos_dispositivos_desechados_map:
-            if clave + '_Desechado' in datos:  # Asegúrate de usar la clave correcta con el sufijo
+            if clave + '_Desechado' in datos: 
                 datos[clave + '_Desechado'] = 1 if datos[clave + '_Desechado'] == 'si' else 0
         return datos
 
@@ -77,7 +76,6 @@ class PredecirResiduosView(APIView):
 
             # Convertir las categorías de texto a valores numéricos usando los mapeos definidos
             datos['NivelEducativo'] = self.nivel_educativo_map.get(datos.get('NivelEducativo'))
-            #datos['Ocupacion'] = self.ocupacion_map.get(datos.get('Ocupacion'))
 
             # Convertir los datos en DataFrame
             df_datos = pd.DataFrame([datos])
@@ -174,7 +172,7 @@ class PrediccionTotalGuayaquilView(APIView):
         }
 
             # Usar los datos de entrenamiento
-            df_datos_guayaquil = self.df_entrenamiento.copy()  # Copiar el DataFrame de entrenamiento
+            df_datos_guayaquil = self.df_entrenamiento.copy() 
 
             # Escalar los datos
             datos_escalados_guayaquil = self.scaler.transform(df_datos_guayaquil)
@@ -192,7 +190,6 @@ class PrediccionTotalGuayaquilView(APIView):
                 total_residuos_kg += promedio_residuos_por_persona * poblacion_total * peso
 
             # Calcular la proyección total para la población de Guayaquil
-            total_residuos_proyectados = promedio_residuos_por_persona * poblacion_total * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
             total_residuos_proyectados_toneladas = (total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)) / 1000  # Convertir a toneladas
             # Preparar el resultado en formato JSON
             resultado_json_guayaquil = {

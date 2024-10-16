@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import textwrap
 
 # Cargar el archivo CSV limpio
-file_path = os.path.join('../data/dataframe_limpio.csv')  # Asegúrate de que la ruta sea correcta
+file_path = os.path.join('../data/dataframe_limpio.csv')  
 df = pd.read_csv(file_path)
 
 # Mapas de mapeo de columnas
@@ -26,8 +26,6 @@ tipos_dispositivos_desechados_list = list(tipos_dispositivos_desechados_map)
 
 # Calcular el total de productos desechados por fila
 df['TotalProductosDesechados'] = df[tipos_dispositivos_desechados_list].sum(axis=1)
-
-
 # Obtener el número de encuestados
 num_encuestados = df.shape[0]
 # Calcular el total de productos desechados en todos los sectores

@@ -1029,7 +1029,7 @@ plt.xlim(0, num_features + 1)  # Ajustar el límite del eje X
 plt.grid(axis='x')  # Agregar una cuadrícula vertical
 plt.tight_layout()  # Ajustar el layout para evitar superposiciones
 plt.show()
-"""
+
 # Mapas para diferentes categorías
 # Cargar el archivo CSV
 url="../data/Proyecto_Reciclaje (Respuestas).csv"
@@ -1258,3 +1258,99 @@ dump(X, 'X_variables.joblib')
 from joblib import dump
 y = df[['TotalProductosDesechados']]
 dump(y, 'y_variable.joblib')
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error, r2_score
+from joblib import load
+from tensorflow import keras
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# Cargar las variables independientes (X) y la dependiente (y)
+X = load('X_variables.joblib')
+y = load('y_variable.joblib')
+
+# Normalizar los datos
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Dividir los datos en entrenamiento y prueba (80%-20%)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Cargar el modelo guardado
+modelo_nn = keras.models.load_model('modelo_residuos_electronicos.h5')
+
+# Realizar predicciones en el conjunto de prueba
+predicciones = modelo_nn.predict(X_test)
+
+# Calcular métricas de evaluación
+mse = mean_squared_error(y_test, predicciones)
+rmse = np.sqrt(mse)
+r2 = r2_score(y_test, predicciones)
+
+# Mostrar las métricas en formato tabular
+print("\n===== MÉTRICAS DE EVALUACIÓN =====")
+print(f"{'Métrica':<25} {'Valor':>10}")
+print("-" * 37)
+print(f"{'Error Cuadrático Medio (MSE)':<25} {mse:>10.4f}")
+print(f"{'Raíz del MSE (RMSE)':<25} {rmse:>10.4f}")
+print(f"{'Coeficiente de Determinación (R²)':<25} {r2:>10.4f}")
+
+# Mostrar ejemplos de valores reales y predicciones
+print("\n===== EJEMPLOS DE PREDICCIONES =====")
+print(f"{'Valor Real':<15} {'Predicción':>15}")
+print("-" * 32)
+for real, pred in zip(y_test[:5], predicciones[:5]):
+    print(f"{real:<15.4f} {pred[0]:>15.4f}")
+
+# Graficar las predicciones vs. los valores reales
+plt.figure(figsize=(10, 6))
+plt.scatter(y_test, predicciones, alpha=0.7, color='blue', label='Predicciones')
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2, label='Línea Ideal')
+
+# Etiquetas y configuración de la gráfica
+plt.title('Predicciones vs. Valores Reales en el Conjunto de Prueba')
+plt.xlabel('Valores Reales')
+plt.ylabel('Predicciones')
+plt.grid()
+plt.axis('equal')
+plt.xlim(y_test.min(), y_test.max())
+plt.ylim(y_test.min(), y_test.max())
+plt.legend()
+plt.show()
+
+import numpy as np
+import pandas as pd
+from joblib import load
+import matplotlib.pyplot as plt
+
+# Cargar el escalador
+scaler = load('scaler.joblib')
+
+# Obtener el número de características
+num_features = scaler.n_features_in_
+
+# Obtener los nombres de las características
+feature_names = scaler.feature_names_in_
+
+# Imprimir el número de características y sus nombres
+print(f"Número total de características: {num_features}")
+print("Nombres de las características:")
+print(feature_names)
+
+# Crear un DataFrame para visualizar mejor los nombres
+features_df = pd.DataFrame(feature_names, columns=['Feature Names'])
+
+# Crear el gráfico con un tamaño más angosto
+plt.figure(figsize=(12, 9))  # Ajustar el tamaño de la figura
+plt.barh(np.arange(num_features), np.arange(1, num_features + 1), color='skyblue')
+plt.yticks(np.arange(num_features), feature_names)  # Etiquetas en el eje Y
+plt.xlabel('Posición en el Array de Características')  # Etiqueta del eje X
+plt.title('Características del Modelo')
+plt.xlim(0, num_features + 1)  # Ajustar el límite del eje X
+plt.grid(axis='x')  # Agregar una cuadrícula vertical
+plt.tight_layout()  # Ajustar el layout para evitar superposiciones
+plt.show()"""

@@ -10,13 +10,12 @@ import {environment} from '../../environments/environment';
 })
 export class PrediccionPorFilroService {
   private apiUrl = `${environment.endpoint}/predecir_residuos/`; 
-  constructor(private http: HttpClient) {
-   }
+  constructor(private http: HttpClient) {}
+
    predecirResiduos(data: PrediccionPorFiltro): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-
     return this.http.post<any>(this.apiUrl, data, { headers });
   }
 }

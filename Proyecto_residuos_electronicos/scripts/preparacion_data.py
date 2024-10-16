@@ -19,7 +19,6 @@ pd.set_option('display.max_columns', None)  # Mostrar todas las columnas
 
 
 # Definir los mapeos de las categorías
-# Crear un mapa de categorías a rangos
 edad_map = {
     '18-24 años': (18, 24),
     '25-34 años': (25, 34),
@@ -54,7 +53,6 @@ vivienda_map = {
 }
 
 
-# Crear un diccionario que mapea las categorías de ingresos a sus valores numéricos.
 ingresos_map_num = {
     'Menos de $400': 200,      # Valor medio entre 0 y 399
     '$400 - $800': 400,        # Valor medio entre 400 y 800
@@ -283,8 +281,6 @@ print(missing_values_cleaned_df.to_string(index=False))
 # Mostrar una muestra del DataFrame limpio
 print("\nDataframe Limpio (primeras 5 filas):")
 print(df_cleaned.head().to_string(index=False))
-# Exportar el DataFrame limpio a un archivo CSV
-
 
 # Exportar el DataFrame limpio a un archivo CSV
 output_file = '../data/dataframe_limpio.csv'

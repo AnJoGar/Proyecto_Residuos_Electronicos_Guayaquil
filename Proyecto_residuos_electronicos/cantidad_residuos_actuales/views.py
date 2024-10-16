@@ -41,7 +41,7 @@ def obtener_estadisticas(request):
     2: 'Sur',
     3: 'Centro',
     4: 'Este'
-}
+    }
 
     # Calcular el total de productos desechados por cada fila
     df['TotalProductosDesechados'] = df[
@@ -63,7 +63,6 @@ def obtener_estadisticas(request):
     total_productos_desechados = int(df['TotalProductosDesechados'].sum())
 
     # Agrupar los productos desechados por sector
-# Agrupar los productos desechados por sector
     productos_desechados_por_sector = df.groupby('AreaResidencia')['TotalProductosDesechados'].sum().reset_index()
 
     # Mapear los números de sector a los nombres
@@ -75,13 +74,11 @@ def obtener_estadisticas(request):
     # Convertir los valores numéricos a tipos estándar de Python (por ejemplo, convertir int64 a int)
     productos_desechados_por_sector['TotalProductosDesechados'] = productos_desechados_por_sector['TotalProductosDesechados'].astype(int)
 
-       # Contar productos reciclados por tipo
-       # Contar productos reciclados por tipo
+
+    # Contar productos reciclados por tipo
     conteo_reciclados = {columna.split('_')[0]: int(df[columna].sum()) for columna in tipos_dispositivos_desechados_map}
     
     # Calcular el porcentaje de productos desechados por sector
-    # Calcular el porcentaje de productos desechados por sector
-    # Aquí usamos un valor de ejemplo, que puedes ajustar según los datos disponibles
     total_productos_generados = df['TotalProductos'].sum() if 'TotalProductos' in df else total_productos_desechados * 1.5  # Ajusta según datos reales
 
     # Calcular el porcentaje total de productos desechados en relación al total de productos generados
@@ -94,19 +91,18 @@ def obtener_estadisticas(request):
     promedio_residuos_por_persona = total_productos_desechados / total_personas
 
 
-        # Identificar el sector con más residuos
-    # Asumiendo que tienes una columna 'sector' que identifica los sectores
+    # Identificar el area de residencia con más residuos
     df_sectores = df.groupby('AreaResidencia')['TotalProductosDesechados'].sum().reset_index()
     sector_mas_contaminacion = df_sectores.loc[df_sectores['TotalProductosDesechados'].idxmax()]
 
      # Obtener el nombre del sector usando el mapa
     sector_numero = sector_mas_contaminacion['AreaResidencia']
-    sector_con_mas_contaminacion = mapa_sectores.get(sector_numero, "Desconocido")  # Usa 'Desconocido' si no se encuentra el sector
+    sector_con_mas_contaminacion = mapa_sectores.get(sector_numero, "Desconocido")
 
     total_residuos_sector_max = sector_mas_contaminacion['TotalProductosDesechados']
 
 
-# Calcular el total de cada tipo de producto desechado
+    # Calcular el total de cada tipo de producto desechado
     total_productos_desechados_por_tipo = df[tipos_dispositivos_desechados_list].sum().reset_index()
     total_productos_desechados_por_tipo.columns = ['Producto', 'TotalDesechado']
 
@@ -129,19 +125,18 @@ def obtener_estadisticas(request):
     print(conteo_reciclados)
     # Calcular estadísticas
     estadisticas = {
-        'total_productos_desechados': total_productos_desechados,  # Total de productos desechados
+        'total_productos_desechados': total_productos_desechados, 
         'residuos_electronicos_por_sector': productos_desechados_por_sector.to_dict(orient='records'),
         'count': df.shape[0],
         'conteo_reciclados': conteo_reciclados, 
-       # 'conteo_reciclados': conteo_reciclados,
-        'total_productos_desechados': int(total_productos_desechados),  # Total de productos desechados
-        'porcentaje_total_contaminacion': round(porcentaje_total_contaminacion, 2),  # Porcentaje total de contaminación # Porcentaje total de contaminación # Número total de filas
+        'total_productos_desechados': int(total_productos_desechados), 
+        'porcentaje_total_contaminacion': round(porcentaje_total_contaminacion, 2),
         'promedio_residuos_por_persona': round(promedio_residuos_por_persona, 2), 
-         'sector_mas_contaminacion': str(sector_con_mas_contaminacion),  # Asegurar que sea un string
+         'sector_mas_contaminacion': str(sector_con_mas_contaminacion),
         'total_residuos_sector_max': int(total_residuos_sector_max),
-        'producto_mas_contaminante': producto_mas_contaminante['Producto'],  # Nombre del producto
+        'producto_mas_contaminante': producto_mas_contaminante['Producto'],  
         'total_residuos_producto_max': int(producto_mas_contaminante['TotalDesechado']),
-        'nivel_educativo_mas_contaminante': nivel_educativo_max['NivelEducativo']  # Nombre del nivel educativo  # Total de resid
+        'nivel_educativo_mas_contaminante': nivel_educativo_max['NivelEducativo']  
     }
 
     # Convertir las estadísticas a JSON

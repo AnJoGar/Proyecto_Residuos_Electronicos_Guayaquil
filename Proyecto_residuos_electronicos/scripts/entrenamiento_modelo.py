@@ -21,7 +21,6 @@ dump(scaler, 'scaler.joblib')
 # Dividir los datos en conjuntos de entrenamiento y prueba
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-
 # Crear el modelo de la red neuronal
 modelo_nn = keras.Sequential([
     layers.Dense(128, activation='relu', input_shape=(X_train.shape[1],)),
@@ -55,7 +54,6 @@ else:
 print(f"Error Cuadrático Medio (MSE): {mse:.4f}")
 print(f"Raíz del Error Cuadrático Medio (RMSE): {rmse:.4f}")
 print(f"Coeficiente de Determinación (R²): {r2:.4f}")
-
 print("Número de características:", scaler.n_features_in_)
 print("Nombres de características:", scaler.feature_names_in_)
 modelo_nn.save('modelo_residuos_electronicos.h5')

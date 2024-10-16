@@ -9,11 +9,9 @@ import { DatosActuales } from '../../interfaces/datos-actuales';
 })
 export class DatosEstadisticosActualesComponent {
 
-  datosActuales: any; // Using any for overall structure
+  datosActuales: any; 
   residuosPorSector: any[] = [];
   conteoReciclados: { [key: string]: number } = {};
-  
-  // New properties for additional data
   sectorMasContaminacion: string = '';
   totalResiduosSectorMax: number = 0;
   productoMasContaminante: string = '';
@@ -22,10 +20,6 @@ export class DatosEstadisticosActualesComponent {
   
 
   constructor(private datosActualesService: DatosActualesService){
-
-
-
-
   }
   
   ngOnInit(){
@@ -37,12 +31,10 @@ export class DatosEstadisticosActualesComponent {
 
   loadEstadisticas(): void {
     this.datosActualesService.getEstadisticas().subscribe(
-      (data: any) => { // Adjusted to any for flexibility
+      (data: any) => { 
         this.datosActuales = data;
-        this.residuosPorSector = data.residuos_electronicos_por_sector; // Access the array
-        this.conteoReciclados = data.conteo_reciclados; // Access the object
-        
-        // New fields
+        this.residuosPorSector = data.residuos_electronicos_por_sector;
+        this.conteoReciclados = data.conteo_reciclados; 
         this.sectorMasContaminacion = data.sector_mas_contaminacion;
         this.totalResiduosSectorMax = data.total_residuos_sector_max;
         this.productoMasContaminante = data.producto_mas_contaminante;

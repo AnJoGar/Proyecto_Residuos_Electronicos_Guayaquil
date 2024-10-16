@@ -1,68 +1,66 @@
 <head>
-    <title>Modelo predictivo V1</title>
+  <title>Modelo predictivo V1</title>
 </head>
 
 <header class="mat-elevation-z3" style="background-color: rgb(70, 218, 159)">
-    <div class="texto">
-        <div class="info">
-          <div class="titulo">
-            <p>Modelo predictivo de residuos electrónicos en Guayaquil</p>
-          </div>
-        </div>
+  <div class="texto">
+    <div class="info">
+      <div class="titulo">
+        <p>Modelo predictivo de residuos electrónicos en Guayaquil</p>
       </div>
-</header>
-<body style="background-color: rgb(207, 233, 212)">
-    <section class="seccionDeOpciones">
-        <div class="opciones">
-            <a id="acercaDe" routerLink="/acercaDe">Acerca de</a>
-            <a id="datosEstadisticos" routerLink="/datosEstadisticos" routerLinkActive="active">Datos estadísticos de la muestra</a>
-            <a id="modeloPrediccion" routerLink="/modeloPrediccion">Modelo de predicción por año</a>
-            <a id="modeloPrediccion" routerLink="/prediccionFiltro">Modelo de predicción por filtros</a>
-        </div>
-      </section>
-
-
-      <!-- dispositivo.component.html -->
-<div>
-  <div class="statistics-container">
-    <div class="statistic-card">
-      <h3>Porcentaje de contaminación actual</h3>
-      <p>{{ datosActuales.porcentaje_total_contaminacion }}%</p>
-    </div>
-  
-    <div class="statistic-card">
-      <h3>Promedio de residuo por persona</h3>
-      <p>{{ datosActuales.promedio_residuos_por_persona }} kg</p>
-    </div>
-  
-    <div class="statistic-card">
-      <h3>Sector con mayor contaminación</h3>
-      <p>{{ datosActuales.sector_mas_contaminacion }}</p>
-    </div>
-
-    <div class="statistic-card">
-      <h3>Total residuos sector más contaminante</h3>
-      <p>{{ datosActuales.total_residuos_sector_max }}</p>
-    </div>
-
-    <div class="statistic-card">
-      <h3>Producto más contaminante</h3>
-      <p>{{ datosActuales.producto_mas_contaminante }}</p>
-    </div>
-  
-
-  
-    <div class="statistic-card">
-      <h3>Total residuos producto mas contaminante</h3>
-      <p>{{ datosActuales.total_residuos_producto_max }}</p>
-    </div>
-  
-    <div class="statistic-card">
-      <h3>Nivel educativo más contaminante</h3>
-      <p>{{ datosActuales.nivel_educativo_mas_contaminante }}</p>
     </div>
   </div>
-  
-</div>
+</header>
+
+<body style="background-color: rgb(207, 233, 212)">
+  <section class="seccionDeOpciones">
+    <div class="opciones">
+      <a id="acercaDe" routerLink="/acercaDe">Acerca de</a>
+      <a id="datosEstadisticos" routerLink="/datosEstadisticos" routerLinkActive="active">Datos estadísticos de la
+        muestra</a>
+      <a id="modeloPrediccion" routerLink="/modeloPrediccion">Modelo de predicción por año</a>
+      <a id="modeloPrediccion" routerLink="/prediccionFiltro">Modelo de predicción por filtros</a>
+    </div>
+  </section>
+  <!-- dispositivo.component.html -->
+  <div>
+    <div class="statistics-container">
+      <div class="statistic-card">
+        <h3>Porcentaje de contaminación actual</h3>
+        <p>{{ datosActuales.porcentaje_total_contaminacion }}%</p>
+      </div>
+
+      <div class="statistic-card">
+        <h3>Promedio de residuo por persona</h3>
+        <p>{{ datosActuales.promedio_residuos_por_persona }} kg</p>
+      </div>
+
+      <div class="statistic-card">
+        <h3>Sector con mayor contaminación</h3>
+        <p>{{ datosActuales.sector_mas_contaminacion }}</p>
+      </div>
+
+      <div class="statistic-card">
+        <h3>Total residuos sector más contaminante</h3>
+        <p>{{ datosActuales.total_residuos_sector_max }}</p>
+      </div>
+      
+      <div class="statistic-card">
+        <h3>Producto más contaminante</h3>
+        <p>{{ datosActuales.producto_mas_contaminante }}</p>
+      </div>
+
+      <div class="statistic-card">
+        <h3>Total residuos producto mas contaminante</h3>
+        <p>{{ datosActuales.total_residuos_producto_max }}</p>
+      </div>
+
+      <div class="statistic-card">
+        <h3>Nivel educativo más contaminante</h3>
+        <p>{{ datosActuales.nivel_educativo_mas_contaminante }}</p>
+      </div>
+    </div>
+
+  </div>
 
 </body>

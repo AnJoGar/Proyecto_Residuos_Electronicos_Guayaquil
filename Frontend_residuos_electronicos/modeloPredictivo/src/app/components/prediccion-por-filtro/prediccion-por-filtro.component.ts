@@ -11,7 +11,6 @@ export class PrediccionPorFiltroComponent {
   resultado: any;
   error: string | null = null;
 
-
   constructor(private prediccionService: PrediccionPorFilroService) {}
 
   formData: PrediccionPorFiltro = {
@@ -32,7 +31,6 @@ export class PrediccionPorFiltroComponent {
     Otra_Desechado: 'no'
   };
 
-
   submitPredictionForm() {
     this.prediccionService.predecirResiduos(this.formData).subscribe(
       response => {
@@ -45,5 +43,4 @@ export class PrediccionPorFiltroComponent {
       }
     );
   }
-
 }

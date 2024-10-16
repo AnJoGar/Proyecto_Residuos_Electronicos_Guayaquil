@@ -8,8 +8,8 @@ import { PrediccionPorAñoService } from '../../services/prediccion-por-año.ser
   styleUrl: './modelo-prediccion.component.css'
 })
 export class ModeloPrediccionComponent {
- PrediccionAnual: number = 2025; // Cambia esto al año que desees
-  resultado?: PrediccionPorAño; // Cambia el tipo de la variable
+ PrediccionAnual: number = 2025; 
+  resultado?: PrediccionPorAño; 
 
   constructor(private prediccionService: PrediccionPorAñoService) {}
 
@@ -17,7 +17,7 @@ export class ModeloPrediccionComponent {
     this.prediccionService.hacerPrediccion(this.PrediccionAnual).subscribe(
       (response) => {
         this.resultado = response.predicciones_guayaquil;
-        console.log('Resultado de la predicción:', this.resultado); // Asignar el resultado a la interfaz
+        console.log('Resultado de la predicción:', this.resultado); 
       },
       (error) => {
         console.error('Error al realizar la predicción:', error);
