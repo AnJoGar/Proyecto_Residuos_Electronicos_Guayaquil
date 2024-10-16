@@ -19,10 +19,8 @@
       <a id="datosEstadisticos" routerLink="/datosEstadisticos">Datos estadísticos actuales</a>
       <a id="modeloPrediccion" routerLink="/modeloPrediccion" routerLinkActive="active">Modelo de predicción por año</a>
       <a id="modeloPrediccion" routerLink="/prediccionFiltro">Modelo de predicción por filtros</a>
-
     </div>
   </section>
-
   <mat-card class="prediccion-card">
     <mat-card-title>
       <h3>Predicción de Residuos Electrónicos</h3>
@@ -32,11 +30,9 @@
         <mat-label>Año de Proyección</mat-label>
         <input matInput type="number" [(ngModel)]="PrediccionAnual" />
       </mat-form-field>
-
       <div class="button-container">
         <button mat-raised-button color="primary" (click)="realizarPrediccion()">Realizar Predicción</button>
       </div>
-
       <div *ngIf="resultado" class="resultados">
         <div class="result-container">
           <h4>Resultados:</h4>
@@ -46,5 +42,4 @@
       </div>
     </mat-card-content>
   </mat-card>
-
 </body>

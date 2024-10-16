@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DatosActuales } from '../interfaces/datos-actuales';
 import { PrediccionPorFiltro } from '../interfaces/prediccion-por-filtro';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {environment} from '../../environments/environment';

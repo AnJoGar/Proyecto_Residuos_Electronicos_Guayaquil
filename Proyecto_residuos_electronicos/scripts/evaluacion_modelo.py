@@ -74,32 +74,25 @@ def plot_results(y_test, predictions_nn, predictions_lr, r2_nn, r2_lr):
 def main():
     # Cargar las variables
     X, y, scaler = load_data()
-
     # Normalizar los datos
     X_scaled = normalize_data(X, scaler)
-
     # Dividir los datos en conjuntos de entrenamiento y prueba
     X_train, X_test, y_train, y_test = split_data(X_scaled, y)
 
     # Configuración de la tasa de crecimiento
     Tasa_Crecimiento = 0.33  
     año_proyeccion = 2024
-
+    
     # Cargar los modelos
     modelo_nn, modelo_lr = load_models()
-
     # Realizar predicciones en el conjunto de prueba (red neuronal)
     predicciones_nn = modelo_nn.predict(X_test)
-
     # Calcular métricas de evaluación usando el conjunto de prueba (red neuronal)
     mse_nn, rmse_nn, r2_nn = evaluate_model(y_test, predicciones_nn)
-
     # Entrenar el modelo de regresión lineal
     modelo_lr = train_linear_regression(modelo_lr, X_train, y_train)
-
     # Realizar predicciones en el conjunto de prueba (regresión lineal)
     predicciones_lr = modelo_lr.predict(X_test)
-
     # Calcular métricas de evaluación usando el conjunto de prueba (regresión lineal)
     mse_lr, rmse_lr, r2_lr = evaluate_model(y_test, predicciones_lr)
 
@@ -119,12 +112,10 @@ def main():
     predicciones_train_nn = modelo_nn.predict(X_train)
     # Calcular la proyección total de productos desechados para la red neuronal
     total_proyectado_nn = calculate_projection(predicciones_train_nn, Tasa_Crecimiento, año_proyeccion)
-
     # Realizar predicciones en el conjunto de entrenamiento para la regresión lineal
     predicciones_train_lr = modelo_lr.predict(X_train)
     # Calcular la proyección total de productos desechados para la regresión lineal
     total_proyectado_lr = calculate_projection(predicciones_train_lr, Tasa_Crecimiento, año_proyeccion)
-
     # Imprimir las proyecciones totales para el año ingresado
     print(f"\nProyección total de residuos electrónicos para {año_proyeccion} (Red Neuronal): {total_proyectado_nn:.2f}")
     print(f"Proyección total de residuos electrónicos para {año_proyeccion} (Regresión Lineal): {total_proyectado_lr:.2f}")

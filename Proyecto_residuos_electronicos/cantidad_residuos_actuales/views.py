@@ -98,7 +98,6 @@ def obtener_estadisticas(request):
      # Obtener el nombre del sector usando el mapa
     sector_numero = sector_mas_contaminacion['AreaResidencia']
     sector_con_mas_contaminacion = mapa_sectores.get(sector_numero, "Desconocido")
-
     total_residuos_sector_max = sector_mas_contaminacion['TotalProductosDesechados']
 
 
@@ -141,5 +140,4 @@ def obtener_estadisticas(request):
 
     # Convertir las estadísticas a JSON
     response_data = json.dumps(estadisticas, ensure_ascii=False)
-    
     return JsonResponse(estadisticas, json_dumps_params={'ensure_ascii': False})

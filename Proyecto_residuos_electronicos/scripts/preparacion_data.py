@@ -17,7 +17,6 @@ df = pd.read_csv(url, sep=",", encoding='utf-8')
 pd.set_option('display.max_rows', None)  # Mostrar todas las filas
 pd.set_option('display.max_columns', None)  # Mostrar todas las columnas
 
-
 # Definir los mapeos de las categorías
 edad_map = {
     '18-24 años': (18, 24),
@@ -35,8 +34,6 @@ def obtener_edad_media(rango):
 # Mapeo de categorías a valores
 df['Edad'] = df['¿Cuál es su edad?'].map(edad_map).apply(obtener_edad_media)
 
-
-
 nivel_educativo_map = {
     'Educación secundaria incompleta': 0, 'Educación secundaria completa': 1, 'Educación técnica o tecnológica': 2, 
     'Educación universitaria': 3, 'Educación de posgrado': 4
@@ -51,7 +48,6 @@ vivienda_map = {
     'Apartamento': 1, 'Casa': 2, 
     'Vivienda compartida': 3, 'Otro': 4
 }
-
 
 ingresos_map_num = {
     'Menos de $400': 200,      # Valor medio entre 0 y 399
@@ -109,8 +105,7 @@ tipos_dispositivos_desechados_map = {
      'Tablet':6, 'Consola de videojuegos':7, 
      'Electrodomésticos inteligentes (nevera, lavadora, etc.)': 8,
      'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)': 9,
-       'Otra':10
-
+      'Otra':10
 }
 
 informado_centros_reciclaje_map = {
@@ -196,7 +191,6 @@ df['PracticasSostenibles'] = df['¿Qué tipo de prácticas sostenibles sigue con
     'No conozco sobre prácticas sostenibles': 5,
     'No sigo prácticas sostenibles': 6
 })
-
 
 # Generar columnas binarias para dispositivos electrónicos
 df['Televisor'] = df['¿Qué dispositivos electrónicos posee actualmente? '].apply(lambda x: 1 if 'Televisor' in x else 0)

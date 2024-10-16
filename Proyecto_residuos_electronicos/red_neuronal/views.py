@@ -23,8 +23,6 @@ class PredecirResiduosView(APIView):
             'Educación técnica o tecnológica': 2, 'Educación universitaria': 3, 
             'Educación de posgrado': 4
         }
-
-
         self.tipos_dispositivos_desechados_map = {
                     'Televisor': 1,
                     'Computadora': 2,
@@ -50,7 +48,6 @@ class PredecirResiduosView(APIView):
                     'Otra_Desechado': 1  # Peso promedio en kg
                 }
                 
-        
     def transformar_si_no_a_binario(self, datos):
         # Reemplazar 'si'/'no' por 1/0
         for clave in self.tipos_dispositivos_desechados_map:
@@ -58,25 +55,20 @@ class PredecirResiduosView(APIView):
                 datos[clave + '_Desechado'] = 1 if datos[clave + '_Desechado'] == 'si' else 0
         return datos
 
-
     def post(self, request):
         try:
             # Parsear los datos enviados por el cliente
             datos = request.data
             print("Datos recibidos:", datos)  
-            
             # Convertir valores binarios de dispositivos desechados a 1/0
             datos = self.transformar_si_no_a_binario(datos)
-
             año_proyeccion = datos.get('PrediccionAnual')
             poblacion_total = 2650000
-             # Configurar la tasa de crecimiento
             tasa_crecimiento = 0.55  # 5.5% de aumento anual
             año_base = 2024  # Año base para la tasa de crecimiento
 
             # Convertir las categorías de texto a valores numéricos usando los mapeos definidos
             datos['NivelEducativo'] = self.nivel_educativo_map.get(datos.get('NivelEducativo'))
-
             # Convertir los datos en DataFrame
             df_datos = pd.DataFrame([datos])
             print("Datos transformados:", datos)
@@ -84,17 +76,14 @@ class PredecirResiduosView(APIView):
             # Verificar si faltan columnas opcionales y agregar columnas vacías si no están presentes
             for columna in self.feature_columns:
                 if columna not in df_datos.columns:
-                    df_datos[columna] = 0  # Asignar un valor predeterminado
+                    df_datos[columna] = 0 
 
             # Asegurarse de que las columnas coincidan con las esperadas por el modelo
             df_datos = df_datos[self.feature_columns]
-
             # Escalar los datos
             datos_escalados = self.scaler.transform(df_datos)
-
             # Hacer la predicción
             predicciones = self.modelo.predict(datos_escalados)
-
             # Calcular el total de residuos en kilogramos
             total_residuos_kg = 0
             for dispositivo, peso in self.pesos_dispositivos.items():
@@ -102,18 +91,13 @@ class PredecirResiduosView(APIView):
 
             # Agregar las predicciones al DataFrame
             df_datos['Prediccion_Residuos'] = (predicciones * poblacion_total) + total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
-
             # Convertir a toneladas
-            df_datos['Prediccion_Residuos'] = df_datos['Prediccion_Residuos'] / 1000  # Convertir kg a toneladas
-
+            df_datos['Prediccion_Residuos'] = df_datos['Prediccion_Residuos'] / 1000 
             # Formatear la proyección total a toneladas para claridad
             df_datos['Prediccion_Residuos'] = df_datos['Prediccion_Residuos'].apply(lambda x: f"{x:.2f} toneladas")
-
             # Preparar los datos para devolver en formato JSON
             resultado_json = df_datos[['PrediccionAnual','Prediccion_Residuos']].to_dict(orient='records')
-
             return Response({'predicciones': resultado_json}, status=status.HTTP_200_OK)
-
         except KeyError as e:
             return Response({'error': f'Columna faltante: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
@@ -131,7 +115,6 @@ class PrediccionTotalGuayaquilView(APIView):
         df_entrenamiento_path = os.path.join(settings.BASE_DIR, 'scripts/X_variables.joblib')  # Ruta de los datos de entrenamiento
         self.modelo = load_model(modelo_path)
         self.scaler = load(scaler_path)
-
         self.df_entrenamiento = load(df_entrenamiento_path)
         self.feature_columns = self.scaler.feature_names_in_
         self.modelo.summary()  
@@ -196,9 +179,7 @@ class PrediccionTotalGuayaquilView(APIView):
                 'PrediccionAnual': año_proyeccion,
                 'Proyeccion_Total': f"{total_residuos_proyectados_toneladas:.2f} t" # Total proyectado para la población
             }
-           
             return Response({'predicciones_guayaquil': resultado_json_guayaquil}, status=status.HTTP_200_OK)
-
         except KeyError as e:
             return Response({'error': f'Columna faltante: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:

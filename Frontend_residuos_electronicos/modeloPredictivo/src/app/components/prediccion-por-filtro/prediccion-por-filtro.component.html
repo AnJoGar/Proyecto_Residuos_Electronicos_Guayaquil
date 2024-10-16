@@ -21,7 +21,7 @@
       <a id="modeloPrediccion" routerLink="/prediccionFiltro">Modelo de predicción por filtros</a>
     </div>
   </section>
-
+  
   <mat-card class="container">
     <mat-toolbar class="toolbar">
       <h3>Formulario de Predicción de Residuos Electrónicos</h3>
@@ -41,7 +41,6 @@
             <mat-option [value]="1">Norte</mat-option>
             <mat-option [value]="2">Sur</mat-option>
             <mat-option [value]="3">Centro</mat-option>
-
           </mat-select>
         </mat-form-field>
 
@@ -70,7 +69,6 @@
             <mat-option [value]="1">Siempre</mat-option>
             <mat-option [value]="0.5">A veces</mat-option>
             <mat-option [value]="0">Nunca</mat-option>
-
           </mat-select>
         </mat-form-field>
 
@@ -157,7 +155,6 @@
           <p><strong>Predicción de Residuos:</strong> {{ prediccion.Prediccion_Residuos }}</p>
         </div>
       </div>
-
       <!-- Mensaje de error -->
       <div *ngIf="error" class="error">
         <p>{{ error }}</p>

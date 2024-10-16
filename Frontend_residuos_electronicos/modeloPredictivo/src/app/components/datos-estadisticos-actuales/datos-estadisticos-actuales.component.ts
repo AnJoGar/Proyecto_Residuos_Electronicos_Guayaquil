@@ -19,14 +19,10 @@ export class DatosEstadisticosActualesComponent {
   nivelEducativoMasContaminante: string = '';
   
 
-  constructor(private datosActualesService: DatosActualesService){
-  }
+  constructor(private datosActualesService: DatosActualesService){}
   
   ngOnInit(){
-
     this.loadEstadisticas();
-
-
   }
 
   loadEstadisticas(): void {
