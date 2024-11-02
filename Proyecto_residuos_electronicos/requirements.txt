@@ -47,7 +47,6 @@ platformdirs==4.2.2
 plotly==5.23.0
 pooch==1.8.2
 protobuf==4.25.4
-PyAudio==0.2.14
 pycparser==2.22
 pydot==3.0.2
 Pygments==2.18.0
