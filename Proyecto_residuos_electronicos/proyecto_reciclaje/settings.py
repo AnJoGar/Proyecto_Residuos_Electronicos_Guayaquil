@@ -57,10 +57,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'proyecto_reciclaje.urls'
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "*",  
+#CORS_ALLOWED_ORIGINS = [
+ #   "*",  
 
-]
+#]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

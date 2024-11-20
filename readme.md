@@ -68,7 +68,7 @@ ss
 }
 
 ### 2. **Predecir Residuos Electrónicos en Guayaquil**
-- **URL**: `http://127.0.0.1:8000/predecir_residuos_guayaquil/`
+- **URL**: `http://127.0.0.1:8000/predecir_residuos/`
 - **Método**: `POST`
 - **Descripción**: Este endpoint permite predecir la cantidad de residuos electrónicos generados en Guayaquil para un año específico, aplicando filtros sobre distintos factores. Se pueden considerar variables como el área de residencia, el nivel educativo, la frecuencia de reciclaje y el estado de varios dispositivos electrónicos respecto a si se van a considerar en la predicción.
 - **Cuerpo de la Solicitud**:

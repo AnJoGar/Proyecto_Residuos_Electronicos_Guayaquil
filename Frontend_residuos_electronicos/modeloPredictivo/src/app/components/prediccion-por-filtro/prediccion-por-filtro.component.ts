@@ -1,6 +1,8 @@
 import { PrediccionPorFiltro} from '../../interfaces/prediccion-por-filtro';
-import { Component, Input } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { PrediccionPorFilroService } from '../../services/prediccion-por-filro.service';
+import { Chart, registerables } from 'chart.js';
+
 
 @Component({
   selector: 'app-prediccion-por-filtro',
@@ -10,8 +12,17 @@ import { PrediccionPorFilroService } from '../../services/prediccion-por-filro.s
 export class PrediccionPorFiltroComponent {
   resultado: any;
   error: string | null = null;
+  @ViewChild('lineChart') lineChart!: ElementRef; // Referencia para el gráfico de líneas
+  @ViewChild('barChart') barChart!: ElementRef;   // Referencia para el gráfico de barras
+  lineChartInstance!: Chart; // Instancia del gráfico de líneas
+  barChartInstance!: Chart;   // Instancia del gráfico de barras
+  predicciones: { año: string; proyeccion: number }[] = []; // Arreglo en memoria
+  constructor(private prediccionService: PrediccionPorFilroService) {
+    Chart.register(...registerables);
 
-  constructor(private prediccionService: PrediccionPorFilroService) {}
+
+
+  }
 
   formData: PrediccionPorFiltro = {
     PrediccionAnual:2025,
@@ -30,17 +41,94 @@ export class PrediccionPorFiltroComponent {
     'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado': 'no',
     Otra_Desechado: 'no'
   };
+  ngAfterViewInit() {
+    this.initializeLineChart(); // Inicializa el gráfico de líneas
+    this.initializeBarChart();   // Inicializa el gráfico de barras
+  }
 
   submitPredictionForm() {
     this.prediccionService.predecirResiduos(this.formData).subscribe(
       response => {
         this.resultado = response; 
         this.error = null; 
+        this.updateCharts();
+        console.log('API Response:', this.resultado);
+
       },
       error => {
         this.error = 'Hubo un error al realizar la predicción'; // Manejo de errores
         console.error('Error:', error);
       }
     );
+  }
+
+
+  initializeLineChart() {
+    const ctx = this.lineChart.nativeElement.getContext('2d');
+    this.lineChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [], // Inicialmente vacío
+        datasets: [
+          {
+            label: 'Tendencia de Residuos (Toneladas)',
+            data: [],
+            backgroundColor: 'rgba(63, 81, 181, 0.2)',
+            borderColor: 'rgba(63, 81, 181, 1)',
+            borderWidth: 2,
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+
+  initializeBarChart() {
+    const ctx = this.barChart.nativeElement.getContext('2d');
+    this.barChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [], // Inicialmente vacío
+        datasets: [
+          {
+            label: 'Residuos Proyectados por Año',
+            data: [],
+            backgroundColor: 'rgba(0, 200, 83, 0.5)',
+            borderColor: 'rgba(0, 200, 83, 1)',
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+  updateCharts() {
+    const etiquetas = this.predicciones.map((p) => p.año); // Extrae los años
+    const datos = this.predicciones.map((p) => p.proyeccion); // Extrae las proyecciones
+
+    // Actualiza el gráfico de líneas
+    this.lineChartInstance.data.labels = etiquetas;
+    this.lineChartInstance.data.datasets[0].data = datos;
+    this.lineChartInstance.update();
+
+    // Actualiza el gráfico de barras
+    this.barChartInstance.data.labels = etiquetas;
+    this.barChartInstance.data.datasets[0].data = datos;
+    this.barChartInstance.update();
   }
 }
