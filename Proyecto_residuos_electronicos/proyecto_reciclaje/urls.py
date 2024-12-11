@@ -18,8 +18,10 @@ from django.contrib import admin
 from django.urls import path
 from red_neuronal.views import PredecirResiduosView 
 from cantidad_residuos_actuales.views import obtener_estadisticas
-from red_neuronal.views import PrediccionTotalGuayaquilView    
- 
+from red_neuronal.views import PrediccionTotalGuayaquilView
+from historialEntrenamiento.views import obtener_historial_entrenamientos    
+
+
 urlpatterns = [
     # Ruta para predecir residuos con parámetros específicos
     path('predecir_residuos/', PredecirResiduosView.as_view(), name='predecir_residuos'),
@@ -29,4 +31,5 @@ urlpatterns = [
     
     # Ruta para la predicción total de residuos en Guayaquil
     path('predecir_residuos_guayaquil/', PrediccionTotalGuayaquilView.as_view(), name='predecir_residuos_guayaquil'),
+    path('historial/',  obtener_historial_entrenamientos, name='historial'),
 ]

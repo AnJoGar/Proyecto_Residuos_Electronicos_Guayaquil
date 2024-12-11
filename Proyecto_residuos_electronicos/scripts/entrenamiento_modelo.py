@@ -35,6 +35,15 @@ def guardar_datos_entrenamiento(fecha, mse, rmse, r2):
     conexion.commit()
     cursor.close()
     conexion.close()
+# Función para extraer datos de SQL Server y guardarlos en un CSV
+def exportar_datos_a_csv(nombre_archivo):
+    conexion = conectar_sql_server()
+    consulta = "SELECT * FROM HistorialEntrenamientos"
+    datos = pd.read_sql(consulta, conexion)  # Leer datos en un DataFrame de pandas
+    datos.to_csv(nombre_archivo, index=False)  # Guardar los datos en un archivo CSV
+    conexion.close()
+    print(f"Datos exportados correctamente a {nombre_archivo}")
+
 
 # Cargar las variables
 X = load('X_variables.joblib')
@@ -82,6 +91,11 @@ modelo_nn.save('modelo_residuos_electronicos.h5')
 np.save('historial_entrenamiento.npy', historial.history)
 
 # Guardar los resultados en SQL Server
-fecha_entrenamiento = datetime.now()
+fecha_entrenamiento =  datetime(2024, 12, 10)
+
 guardar_datos_entrenamiento(fecha_entrenamiento, mse, rmse, r2)
 print("Datos de entrenamiento guardados en SQL Server correctamente.")
+
+
+# Exportar los datos de la tabla a un archivo CSV
+exportar_datos_a_csv('historial_entrenamientos.csv')

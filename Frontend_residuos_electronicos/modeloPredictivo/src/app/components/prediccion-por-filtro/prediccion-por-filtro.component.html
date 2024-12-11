@@ -19,6 +19,7 @@
       <a id="datosEstadisticos" routerLink="/datosEstadisticos">Datos estadísticos actuales</a>
       <a id="modeloPrediccion" routerLink="/modeloPrediccion" routerLinkActive="active">Modelo de predicción por año</a>
       <a id="modeloPrediccion" routerLink="/prediccionFiltro">Modelo de predicción por filtros</a>
+      <a id="historialEntrenamiento" routerLink="/historialEntrenamiento">Historial de Entrenamiento</a>
     </div>
   </section>
   
@@ -32,6 +33,14 @@
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Año de prediccion</mat-label>
           <input matInput type="number" [(ngModel)]="formData['PrediccionAnual']" name="PrediccionAnual" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Mes de Proyección</mat-label>
+          <mat-select [(ngModel)]="formData['PrediccionMes']"name="PrediccionMes" required >
+            <mat-option *ngFor="let mes of meses" [value]="mes.value">
+              {{ mes.nombre }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <!-- Área de Residencia -->

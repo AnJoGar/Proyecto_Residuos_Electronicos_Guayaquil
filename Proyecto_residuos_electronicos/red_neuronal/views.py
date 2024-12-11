@@ -54,6 +54,8 @@ class PredecirResiduosView(APIView):
             if clave + '_Desechado' in datos: 
                 datos[clave + '_Desechado'] = 1 if datos[clave + '_Desechado'] == 'si' else 0
         return datos
+    def calcular_meses_desde_base(self, año, mes, año_base=2024, mes_base=9):
+        return (año - año_base) * 12 + (mes - mes_base)
 
     def post(self, request):
         try:
@@ -63,9 +65,13 @@ class PredecirResiduosView(APIView):
             # Convertir valores binarios de dispositivos desechados a 1/0
             datos = self.transformar_si_no_a_binario(datos)
             año_proyeccion = datos.get('PrediccionAnual')
-            poblacion_total = 2650000
+            mes_proyeccion = int(datos.get('PrediccionMes'))  # Nuevo campo
+            meses_desde_base = self.calcular_meses_desde_base(año_proyeccion, mes_proyeccion)
+
+            poblacion_total = 1000000
             tasa_crecimiento = 0.55  # 5.5% de aumento anual
             año_base = 2024  # Año base para la tasa de crecimiento
+            tasa_crecimiento_mensual = tasa_crecimiento / 12
 
             # Convertir las categorías de texto a valores numéricos usando los mapeos definidos
             datos['NivelEducativo'] = self.nivel_educativo_map.get(datos.get('NivelEducativo'))
@@ -88,15 +94,17 @@ class PredecirResiduosView(APIView):
             total_residuos_kg = 0
             for dispositivo, peso in self.pesos_dispositivos.items():
                 total_residuos_kg += datos.get(dispositivo, 0) * peso
-
+        
             # Agregar las predicciones al DataFrame
-            df_datos['Prediccion_Residuos'] = (predicciones * poblacion_total) + total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
+           # df_datos['Prediccion_Residuos'] = (predicciones * poblacion_total) + total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
+            df_datos['Prediccion_Residuos'] = (predicciones * poblacion_total) + total_residuos_kg 
+            df_datos['Mes'] = mes_proyeccion  
             # Convertir a toneladas
-            df_datos['Prediccion_Residuos'] = df_datos['Prediccion_Residuos'] / 1000 
+            df_datos['Prediccion_Residuos'] = (df_datos['Prediccion_Residuos'] / 1000)* (1 + tasa_crecimiento_mensual) ** (meses_desde_base)
             # Formatear la proyección total a toneladas para claridad
             df_datos['Prediccion_Residuos'] = df_datos['Prediccion_Residuos'].apply(lambda x: f"{x:.2f} toneladas")
             # Preparar los datos para devolver en formato JSON
-            resultado_json = df_datos[['PrediccionAnual','Prediccion_Residuos']].to_dict(orient='records')
+            resultado_json = df_datos[['PrediccionAnual','Prediccion_Residuos', 'Mes']].to_dict(orient='records')
             return Response({'predicciones': resultado_json}, status=status.HTTP_200_OK)
         except KeyError as e:
             return Response({'error': f'Columna faltante: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
@@ -121,7 +129,8 @@ class PrediccionTotalGuayaquilView(APIView):
         print(self.scaler.feature_names_in_)  # Las columnas que espera el modelo
     def post(self, request):
         return self.prediccionTotalGuayaquil(request)
-
+    def calcular_meses_desde_base(self, año, mes, año_base=2024, mes_base=9):
+        return (año - año_base) * 12 + (mes - mes_base)
     def prediccionTotalGuayaquil(self, request):
         try:
             # Obtener los datos del request
@@ -135,12 +144,13 @@ class PrediccionTotalGuayaquilView(APIView):
 
             # Asegurarse de que el año sea un valor numérico
             año_proyeccion = int(año_proyeccion)
-
+            mes_proyeccion = int(datos.get('PrediccionMes'))  # Nuevo campo
+            meses_desde_base = self.calcular_meses_desde_base(año_proyeccion, mes_proyeccion)
             # Configurar los parámetros
             tasa_crecimiento = 0.055
             año_base = 2024
-            poblacion_total = 2650000  # Población total de Guayaquil
-
+            poblacion_total = 1000000  # Población total de Guayaquil
+            tasa_crecimiento_mensual = tasa_crecimiento / 12
             pesos_dispositivos_kg  = {
                'Televisor_Desechado': 15,  # Peso promedio en kg
                 'Computadora_Desechado': 10,  # Peso promedio en kg
@@ -173,14 +183,19 @@ class PrediccionTotalGuayaquilView(APIView):
                 total_residuos_kg += promedio_residuos_por_persona * poblacion_total * peso
 
             # Calcular la proyección total para la población de Guayaquil
-            total_residuos_proyectados_toneladas = (total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)) / 1000  # Convertir a toneladas
+           # total_residuos_proyectados_toneladas = ((total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)) / 1000)#* (1 + tasa_crecimiento_mensual) ** meses_desde_base  # Convertir a toneladas
+            total_residuos_proyectados_toneladas = ((total_residuos_kg / 1000)* (1 + tasa_crecimiento_mensual) ** meses_desde_base)   # Convertir a toneladas
             # Preparar el resultado en formato JSON
             resultado_json_guayaquil = {
                 'PrediccionAnual': año_proyeccion,
-                'Proyeccion_Total': f"{total_residuos_proyectados_toneladas:.2f} t" # Total proyectado para la población
+                'Mes': mes_proyeccion,
+                'Proyeccion_Total': f"{total_residuos_proyectados_toneladas:.2f} t",
+             
+                 # Total proyectado para la población
             }
             return Response({'predicciones_guayaquil': resultado_json_guayaquil}, status=status.HTTP_200_OK)
         except KeyError as e:
             return Response({'error': f'Columna faltante: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': f'Error en la predicción: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        

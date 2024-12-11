@@ -10,13 +10,15 @@ import os
 from joblib import dump
 
 # Cargar el archivo CSV
-url="../data/Proyecto_Reciclaje (Respuestas).csv"
+url="../data/Proyecto_Reciclaje (Respuestas)co.csv"
 # Leer el archivo CSV con las configuraciones correctas
 df = pd.read_csv(url, sep=",", encoding='utf-8')
 # Configurar pandas para mostrar todas las filas y columnas
 pd.set_option('display.max_rows', None)  # Mostrar todas las filas
 pd.set_option('display.max_columns', None)  # Mostrar todas las columnas
+print(df['¿Cuál es su edad?'].unique())
 
+df['¿Cuál es su edad?'] = df['¿Cuál es su edad?'].astype(str)
 # Definir los mapeos de las categorías
 edad_map = {
     '18-24 años': (18, 24),
@@ -159,6 +161,9 @@ caracteristicas_deseadas_map = {
 familiaridad_ciudad_inteligente_map = {
     'Sí': 1, 'No': 0
 }
+dispositivos_reparados_map = {
+    0: 0, 1: 1, 2: 2, 3: 3, '4 o más': 4
+}
 
 df['Tasa_Crecimiento'] = 0.33 
 
@@ -185,7 +190,7 @@ df['DisposicionApp'] = df['¿Estaría dispuesto a utilizar una aplicación móvi
 df['ComodidadApps'] = df['¿Qué tan cómodo se sentiría usando aplicaciones o dispositivos que ayudan a gestionar el reciclaje de electrónicos?'].map(comodidad_apps_map)
 df['CaracteristicasDeseadas'] = df['¿Qué características le gustaría ver en una aplicación de gestión de residuos electrónicos?'].apply(lambda x: {k: (1 if k in x else 0) for k in caracteristicas_deseadas_map.keys()})
 df['FamiliaridadCiudadInteligente'] = df['¿Está familiarizado con el concepto de "Ciudad Inteligente"?'].map(familiaridad_ciudad_inteligente_map)
-df['DispositivosReemplazadosReparados'] = df['¿Cuántos dispositivos electrónicos ha reemplazado o reparado en el último año?']
+df['DispositivosReemplazadosReparados'] = df['¿Cuántos dispositivos electrónicos ha reemplazado o reparado en el último año?'].map(dispositivos_reparados_map)
 df['PracticasSostenibles'] = df['¿Qué tipo de prácticas sostenibles sigue con respecto a sus dispositivos electrónicos? '].map({
     'Reutilización': 1, 'Reciclaje': 2, 'Donación': 3, 'Reparación': 4, 
     'No conozco sobre prácticas sostenibles': 5,
@@ -211,6 +216,16 @@ print(df[['Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaRe
 # Agregar la columna 'Año de Proyección' con valores ficticios o calculados
 df['PrediccionAnual'] = 2024
 
+#df['Mes'] =  df['Marca temporal'].dt.month
+# Convertir la columna a formato datetime
+df['Marca temporal'] = pd.to_datetime(df['Marca temporal'], errors='coerce')
+
+# Verificar si hubo errores en la conversión
+if df['Marca temporal'].isnull().any():
+    print("Advertencia: algunos valores no pudieron convertirse a formato datetime.")
+
+# Extraer el mes
+df['Mes'] = df['Marca temporal'].dt.month
 # Sumar las cantidades de dispositivos adquiridos y desechados como una medida total de "producto"
 df['TotalDispositivos'] = df['DispositivosaAdquiridos'] + df['DispositivosDesuso']
 
@@ -229,7 +244,7 @@ df['TotalProductosDesechados'] = df[[f'{dispositivo}_Desechado' for dispositivo 
 df['TotalProductos'] = df['TotalProductosReciclados'] + df['TotalProductosDesechados']
 
 # Verificar las nuevas columnas
-print(df[['TotalDispositivos', 'TotalProductosReciclados', 'TotalProductosDesechados', 'TotalProductos']].head())
+print(df[['TotalDispositivos', 'TotalProductosReciclados', 'TotalProductosDesechados', 'TotalProductos','Mes']].head())
 # Seleccionar solo las columnas categorizadas para el DataFrame limpio
 columns_to_export = ['PrediccionAnual','Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaResidencia', 
                       'FrecuenciaActualizacion', 'PrimeraAccion', 'QueHaceConDispositivos', 
@@ -246,7 +261,7 @@ columns_to_export = ['PrediccionAnual','Edad', 'NivelEducativo', 'Ocupacion', 'V
                       'Tablet_Desechado','Teléfono móvil inteligente_Desechado',
                       'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado',
                       'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado',
-                      'Otra_Desechado','Tasa_Crecimiento'
+                      'Otra_Desechado','Tasa_Crecimiento','Mes'
                       
                       ]
 

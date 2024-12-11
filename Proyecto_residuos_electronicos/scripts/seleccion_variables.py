@@ -19,6 +19,7 @@ print(df.dtypes)
 
 # Variables predictoras (entrantes)
 X = df[[  'PrediccionAnual',
+        'Mes',
           'Ingresos',
           'NivelEducativo',
           'AreaResidencia',

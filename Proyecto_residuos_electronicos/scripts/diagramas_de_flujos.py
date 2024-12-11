@@ -1353,4 +1353,423 @@ plt.title('Características del Modelo')
 plt.xlim(0, num_features + 1)  # Ajustar el límite del eje X
 plt.grid(axis='x')  # Agregar una cuadrícula vertical
 plt.tight_layout()  # Ajustar el layout para evitar superposiciones
-plt.show()"""
+plt.show()
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error, r2_score
+from joblib import load
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.models import load_model
+
+def load_data():
+    Cargar las variables y el escalador.
+    X = load('X_variables.joblib')
+    y = load('y_variable.joblib')
+    scaler = load('scaler.joblib')
+    return X, y, scaler
+
+def normalize_data(X, scaler):
+    Normalizar los datos.
+    return scaler.transform(X)
+
+def split_data(X_scaled, y):
+    Dividir los datos en conjuntos de entrenamiento y prueba.
+    return train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+def load_model_nn():
+    Cargar el modelo de red neuronal.
+    return load_model('modelo_residuos_electronicos.h5')
+
+def evaluate_model(y_test, predictions):
+    Calcular métricas de evaluación.
+    mse = mean_squared_error(y_test, predictions)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, predictions)
+    return mse, rmse, r2
+
+def plot_metrics(mse, rmse, r2):
+    Graficar MSE, RMSE y R².
+    metrics = ['MSE', 'RMSE', 'R²']
+    values = [mse, rmse, r2]
+
+    # Crear subgráficos
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6), constrained_layout=True)
+
+    # Graficar cada métrica
+    for ax, metric, value in zip(axes, metrics, values):
+        ax.bar([metric], [value], color='skyblue')
+        ax.set_title(f"{metric}: {value:.4f}")
+        ax.set_ylabel('Valor')
+        ax.set_ylim(0, max(values) * 1.2)
+
+    plt.suptitle("Métricas de Evaluación del Modelo", fontsize=16)
+    plt.show()
+
+def main():
+    # Cargar las variables
+    X, y, scaler = load_data()
+    # Normalizar los datos
+    X_scaled = normalize_data(X, scaler)
+    # Dividir los datos en conjuntos de entrenamiento y prueba
+    X_train, X_test, y_train, y_test = split_data(X_scaled, y)
+
+    # Configuración de la tasa de crecimiento
+    Tasa_Crecimiento = 0.33  
+    año_proyeccion = 2024
+    
+    # Cargar el modelo de red neuronal
+    modelo_nn = load_model_nn()
+    # Realizar predicciones en el conjunto de prueba (red neuronal)
+    predicciones_nn = modelo_nn.predict(X_test)
+    # Calcular métricas de evaluación usando el conjunto de prueba (red neuronal)
+    mse_nn, rmse_nn, r2_nn = evaluate_model(y_test, predicciones_nn)
+
+    # Imprimir resultados
+    print("\n--- Resultados del Modelo de Red Neuronal ---")
+    print(f"Error Cuadrático Medio (MSE): {mse_nn:.4f}")
+    print(f"Raíz del Error Cuadrático Medio (RMSE): {rmse_nn:.4f}")
+    print(f"Coeficiente de Determinación (R²): {r2_nn:.4f}")
+
+    # Graficar las métricas
+    plot_metrics(mse_nn, rmse_nn, r2_nn)
+
+# Ejecutar el programa principal
+if __name__ == "__main__":
+    main()
+
+import numpy as np
+import matplotlib.pyplot as plt
+from joblib import load
+from sklearn.preprocessing import StandardScaler
+
+# Cargar las variables independientes (X) y la dependiente (y)
+X = load('X_variables.joblib')
+y = load('y_variable.joblib')
+
+# Normalizar los datos
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Calcular tamaños exactos
+n_total = len(X)
+n_train = int(n_total * 0.8)  # 80% para entrenamiento
+n_test = n_total - n_train    # Resto para prueba
+
+# Crear los conjuntos de entrenamiento y prueba
+X_train, X_test = X_scaled[:n_train], X_scaled[n_train:]
+y_train, y_test = y[:n_train], y[n_train:]
+
+# Verificar tamaños
+print(f"Tamaño total: {n_total}")
+print(f"Tamaño de entrenamiento: {n_train}")
+print(f"Tamaño de prueba: {n_test}")
+
+# Graficar la proporción
+etiquetas = ['Entrenamiento (80%)', 'Prueba (20%)']
+tamanios = [n_train, n_test]
+
+plt.figure(figsize=(8, 6))
+plt.pie(tamanios, labels=etiquetas, autopct='%1.1f%%', startangle=90, colors=['lightblue', 'orange'])
+plt.title('Distribución Exacta de Datos: Entrenamiento vs Prueba')
+plt.axis('equal')  # Asegurar que el gráfico sea un círculo
+plt.show()
+
+
+
+import numpy as np
+from joblib import load
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import mean_squared_error, r2_score
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.regularizers import l2
+import matplotlib.pyplot as plt
+
+def load_data():
+    Cargar las variables y el escalador.
+    X = load('X_variables.joblib')
+    y = load('y_variable.joblib')
+    scaler = load('scaler.joblib')
+    X_scaled = scaler.transform(X)
+    return X_scaled, y
+
+def create_model_with_l2(input_shape):
+    Crear una red neuronal con regularización L2
+        model = Sequential([
+        Dense(128, activation='relu', kernel_regularizer=l2(0.01), input_shape=(input_shape,)),
+        Dense(64, activation='relu', kernel_regularizer=l2(0.01)),
+        Dense(1)
+    ])
+    model.compile(optimizer='adam', loss='mse', metrics=['mse'])
+    return model
+
+def evaluate_model(y_test, predictions):
+    Calcular métricas de evaluación.
+    mse = mean_squared_error(y_test, predictions)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, predictions)
+    return mse, rmse, r2
+
+def plot_results(y_test, predictions, r2):
+    Graficar los resultados de la Red Neuronal.
+    plt.figure(figsize=(6, 6))
+    plt.scatter(y_test, predictions, color='blue', label='Predicciones (Red Neuronal)')
+    plt.plot(y_test, y_test, color='red', label='Valores Reales')
+    plt.title(f"Red Neuronal: Predicciones vs Reales\nR² = {r2:.4f}")
+    plt.xlabel("Valores Reales")
+    plt.ylabel("Predicciones")
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+def plot_metrics_per_fold(mse_list, r2_list):
+    Graficar métricas por pliegue en Stratified K-Fold.
+    num_folds = len(mse_list)
+    rmse_list = [np.sqrt(mse) for mse in mse_list]  # Calcular RMSE a partir del MSE
+
+    # Crear un gráfico de barras
+    x_labels = [f"Pliegue {i+1}" for i in range(num_folds)]
+    x = np.arange(num_folds)  # Posiciones en el eje x
+
+    plt.figure(figsize=(10, 6))
+
+    # Graficar MSE
+    plt.bar(x - 0.2, mse_list, width=0.2, label='MSE', color='blue', alpha=0.7)
+    # Graficar RMSE
+    plt.bar(x, rmse_list, width=0.2, label='RMSE', color='orange', alpha=0.7)
+    # Graficar R²
+    plt.bar(x + 0.2, r2_list, width=0.2, label='R²', color='green', alpha=0.7)
+
+    # Configurar el gráfico
+    plt.axhline(np.mean(mse_list), color='blue', linestyle='--', linewidth=1, label=f'MSE promedio: {np.mean(mse_list):.4f}')
+    plt.axhline(np.mean(rmse_list), color='orange', linestyle='--', linewidth=1, label=f'RMSE promedio: {np.mean(rmse_list):.4f}')
+    plt.axhline(np.mean(r2_list), color='green', linestyle='--', linewidth=1, label=f'R² promedio: {np.mean(r2_list):.4f}')
+    
+    plt.xticks(x, x_labels)
+    plt.title("Métricas de Evaluación por Pliegue (Stratified K-Fold)")
+    plt.xlabel("Pliegues")
+    plt.ylabel("Valor")
+    plt.legend(loc="upper right")
+    plt.tight_layout()
+    plt.show()
+
+def stratified_k_fold_validation(X_scaled, y, n_splits=5):
+    Validación Estratificada K-Fold.
+    skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
+    mse_list = []
+    r2_list = []
+    for train_index, test_index in skf.split(X_scaled, y):
+        X_train, X_test = X_scaled[train_index], X_scaled[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+
+        # Crear y entrenar el modelo
+        modelo_nn = create_model_with_l2(X_train.shape[1])
+        modelo_nn.fit(X_train, y_train, epochs=100, validation_split=0.2, verbose=0)
+
+        # Evaluar el modelo
+        predicciones_nn = modelo_nn.predict(X_test)
+        mse_nn, rmse_nn, r2_nn = evaluate_model(y_test, predicciones_nn)
+        mse_list.append(mse_nn)
+        r2_list.append(r2_nn)
+        # Graficar los resultados
+        plot_results(y_test, predicciones_nn, r2_nn)
+    return mse_list, r2_list
+
+def main():
+    # Cargar los datos
+    X_scaled, y = load_data()
+
+    # Stratified K-Fold Cross Validation
+    mse_stratified_kfold, r2_stratified_kfold = stratified_k_fold_validation(X_scaled, y)
+
+    # Graficar métricas por pliegue
+    plot_metrics_per_fold(mse_stratified_kfold, r2_stratified_kfold)
+
+    # Mostrar resultados promedio
+    print(f"Stratified K-Fold Cross Validation - MSE promedio: {np.mean(mse_stratified_kfold):.4f}, R² promedio: {np.mean(r2_stratified_kfold):.4f}")
+
+if __name__ == "__main__":
+    main()
+"""
+import numpy as np
+import pandas as pd
+from sklearn.metrics import mean_squared_error, r2_score
+from joblib import load
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.models import load_model
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def load_data():
+    """Cargar las variables y el escalador."""
+    X = load('X_variables.joblib')
+    y = load('y_variable.joblib')
+    scaler = load('scaler.joblib')
+    return X, y, scaler
+
+def normalize_data(X, scaler):
+    """Normalizar los datos."""
+    return scaler.transform(X)
+
+def split_data(X_scaled, y):
+    """Dividir los datos en conjuntos de entrenamiento y prueba."""
+    return train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+def load_models():
+    """Cargar los modelos de red neuronal y regresión lineal."""
+    modelo_nn = load_model('modelo_residuos_electronicos.h5')
+    modelo_lr = LinearRegression()
+    return modelo_nn, modelo_lr
+
+def train_linear_regression(modelo_lr, X_train, y_train):
+    """Entrenar el modelo de regresión lineal."""
+    modelo_lr.fit(X_train, y_train)
+    return modelo_lr
+
+def evaluate_model(y_test, predictions):
+    """Calcular métricas de evaluación."""
+    mse = mean_squared_error(y_test, predictions)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, predictions)
+    return mse, rmse, r2
+
+def calculate_projection(predictions_train, growth_rate, year_projection, base_year=2024):
+    """Calcular la proyección total de productos desechados."""
+    return np.sum(predictions_train) * (1 + growth_rate) ** (year_projection - base_year)
+
+def plot_error_boxplot(y_test, predictions_nn, predictions_lr):
+    """Graficar un boxplot de los errores de cada modelo."""
+    errores_nn = y_test - predictions_nn.ravel()
+    errores_lr = y_test - predictions_lr
+
+    plt.figure(figsize=(8, 6))
+    sns.boxplot(data=[errores_nn, errores_lr], palette=["blue", "green"])
+    plt.xticks([0, 1], ['Red Neuronal', 'Regresión Lineal'])
+    plt.title("Distribución de Errores (Boxplot)")
+    plt.ylabel("Error")
+    plt.show()
+
+def plot_scatter_error_vs_predictions(y_test, predictions_nn, predictions_lr):
+    """Graficar los errores frente a las predicciones de cada modelo."""
+    errores_nn = y_test - predictions_nn.ravel()
+    errores_lr = y_test - predictions_lr
+
+    plt.figure(figsize=(12, 6))
+    
+    plt.subplot(1, 2, 1)
+    plt.scatter(predictions_nn.ravel(), errores_nn, color='blue', alpha=0.7)
+    plt.axhline(0, color='red', linestyle='--')
+    plt.title("Errores vs Predicciones (Red Neuronal)")
+    plt.xlabel("Predicciones")
+    plt.ylabel("Errores")
+
+    plt.subplot(1, 2, 2)
+    plt.scatter(predictions_lr, errores_lr, color='green', alpha=0.7)
+    plt.axhline(0, color='red', linestyle='--')
+    plt.title("Errores vs Predicciones (Regresión Lineal)")
+    plt.xlabel("Predicciones")
+    plt.ylabel("Errores")
+
+    plt.tight_layout()
+    plt.show()
+
+def plot_metrics_comparison(mse_nn, rmse_nn, r2_nn, mse_lr, rmse_lr, r2_lr):
+    """Graficar comparación de métricas entre modelos."""
+    metrics = ['MSE', 'RMSE', 'R²']
+    nn_values = [mse_nn, rmse_nn, r2_nn]
+    lr_values = [mse_lr, rmse_lr, r2_lr]
+
+    x = np.arange(len(metrics))
+    width = 0.35
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(x - width/2, nn_values, width, label='Red Neuronal', color='blue', alpha=0.7)
+    plt.bar(x + width/2, lr_values, width, label='Regresión Lineal', color='green', alpha=0.7)
+
+    plt.title("Comparación de Métricas entre Modelos")
+    plt.xlabel("Métricas")
+    plt.ylabel("Valor")
+    plt.xticks(x, metrics)
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+def plot_density_scatter(y_test, predictions_nn, predictions_lr):
+    """Graficar curvas de densidad para las predicciones."""
+    plt.figure(figsize=(12, 6))
+
+    plt.subplot(1, 2, 1)
+    sns.kdeplot(x=y_test, y=predictions_nn.ravel(), cmap="Blues", fill=True, cbar=True)
+    plt.title("Densidad de Predicciones (Red Neuronal)")
+    plt.xlabel("Valores Reales")
+    plt.ylabel("Predicciones")
+
+    plt.subplot(1, 2, 2)
+    sns.kdeplot(x=y_test, y=predictions_lr, cmap="Greens", fill=True, cbar=True)
+    plt.title("Densidad de Predicciones (Regresión Lineal)")
+    plt.xlabel("Valores Reales")
+    plt.ylabel("Predicciones")
+
+    plt.tight_layout()
+    plt.show()
+
+def main():
+    # Cargar las variables
+    X, y, scaler = load_data()
+    # Normalizar los datos
+    X_scaled = normalize_data(X, scaler)
+    # Dividir los datos en conjuntos de entrenamiento y prueba
+    X_train, X_test, y_train, y_test = split_data(X_scaled, y)
+
+    # Configuración de la tasa de crecimiento
+    Tasa_Crecimiento = 0.33  
+    año_proyeccion = 2024
+    
+    # Cargar los modelos
+    modelo_nn, modelo_lr = load_models()
+    # Realizar predicciones en el conjunto de prueba (red neuronal)
+    predicciones_nn = modelo_nn.predict(X_test)
+    # Calcular métricas de evaluación usando el conjunto de prueba (red neuronal)
+    mse_nn, rmse_nn, r2_nn = evaluate_model(y_test, predicciones_nn)
+    # Entrenar el modelo de regresión lineal
+    modelo_lr = train_linear_regression(modelo_lr, X_train, y_train)
+    # Realizar predicciones en el conjunto de prueba (regresión lineal)
+    predicciones_lr = modelo_lr.predict(X_test)
+    # Calcular métricas de evaluación usando el conjunto de prueba (regresión lineal)
+    mse_lr, rmse_lr, r2_lr = evaluate_model(y_test, predicciones_lr)
+
+    # Comparar los resultados
+    print("\n--- Comparación de Modelos ---")
+    print("\nRed Neuronal (Cargada):")
+    print(f"Error Cuadrático Medio (MSE): {mse_nn:.4f}")
+    print(f"Raíz del Error Cuadrático Medio (RMSE): {rmse_nn:.4f}")
+    print(f"Coeficiente de Determinación (R²): {r2_nn:.4f}")
+
+    print("\nRegresión Lineal:")
+    print(f"Error Cuadrático Medio (MSE): {mse_lr:.4f}")
+    print(f"Raíz del Error Cuadrático Medio (RMSE): {rmse_lr:.4f}")
+    print(f"Coeficiente de Determinación (R²): {r2_lr:.4f}")
+
+    # Realizar predicciones en el conjunto de entrenamiento para la red neuronal
+    predicciones_train_nn = modelo_nn.predict(X_train)
+    # Calcular la proyección total de productos desechados para la red neuronal
+    total_proyectado_nn = calculate_projection(predicciones_train_nn, Tasa_Crecimiento, año_proyeccion)
+    # Realizar predicciones en el conjunto de entrenamiento para la regresión lineal
+    predicciones_train_lr = modelo_lr.predict(X_train)
+    # Calcular la proyección total de productos desechados para la regresión lineal
+    total_proyectado_lr = calculate_projection(predicciones_train_lr, Tasa_Crecimiento, año_proyeccion)
+    # Imprimir las proyecciones totales para el año ingresado
+    print(f"\nProyección total de residuos electrónicos para {año_proyeccion} (Red Neuronal): {total_proyectado_nn:.2f}")
+    print(f"Proyección total de residuos electrónicos para {año_proyeccion} (Regresión Lineal): {total_proyectado_lr:.2f}")
+
+    # Graficar los resultados
+    plot_error_boxplot(y_test, predicciones_nn, predicciones_lr)
+    plot_scatter_error_vs_predictions(y_test, predicciones_nn, predicciones_lr)
+    plot_metrics_comparison(mse_nn, rmse_nn, r2_nn, mse_lr, rmse_lr, r2_lr)
+    plot_density_scatter(y_test, predicciones_nn, predicciones_lr)
+
+# Ejecutar el programa principal
+if __name__ == "__main__":
+    main()

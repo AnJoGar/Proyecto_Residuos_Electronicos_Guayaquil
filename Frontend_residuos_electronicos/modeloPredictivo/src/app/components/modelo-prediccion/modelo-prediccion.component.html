@@ -20,6 +20,7 @@
         <a id="datosEstadisticos" routerLink="/datosEstadisticos">Datos estadísticos actuales</a>
         <a id="modeloPrediccion" routerLink="/modeloPrediccion" routerLinkActive="active">Modelo de predicción por año</a>
         <a id="modeloPrediccion" routerLink="/prediccionFiltro">Modelo de predicción por filtros</a>
+        <a id="historialEntrenamiento" routerLink="/historialEntrenamiento">Historial de Entrenamiento</a>
       </div>
     </section>
     <mat-card class="prediccion-card">
@@ -31,6 +32,17 @@
           <mat-label>Año de Proyección</mat-label>
           <input matInput type="number" [(ngModel)]="PrediccionAnual" />
         </mat-form-field>
+    
+        
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mes de Proyección</mat-label>
+      <mat-select [(ngModel)]="PrediccionMes">
+        <mat-option *ngFor="let mes of meses" [value]="mes.value">
+          {{ mes.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+        
         <div class="button-container">
           <button mat-raised-button color="primary" (click)="realizarPrediccion()">Realizar Predicción</button>
         </div>
@@ -49,7 +61,7 @@
         <canvas #lineChart ></canvas>
       </div>
       <div class="chart-container">
-        <h4>Comparación por Año</h4>
+        <h4>Comparación por Mes y Año</h4>
         <canvas #barChart ></canvas>
       </div>
     </div>

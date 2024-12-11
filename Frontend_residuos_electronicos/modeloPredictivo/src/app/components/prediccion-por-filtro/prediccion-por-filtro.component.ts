@@ -14,6 +14,7 @@ export class PrediccionPorFiltroComponent {
   error: string | null = null;
   @ViewChild('lineChart') lineChart!: ElementRef; // Referencia para el gráfico de líneas
   @ViewChild('barChart') barChart!: ElementRef;   // Referencia para el gráfico de barras
+  PrediccionMes:number=9;
   lineChartInstance!: Chart; // Instancia del gráfico de líneas
   barChartInstance!: Chart;   // Instancia del gráfico de barras
   predicciones: { año: string; proyeccion: number }[] = []; // Arreglo en memoria
@@ -23,6 +24,21 @@ export class PrediccionPorFiltroComponent {
 
 
   }
+  meses = [
+    { nombre: 'Enero', value: 1 },
+    { nombre: 'Febrero', value: 2 },
+    { nombre: 'Marzo', value: 3 },
+    { nombre: 'Abril', value: 4 },
+    { nombre: 'Mayo', value: 5 },
+    { nombre: 'Junio', value: 6 },
+    { nombre: 'Julio', value: 7 },
+    { nombre: 'Agosto', value: 8 },
+    { nombre: 'Septiembre', value: 9 },
+    { nombre: 'Octubre', value: 10 },
+    { nombre: 'Noviembre', value: 11 },
+    { nombre: 'Diciembre', value: 12 }
+  ];
+
 
   formData: PrediccionPorFiltro = {
     PrediccionAnual:2025,
@@ -39,7 +55,8 @@ export class PrediccionPorFiltroComponent {
     'Teléfono móvil inteligente_Desechado': 'no',
     'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado': 'no',
     'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado': 'no',
-    Otra_Desechado: 'no'
+    Otra_Desechado: 'no',
+    PrediccionMes: 3
   };
   ngAfterViewInit() {
     this.initializeLineChart(); // Inicializa el gráfico de líneas

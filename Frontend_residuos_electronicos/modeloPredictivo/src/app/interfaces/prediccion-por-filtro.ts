@@ -1,5 +1,6 @@
 export interface PrediccionPorFiltro {
     PrediccionAnual: number;
+    PrediccionMes: number;
     AreaResidencia: number;
     NivelEducativo: string;
     FrecuenciaReciclaje: number;
@@ -14,4 +15,5 @@ export interface PrediccionPorFiltro {
     'Electrodomésticos inteligentes (nevera, lavadora, etc.)_Desechado': 'si' | 'no';
     'Dispositivos de domótica (asistentes de voz, termostatos inteligentes, etc.)_Desechado': 'si' | 'no';
     Otra_Desechado: 'si' | 'no';
+
 }

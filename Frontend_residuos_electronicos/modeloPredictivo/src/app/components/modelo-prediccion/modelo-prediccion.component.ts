@@ -12,6 +12,7 @@ export class ModeloPrediccionComponent implements AfterViewInit {
   @ViewChild('lineChart') lineChart!: ElementRef; // Referencia para el gráfico de línea
   @ViewChild('barChart') barChart!: ElementRef;   //
   PrediccionAnual: number = 2025; 
+  PrediccionMes:number=9;
   resultado?: PrediccionPorAño; 
   lineChartInstance!: Chart; // Instancia del gráfico de línea
   barChartInstance!: Chart;   // Instancia del gráfico de barras
@@ -22,9 +23,24 @@ export class ModeloPrediccionComponent implements AfterViewInit {
 
     Chart.register(...registerables); 
   }
+  meses = [
+    { nombre: 'Enero', value: 1 },
+    { nombre: 'Febrero', value: 2 },
+    { nombre: 'Marzo', value: 3 },
+    { nombre: 'Abril', value: 4 },
+    { nombre: 'Mayo', value: 5 },
+    { nombre: 'Junio', value: 6 },
+    { nombre: 'Julio', value: 7 },
+    { nombre: 'Agosto', value: 8 },
+    { nombre: 'Septiembre', value: 9 },
+    { nombre: 'Octubre', value: 10 },
+    { nombre: 'Noviembre', value: 11 },
+    { nombre: 'Diciembre', value: 12 }
+  ];
+
 
   realizarPrediccion() {
-    this.prediccionService.hacerPrediccion(this.PrediccionAnual).subscribe(
+    this.prediccionService.hacerPrediccion(this.PrediccionAnual, this.PrediccionMes).subscribe(
       (response) => {
         console.log('API Response:', response);
         this.resultado = response.predicciones_guayaquil;

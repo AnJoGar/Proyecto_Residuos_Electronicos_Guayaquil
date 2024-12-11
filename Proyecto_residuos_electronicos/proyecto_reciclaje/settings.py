@@ -40,7 +40,8 @@ INSTALLED_APPS = [
         'rest_framework', 
         'red_neuronal',
         'cantidad_residuos_actuales' ,
-          'corsheaders' 
+          'corsheaders', 
+          'historialEntrenamiento'
 ]
 
 MIDDLEWARE = [
@@ -84,9 +85,22 @@ WSGI_APPLICATION = 'proyecto_reciclaje.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+
+     'default': {  # Base de datos principal (SQLite)
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+
+     'sql_server': {
+        'ENGINE': 'mssql',
+        'NAME': 'PrediccionResiduosElectronicos',
+        'USER': 'sa',
+        'PASSWORD': 'mbappe2019',
+        'HOST': 'DESKTOP-0LIFH6G\SQLEXPRESS',  # Cambia según tu configuración
+        'PORT': '',  # Si es necesario
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        },
     }
 }
 

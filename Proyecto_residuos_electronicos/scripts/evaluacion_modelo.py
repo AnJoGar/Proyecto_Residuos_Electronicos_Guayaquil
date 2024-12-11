@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from tensorflow.keras.models import load_model
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
-
+import seaborn as sns
 def load_data():
     """Cargar las variables y el escalador."""
     X = load('X_variables.joblib')
@@ -44,6 +44,31 @@ def evaluate_model(y_test, predictions):
 def calculate_projection(predictions_train, growth_rate, year_projection, base_year=2024):
     """Calcular la proyección total de productos desechados."""
     return np.sum(predictions_train) * (1 + growth_rate) ** (year_projection - base_year)
+def plot_error_distribution(y_test, predictions_nn, predictions_lr):
+    """Graficar la distribución de errores para cada modelo."""
+    errores_nn = y_test - predictions_nn.ravel()
+    errores_lr = y_test - predictions_lr
+
+    plt.figure(figsize=(12, 6))
+    
+    plt.subplot(1, 2, 1)
+    plt.hist(errores_nn, bins=20, color='blue', alpha=0.7, label='Errores NN')
+    plt.axvline(0, color='red', linestyle='--', label='Error 0')
+    plt.title("Distribución de Errores (Red Neuronal)")
+    plt.xlabel("Error")
+    plt.ylabel("Frecuencia")
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.hist(errores_lr, bins=20, color='green', alpha=0.7, label='Errores LR')
+    plt.axvline(0, color='red', linestyle='--', label='Error 0')
+    plt.title("Distribución de Errores (Regresión Lineal)")
+    plt.xlabel("Error")
+    plt.ylabel("Frecuencia")
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
 
 def plot_results(y_test, predictions_nn, predictions_lr, r2_nn, r2_lr):
     """Graficar los resultados de la Red Neuronal y Regresión Lineal."""
@@ -68,6 +93,46 @@ def plot_results(y_test, predictions_nn, predictions_lr, r2_nn, r2_lr):
     plt.legend()
 
     # Mostrar las gráficas
+    plt.tight_layout()
+    plt.show()
+
+def plot_metrics_comparison(mse_nn, rmse_nn, r2_nn, mse_lr, rmse_lr, r2_lr):
+    """Graficar comparación de métricas entre modelos."""
+    metrics = ['MSE', 'RMSE', 'R²']
+    nn_values = [mse_nn, rmse_nn, r2_nn]
+    lr_values = [mse_lr, rmse_lr, r2_lr]
+
+    x = np.arange(len(metrics))
+    width = 0.35
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(x - width/2, nn_values, width, label='Red Neuronal', color='blue', alpha=0.7)
+    plt.bar(x + width/2, lr_values, width, label='Regresión Lineal', color='green', alpha=0.7)
+
+    plt.title("Comparación de Métricas entre Modelos")
+    plt.xlabel("Métricas")
+    plt.ylabel("Valor")
+    plt.xticks(x, metrics)
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+def plot_density_scatter(y_test, predictions_nn, predictions_lr):
+    """Graficar curvas de densidad para las predicciones."""
+    plt.figure(figsize=(12, 6))
+
+    plt.subplot(1, 2, 1)
+    sns.kdeplot(x=y_test, y=predictions_nn.ravel(), cmap="Blues", fill=True, cbar=True)
+    plt.title("Densidad de Predicciones (Red Neuronal)")
+    plt.xlabel("Valores Reales")
+    plt.ylabel("Predicciones")
+
+    plt.subplot(1, 2, 2)
+    sns.kdeplot(x=y_test, y=predictions_lr, cmap="Greens", fill=True, cbar=True)
+    plt.title("Densidad de Predicciones (Regresión Lineal)")
+    plt.xlabel("Valores Reales")
+    plt.ylabel("Predicciones")
+
     plt.tight_layout()
     plt.show()
 
@@ -119,10 +184,11 @@ def main():
     # Imprimir las proyecciones totales para el año ingresado
     print(f"\nProyección total de residuos electrónicos para {año_proyeccion} (Red Neuronal): {total_proyectado_nn:.2f}")
     print(f"Proyección total de residuos electrónicos para {año_proyeccion} (Regresión Lineal): {total_proyectado_lr:.2f}")
-
+    plot_error_distribution(y_test, predicciones_nn, predicciones_lr)
     # Graficar los resultados
     plot_results(y_test, predicciones_nn, predicciones_lr, r2_nn, r2_lr)
-
+    plot_metrics_comparison(mse_nn, rmse_nn, r2_nn, mse_lr, rmse_lr, r2_lr)
+    plot_density_scatter(y_test, predicciones_nn, predicciones_lr)
 # Ejecutar el programa principal
 if __name__ == "__main__":
     main()

@@ -15,6 +15,7 @@ import { PrediccionPorFiltroComponent } from './components/prediccion-por-filtro
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { HistorialEntrenamientoComponent } from './components/historial-entrenamiento/historial-entrenamiento.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     AcercaDeComponent,
     DatosEstadisticosActualesComponent,
     ModeloPrediccionComponent,
-    PrediccionPorFiltroComponent
+    PrediccionPorFiltroComponent,
+    HistorialEntrenamientoComponent
   ],
   imports: [
     BrowserModule,
