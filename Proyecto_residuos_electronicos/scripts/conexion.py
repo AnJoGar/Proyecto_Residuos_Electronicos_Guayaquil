@@ -1,7 +1,7 @@
 import pyodbc
 
 # Configuración de la conexión
-server = 'DESKTOP-0LIFH6G\SQLEXPRESS'  # Ejemplo: localhost, dirección IP o nombre del servidor
+server = 'DESKTOP-JEKQ4RF\SQLEXPRESS'  # Ejemplo: localhost, dirección IP o nombre del servidor
 database = 'SistemaNutricion1'  # Nombre de tu base de datos
 username = 'sa'  # Usuario de la base de datos
 password = 'mbappe2019'  # Contraseña del usuario

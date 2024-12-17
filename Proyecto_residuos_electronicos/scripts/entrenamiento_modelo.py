@@ -9,8 +9,8 @@ from tensorflow.keras import layers
 import pyodbc  # Para conectar con SQL Server
 from datetime import datetime
 # Configuración de la conexión
-server = 'DESKTOP-0LIFH6G\SQLEXPRESS'  # Ejemplo: localhost, dirección IP o nombre del servidor
-database = 'PrediccionResiduosElectronicos'  # Nombre de tu base de datos
+server = 'DESKTOP-JEKQ4RF\\SQLEXPRESS'  
+database = 'Residuos_Electronicos'  # Nombre de tu base de datos
 username = 'sa'  # Usuario de la base de datos
 password = 'mbappe2019'  # Contraseña del usuario
 # Conexión a SQL Server
@@ -28,7 +28,7 @@ def guardar_datos_entrenamiento(fecha, mse, rmse, r2):
     conexion = conectar_sql_server()
     cursor = conexion.cursor()
     consulta = """
-    INSERT INTO HistorialEntrenamientos (fecha_entrenamiento, mse, rmse, r2)
+    INSERT INTO historial_entrenamientos (fecha_entrenamiento, mse, rmse, r2)
     VALUES (?, ?, ?, ?)
     """
     cursor.execute(consulta, (fecha, mse, rmse, r2))
@@ -38,7 +38,7 @@ def guardar_datos_entrenamiento(fecha, mse, rmse, r2):
 # Función para extraer datos de SQL Server y guardarlos en un CSV
 def exportar_datos_a_csv(nombre_archivo):
     conexion = conectar_sql_server()
-    consulta = "SELECT * FROM HistorialEntrenamientos"
+    consulta = "SELECT * FROM historial_entrenamientos"
     datos = pd.read_sql(consulta, conexion)  # Leer datos en un DataFrame de pandas
     datos.to_csv(nombre_archivo, index=False)  # Guardar los datos en un archivo CSV
     conexion.close()
@@ -91,7 +91,7 @@ modelo_nn.save('modelo_residuos_electronicos.h5')
 np.save('historial_entrenamiento.npy', historial.history)
 
 # Guardar los resultados en SQL Server
-fecha_entrenamiento =  datetime(2024, 12, 10)
+fecha_entrenamiento =  datetime(2024, 12, 17)
 
 guardar_datos_entrenamiento(fecha_entrenamiento, mse, rmse, r2)
 print("Datos de entrenamiento guardados en SQL Server correctamente.")

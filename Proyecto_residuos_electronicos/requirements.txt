@@ -40,7 +40,7 @@ numpy==1.26.4
 opt-einsum==3.3.0
 optree==0.12.1
 packaging==24.1
-pandas==2.2.2
+pandas==2.2.3
 pillow==10.4.0
 pip==24.2
 platformdirs==4.2.2
@@ -51,6 +51,7 @@ pycparser==2.22
 pydot==3.0.2
 Pygments==2.18.0
 pyparsing==3.1.4
+pyodbc==5.2.0
 python-dateutil==2.9.0.post0
 pytz==2024.1
 requests==2.32.3

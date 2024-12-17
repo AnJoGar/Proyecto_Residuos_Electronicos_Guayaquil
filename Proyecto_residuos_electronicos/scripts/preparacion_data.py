@@ -10,9 +10,9 @@ import os
 from joblib import dump
 
 # Cargar el archivo CSV
-url="../data/Proyecto_Reciclaje (Respuestas)co.csv"
+url="../data/Proyecto_Reciclaje (Respuestas)F1.csv"
 # Leer el archivo CSV con las configuraciones correctas
-df = pd.read_csv(url, sep=",", encoding='utf-8')
+df = pd.read_csv(url, sep=";", encoding='utf-8')
 # Configurar pandas para mostrar todas las filas y columnas
 pd.set_option('display.max_rows', None)  # Mostrar todas las filas
 pd.set_option('display.max_columns', None)  # Mostrar todas las columnas

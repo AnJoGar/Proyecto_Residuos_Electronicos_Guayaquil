@@ -9,7 +9,7 @@ import { Chart, registerables } from 'chart.js';
   templateUrl: './prediccion-por-filtro.component.html',
   styleUrl: './prediccion-por-filtro.component.css'
 })
-export class PrediccionPorFiltroComponent {
+export class PrediccionPorFiltroComponent implements AfterViewInit {
   resultado: any;
   error: string | null = null;
   @ViewChild('lineChart') lineChart!: ElementRef; // Referencia para el gráfico de líneas
@@ -17,7 +17,8 @@ export class PrediccionPorFiltroComponent {
   PrediccionMes:number=9;
   lineChartInstance!: Chart; // Instancia del gráfico de líneas
   barChartInstance!: Chart;   // Instancia del gráfico de barras
-  predicciones: { año: string; proyeccion: number }[] = []; // Arreglo en memoria
+  predicciones: { PrediccionAnual: string; Prediccion_Residuos: string }[] = []; 
+  predicciones1: { año: string; proyeccion: number }[] = [];// Arreglo en memoria
   constructor(private prediccionService: PrediccionPorFilroService) {
     Chart.register(...registerables);
 
@@ -68,9 +69,15 @@ export class PrediccionPorFiltroComponent {
       response => {
         this.resultado = response; 
         this.error = null; 
+        this.predicciones = response.predicciones;
+        const nuevaPrediccion = {
+          año: this.resultado.PrediccionAnual,
+          proyeccion: parseFloat(this.resultado.Proyeccion_Total),
+        };
+        this.predicciones1.push(nuevaPrediccion);
         this.updateCharts();
         console.log('API Response:', this.resultado);
-
+        
       },
       error => {
         this.error = 'Hubo un error al realizar la predicción'; // Manejo de errores
@@ -78,10 +85,12 @@ export class PrediccionPorFiltroComponent {
       }
     );
   }
-
-
   initializeLineChart() {
     const ctx = this.lineChart.nativeElement.getContext('2d');
+    if (!ctx) {
+      console.error('No se pudo obtener el contexto del gráfico de líneas');
+      return;
+    }
     this.lineChartInstance = new Chart(ctx, {
       type: 'line',
       data: {
@@ -110,6 +119,10 @@ export class PrediccionPorFiltroComponent {
 
   initializeBarChart() {
     const ctx = this.barChart.nativeElement.getContext('2d');
+    if (!ctx) {
+      console.error('No se pudo obtener el contexto del gráfico de líneas');
+      return;
+    }
     this.barChartInstance = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -135,17 +148,30 @@ export class PrediccionPorFiltroComponent {
     });
   }
   updateCharts() {
-    const etiquetas = this.predicciones.map((p) => p.año); // Extrae los años
-    const datos = this.predicciones.map((p) => p.proyeccion); // Extrae las proyecciones
+    if (Array.isArray(this.predicciones)) {
+      const etiquetas = this.predicciones.map((p) => p.PrediccionAnual);
+      const datos = this.predicciones.map((p) => {
+        // Elimina " toneladas" y convierte el valor a número
+        const valorLimpio = p.Prediccion_Residuos.replace(' toneladas', '').trim();
+        return parseFloat(valorLimpio); // Convertir a número
+      });
 
-    // Actualiza el gráfico de líneas
-    this.lineChartInstance.data.labels = etiquetas;
-    this.lineChartInstance.data.datasets[0].data = datos;
-    this.lineChartInstance.update();
-
-    // Actualiza el gráfico de barras
-    this.barChartInstance.data.labels = etiquetas;
-    this.barChartInstance.data.datasets[0].data = datos;
-    this.barChartInstance.update();
+      console.log('Etiquetas:', etiquetas); // Depuración
+    console.log('Datos:', datos);
+      if (this.lineChartInstance && this.barChartInstance) {
+        // Actualiza los datos y etiquetas
+        this.lineChartInstance.data.labels = etiquetas;
+        this.lineChartInstance.data.datasets[0].data = datos;
+        this.lineChartInstance.update();
+  
+        this.barChartInstance.data.labels = etiquetas;
+        this.barChartInstance.data.datasets[0].data = datos;
+        this.barChartInstance.update();
+      } else {
+        console.error('Instancias de gráficos no inicializadas.');
+      }
+    } else {
+      console.error('this.predicciones no es un arreglo válido:', this.predicciones);
+    }
   }
 }
