@@ -6,15 +6,15 @@ from django.conf import settings
 
 def obtener_historial_entrenamientos(request):
     # Ruta al archivo CSV
-    ruta_csv = os.path.join(settings.BASE_DIR, 'scripts', 'historial_entrenamientos.csv')
+    ruta_csv = os.path.join(settings.BASE_DIR, 'data', 'historial_entrenamientos.csv')
 
     try:
         # Leer el archivo CSV
         if os.path.exists(ruta_csv):
             datos = pd.read_csv(ruta_csv)
 
-            # Asegurarse de que la columna de fechas sea de tipo datetime
-            if 'fecha_entrenamiento' in datos.columns:  # Cambia 'fecha' por el nombre exacto de tu columna de fechas
+
+            if 'fecha_entrenamiento' in datos.columns:  
                 datos['fecha_entrenamiento'] = pd.to_datetime(datos['fecha_entrenamiento'], errors='coerce').dt.date
                 # Filtrar valores no válidos en la columna de fechas
                 datos = datos.dropna(subset=['fecha_entrenamiento'])

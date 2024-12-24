@@ -106,18 +106,17 @@ mat-form-field {
   margin-bottom: 10px;
 }
 body {
-  margin: 0; /* Elimina márgenes por defecto */
-  padding: 0; /* Elimina padding por defecto */
-}
+  margin: 0; 
+  padding: 0; }
 
 .chart-container {
   position: relative;
-  width: 100%; /* Cambia a 100% para que se adapte al contenedor */
-  max-width: 600px; /* Tamaño máximo opcional */
+  width: 100%; 
+  max-width: 600px; 
   height: 80vh;
-  margin: 20px; /* Espaciado entre los gráficos */
-  overflow: hidden; /* Evitar que se sobresalga */
-  aspect-ratio: 16 / 9; /* Mantener un aspecto específico */
+  margin: 20px; 
+  overflow: hidden; 
+  aspect-ratio: 16 / 9; 
 }
 
 canvas {
@@ -127,12 +126,12 @@ canvas {
 
 @media (max-width: 768px) {
   .chart-container {
-    width: 100%; /* Ocupa todo el ancho en pantallas pequeñas */
+    width: 100%; 
   }
 }
 
 @media (min-width: 769px) {
   .chart-container {
-    width: 45%; /* Mantener el ancho en pantallas más grandes */
+    width: 45%; 
   }
 }

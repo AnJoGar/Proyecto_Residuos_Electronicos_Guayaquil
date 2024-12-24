@@ -69,15 +69,21 @@ export class PrediccionPorFiltroComponent implements AfterViewInit {
       response => {
         this.resultado = response; 
         this.error = null; 
-        this.predicciones = response.predicciones;
-        const nuevaPrediccion = {
-          año: this.resultado.PrediccionAnual,
-          proyeccion: parseFloat(this.resultado.Proyeccion_Total),
-        };
-        this.predicciones1.push(nuevaPrediccion);
+
+            // Agregar nueva predicción al arreglo de predicciones
+            const nuevaPrediccion = {
+              PrediccionAnual: response.predicciones[response.predicciones.length - 1].PrediccionAnual.toString(),
+              Prediccion_Residuos: `${response.predicciones[response.predicciones.length - 1].Prediccion_Residuos} toneladas`
+            };
+      
+            // Usar push para agregar la nueva predicción
+            this.predicciones.push(nuevaPrediccion);
+        console.log('Predicciones actualizadas:', this.predicciones);
+        
+
         this.updateCharts();
         console.log('API Response:', this.resultado);
-        
+      
       },
       error => {
         this.error = 'Hubo un error al realizar la predicción'; // Manejo de errores
@@ -158,6 +164,8 @@ export class PrediccionPorFiltroComponent implements AfterViewInit {
 
       console.log('Etiquetas:', etiquetas); // Depuración
     console.log('Datos:', datos);
+
+    
       if (this.lineChartInstance && this.barChartInstance) {
         // Actualiza los datos y etiquetas
         this.lineChartInstance.data.labels = etiquetas;

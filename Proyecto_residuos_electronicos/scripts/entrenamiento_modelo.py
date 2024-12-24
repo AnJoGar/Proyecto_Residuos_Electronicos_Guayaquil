@@ -6,11 +6,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
 from tensorflow.keras import layers
-import pyodbc  # Para conectar con SQL Server
+import pyodbc 
 from datetime import datetime
+
 # Configuración de la conexión
 server = 'DESKTOP-JEKQ4RF\\SQLEXPRESS'  
-database = 'Residuos_Electronicos'  # Nombre de tu base de datos
+database = 'Residuos_Electronicos' 
 username = 'sa'  # Usuario de la base de datos
 password = 'mbappe2019'  # Contraseña del usuario
 # Conexión a SQL Server
@@ -91,11 +92,11 @@ modelo_nn.save('modelo_residuos_electronicos.h5')
 np.save('historial_entrenamiento.npy', historial.history)
 
 # Guardar los resultados en SQL Server
-fecha_entrenamiento =  datetime(2024, 12, 17)
+fecha_entrenamiento =  datetime(2024, 12, 22)
 
 guardar_datos_entrenamiento(fecha_entrenamiento, mse, rmse, r2)
 print("Datos de entrenamiento guardados en SQL Server correctamente.")
 
 
 # Exportar los datos de la tabla a un archivo CSV
-exportar_datos_a_csv('historial_entrenamientos.csv')
+exportar_datos_a_csv('../data/historial_entrenamientos.csv')

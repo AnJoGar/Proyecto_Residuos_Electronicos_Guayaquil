@@ -23,6 +23,7 @@ ss
         python manage.py migrate
     - Ejecuta el servidor de desarrollo:
         python manage.py runserver
+Nota: En el caso que salga un error relacionado a la libreria Pandas, instale individualmente esa libreria 
 
 
 2. **Frontend**:
