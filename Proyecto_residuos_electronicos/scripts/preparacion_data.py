@@ -10,7 +10,7 @@ import os
 from joblib import dump
 
 # Cargar el archivo CSV
-url="../data/Proyecto_Reciclaje (Respuestas)F1.csv"
+url="../data/Proyecto_Reciclaje (Respuestas).csv"
 # Leer el archivo CSV con las configuraciones correctas
 df = pd.read_csv(url, sep=";", encoding='utf-8')
 # Configurar pandas para mostrar todas las filas y columnas
@@ -216,7 +216,6 @@ print(df[['Edad', 'NivelEducativo', 'Ocupacion', 'Vivienda', 'Ingresos', 'AreaRe
 # Agregar la columna 'Año de Proyección' con valores ficticios o calculados
 df['PrediccionAnual'] = 2024
 
-#df['Mes'] =  df['Marca temporal'].dt.month
 # Convertir la columna a formato datetime
 df['Marca temporal'] = pd.to_datetime(df['Marca temporal'], errors='coerce')
 

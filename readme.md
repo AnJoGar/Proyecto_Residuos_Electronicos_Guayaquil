@@ -106,7 +106,10 @@ Nota: En el caso que salga un error relacionado a la libreria Pandas, instale in
 - **Descripción**: Este endpoint proporciona estadísticas sobre los residuos electrónicos     
 recogidos, incluyendo la cantidad total, tipos de residuos y su evolución a lo largo del tiempo. Ideal para obtener una visión general del impacto del reciclaje.
 
-
+### 3. *Mostrar el entrenamiento de la red neuronal**
+- **URL**: `http://127.0.0.1:8000/historialEntrenamiento/`
+- **Método**: `GET`
+- **Descripción**: Este endpoint proporciona datos de como se ha estado aprendiendo la red neuronal, en donde para mejor visualización cada entrenamiento se muestra el dia y mes del año 2024 que se entreno 
 # Interfaces del Frontend
 
 ## Modelo de Predicción por año
@@ -122,4 +125,9 @@ recogidos, incluyendo la cantidad total, tipos de residuos y su evolución a lo 
 ## Datos Estadísticos
 - **URL**: http://localhost:4200/datosEstadisticos
 - **Descripción**: Esta interfaz se conecta al endpoint para obtener estadísticas, mostrando datos sobre la cantidad total de residuos y su clasificación por tipo, proporcionando una visión clara sobre el impacto del reciclaje.
+
+## Historial de Entrenamiento del modelo
+- **URL**: http://localhost:4200/historialEntrenamiento
+- **Descripción**: Esta interfaz se conecta al endpoint para historial de Entrenamiento, mostrando datos sobre como se ha estado entrenando el modelo respecto al R2
+
 

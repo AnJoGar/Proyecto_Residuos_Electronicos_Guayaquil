@@ -111,7 +111,6 @@ export class ModeloPrediccionComponent implements AfterViewInit {
       },
       options: {
         responsive: true,
-      // maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true, // Asegura que los valores empiecen desde 0
@@ -124,8 +123,6 @@ export class ModeloPrediccionComponent implements AfterViewInit {
   updateCharts() {
     const etiquetas = this.predicciones.map((p) => p.año);
     const datos = this.predicciones.map((p) => p.proyeccion);
-      // Verifica que los datos estén correctamente asignados
-
 // Actualiza los datos del gráfico de líneas
     this.lineChartInstance.data.labels = etiquetas;
     this.lineChartInstance.data.datasets[0].data = datos;

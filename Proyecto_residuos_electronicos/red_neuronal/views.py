@@ -68,9 +68,8 @@ class PredecirResiduosView(APIView):
             mes_proyeccion = int(datos.get('PrediccionMes'))  # Nuevo campo
             meses_desde_base = self.calcular_meses_desde_base(año_proyeccion, mes_proyeccion)
 
-            poblacion_total = 1000000
+            poblacion_total = 1850000  # se asume que un 70% de la población total de guayaquil genera residuos electrónicos.
             tasa_crecimiento = 0.55  # 5.5% de aumento anual
-            año_base = 2024  # Año base para la tasa de crecimiento
             tasa_crecimiento_mensual = tasa_crecimiento / 12
 
             # Convertir las categorías de texto a valores numéricos usando los mapeos definidos
@@ -82,7 +81,7 @@ class PredecirResiduosView(APIView):
             # Verificar si faltan columnas opcionales y agregar columnas vacías si no están presentes
             for columna in self.feature_columns:
                 if columna not in df_datos.columns:
-                    df_datos[columna] = 0 
+                    df_datos[columna] = 0
 
             # Asegurarse de que las columnas coincidan con las esperadas por el modelo
             df_datos = df_datos[self.feature_columns]
@@ -96,7 +95,7 @@ class PredecirResiduosView(APIView):
                 total_residuos_kg += datos.get(dispositivo, 0) * peso
         
             # Agregar las predicciones al DataFrame
-           # df_datos['Prediccion_Residuos'] = (predicciones * poblacion_total) + total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)
+           
             df_datos['Prediccion_Residuos'] = (predicciones * poblacion_total) + total_residuos_kg 
             df_datos['Mes'] = mes_proyeccion  
             # Convertir a toneladas
@@ -148,8 +147,7 @@ class PrediccionTotalGuayaquilView(APIView):
             meses_desde_base = self.calcular_meses_desde_base(año_proyeccion, mes_proyeccion)
             # Configurar los parámetros
             tasa_crecimiento = 0.055
-            año_base = 2024
-            poblacion_total = 1000000  # Población total de Guayaquil
+            poblacion_total = 1850000  # se asume que un 70% de la población total de guayaquil genera residuos electrónicos.
             tasa_crecimiento_mensual = tasa_crecimiento / 12
             pesos_dispositivos_kg  = {
                'Televisor_Desechado': 15,  # Peso promedio en kg
@@ -183,7 +181,7 @@ class PrediccionTotalGuayaquilView(APIView):
                 total_residuos_kg += promedio_residuos_por_persona * poblacion_total * peso
 
             # Calcular la proyección total para la población de Guayaquil
-           # total_residuos_proyectados_toneladas = ((total_residuos_kg * (1 + tasa_crecimiento) ** (año_proyeccion - año_base)) / 1000)#* (1 + tasa_crecimiento_mensual) ** meses_desde_base  # Convertir a toneladas
+          
             total_residuos_proyectados_toneladas = ((total_residuos_kg / 1000)* (1 + tasa_crecimiento_mensual) ** meses_desde_base)   # Convertir a toneladas
             # Preparar el resultado en formato JSON
             resultado_json_guayaquil = {
