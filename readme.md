@@ -17,13 +17,14 @@ ss
             cd /Proyecto_residuos_electronicos
     - Instala las dependencias:
         pip install -r requirements.txt
+        Nota: En el caso que salga un error relacionado a la libreria Pandas, instale individualmente esa libreria 
+
     - Crea las migraciones basadas en los modelos:
         python manage.py makemigrations
     - Ejecuta las migraciones para configurar la base de datos:
         python manage.py migrate
     - Ejecuta el servidor de desarrollo:
         python manage.py runserver
-Nota: En el caso que salga un error relacionado a la libreria Pandas, instale individualmente esa libreria 
 
 
 2. **Frontend**:
@@ -55,7 +56,8 @@ Nota: En el caso que salga un error relacionado a la libreria Pandas, instale in
 - **Cuerpo de la Solicitud**:
   ```json
   {
-    "PrediccionAnual": 2025
+    "PrediccionAnual": 2025,
+    "PrediccionMes":9
   }
 
 -  **Respuesta**:
@@ -76,6 +78,7 @@ Nota: En el caso que salga un error relacionado a la libreria Pandas, instale in
   ```json
   {
     "PrediccionAnual": 2025,
+    "PrediccionMes":9,
     "AreaResidencia": 1,
     "NivelEducativo": "Educación universitaria",
     "FrecuenciaReciclaje": 1,
