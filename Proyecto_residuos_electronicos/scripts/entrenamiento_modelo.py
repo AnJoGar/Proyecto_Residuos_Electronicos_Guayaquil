@@ -92,7 +92,7 @@ modelo_nn.save('modelo_residuos_electronicos.h5')
 np.save('historial_entrenamiento.npy', historial.history)
 
 # Guardar los resultados en SQL Server
-fecha_entrenamiento =  datetime(2024, 12, 22)
+fecha_entrenamiento =  datetime(2024, 12, 26)
 
 guardar_datos_entrenamiento(fecha_entrenamiento, mse, rmse, r2)
 print("Datos de entrenamiento guardados en SQL Server correctamente.")
