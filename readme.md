@@ -51,7 +51,7 @@ Nota: En el caso que salga un error relacionado a la libreria Pandas, instale in
 ### 1. **Predecir Residuos Electrónicos en Guayaquil**
 - **URL**: `http://127.0.0.1:8000/predecir_residuos_guayaquil/`
 - **Método**: `POST`
-- **Descripción**: Este endpoint permite predecir la cantidad total de residuos electrónicos generados en Guayaquil para un año específico. La predicción se realiza considerando la población total de la ciudad y su comportamiento en el manejo de residuos electrónicos.
+- **Descripción**: Este endpoint permite predecir la cantidad total de residuos electrónicos generados en Guayaquil para un año y mes específico. La predicción se realiza considerando la población total de la ciudad y su comportamiento en el manejo de residuos electrónicos.
 - **Cuerpo de la Solicitud**:
   ```json
   {
@@ -71,7 +71,7 @@ Nota: En el caso que salga un error relacionado a la libreria Pandas, instale in
 ### 2. **Predecir Residuos Electrónicos en Guayaquil**
 - **URL**: `http://127.0.0.1:8000/predecir_residuos/`
 - **Método**: `POST`
-- **Descripción**: Este endpoint permite predecir la cantidad de residuos electrónicos generados en Guayaquil para un año específico, aplicando filtros sobre distintos factores. Se pueden considerar variables como el área de residencia, el nivel educativo, la frecuencia de reciclaje y el estado de varios dispositivos electrónicos respecto a si se van a considerar en la predicción.
+- **Descripción**: Este endpoint permite predecir la cantidad de residuos electrónicos generados en Guayaquil para un año y mes específico, aplicando filtros sobre distintos factores. Se pueden considerar variables como el área de residencia, el nivel educativo, la frecuencia de reciclaje y el estado de varios dispositivos electrónicos respecto a si se van a considerar en la predicción.
 - **Cuerpo de la Solicitud**:
   ```json
   {
@@ -114,13 +114,13 @@ recogidos, incluyendo la cantidad total, tipos de residuos y su evolución a lo 
 
 ## Modelo de Predicción por año
 - **URL**: http://localhost:4200/modeloPrediccion
-- **Descripción**: Esta interfaz está conectada al endpoint para predecir residuos electrónicos, permitiendo a los usuarios ingresar el año y obtener una predicción sobre la cantidad de residuos generados en Guayaquil en toneladas.
+- **Descripción**: Esta interfaz está conectada al endpoint para predecir residuos electrónicos, permitiendo a los usuarios ingresar el año y el mes de predicción para obtener una predicción sobre la cantidad de residuos generados en Guayaquil en toneladas.  Además tiene gráficos estadísticos como un gráfico de lineas y barras para visualizar mejor el crecimiento de la prediccion por mes o año.
 
 
 ## Predicción con Filtros
 
 - **URL**: http://localhost:4200/prediccionFiltro
-- **Descripción**: Esta interfaz permite a los usuarios aplicar filtros específicos para predecir la cantidad de residuos electrónicos en toneladas, facilitando el análisis según distintos parámetros como área de residencia, frecuencia de reciclaje nivel educativo y los productos que se desean tener en cuenta en la predicción. 
+- **Descripción**: Esta interfaz permite a los usuarios aplicar filtros específicos aparte del mes y año para predecir la cantidad de residuos electrónicos en toneladas, facilitando el análisis según distintos parámetros como área de residencia, frecuencia de reciclaje nivel educativo y los productos que se desean tener en cuenta en la predicción. Además tiene gráficos estadísticos como un gráfico de lineas y barras para visualizar mejor el crecimiento de la prediccion por mes o año.
 
 ## Datos Estadísticos
 - **URL**: http://localhost:4200/datosEstadisticos
@@ -128,6 +128,6 @@ recogidos, incluyendo la cantidad total, tipos de residuos y su evolución a lo 
 
 ## Historial de Entrenamiento del modelo
 - **URL**: http://localhost:4200/historialEntrenamiento
-- **Descripción**: Esta interfaz se conecta al endpoint para historial de Entrenamiento, mostrando datos sobre como se ha estado entrenando el modelo respecto al R2
+- **Descripción**: Esta interfaz se conecta al endpoint para historial de Entrenamiento, mostrando datos sobre como se ha estado entrenando el modelo respecto al R2 mediante un gráfico de lineas.
 
 
