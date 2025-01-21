@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { PrediccionPorAño } from '../../interfaces/prediccion-por-año';
 import { Chart, registerables } from 'chart.js';
 import { HistorialEntrenamientoService } from '../../services/historial-entrenamiento.service';
+import { HistorialEntrenamiento } from '../../interfaces/historial-entrenamiento';
 
 @Component({
   selector: 'app-historial-entrenamiento',
@@ -18,7 +19,9 @@ export class HistorialEntrenamientoComponent {
 
   ngOnInit(): void {
     this.obtenerDatosHistorial();
+    console.log("fecha",this.obtenerDatosHistorial())
   }
+
 
   obtenerDatosHistorial(): void {
     this.historialService.obtenerHistorial().subscribe(
@@ -36,13 +39,18 @@ export class HistorialEntrenamientoComponent {
       }
     );
   }
+
   ngAfterViewInit(): void {
     this.crearGrafico();
   }
 
 
-
+ 
   crearGrafico(): void {
+    if (this.chart) {
+      this.chart.destroy(); // Destruye el gráfico existente si ya está creado
+    }
+  
     // Extraer datos para el gráfico
     const fechas = this.historial.map((item) => item.fecha_entrenamiento);
     const r2Values = this.historial.map((item) => item.r2);
@@ -84,6 +92,7 @@ export class HistorialEntrenamientoComponent {
               display: true,
               text: 'Fecha de Entrenamiento',
             },
+
             ticks: {
               autoSkip: false, // Muestra todas las etiquetas
             },
