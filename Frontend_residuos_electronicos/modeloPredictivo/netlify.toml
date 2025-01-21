@@ -1,0 +1,7 @@
+[build]
+  command = "ng build --prod"
+  publish = "dist/modelo-predictivo"
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
