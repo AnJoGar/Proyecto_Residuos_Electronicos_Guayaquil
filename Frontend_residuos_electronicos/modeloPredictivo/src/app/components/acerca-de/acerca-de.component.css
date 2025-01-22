@@ -55,24 +55,38 @@ header {
     color: #fff;
   }
 
-  .prediccion-card {
-    position: absolute;
+  .content-container {
+    display: flex;
+    align-items: flex-start; /* Alinea los elementos en la parte superior */
+    gap: 100px; /* Espaciado entre la imagen y el texto */
     padding: 16px;
-    margin: 16px;
-    margin-left: 55%;
-    margin-top: 10%;
-    background-color: white;
-
-    background-size: 90px;
   }
-  .custom-font-size {
-    font-size: 22px;
+  
+  .image-container {
+    flex: 1; /* Permite que la imagen ocupe el espacio necesario */
+    max-width: 40%; 
+    margin-left: 2%;/* Limita el ancho máximo de la imagen */
   }
+  
   .custom-image {
-    position: absolute; 
-    margin-left: 1%;
-    margin-top: 2%;
-    width: 800px;
-    height: 70%;
-    border-radius: 10px;
+    width: 100%;
+    height: 100%; /* Mantiene la proporción de la imagen */
+    border-radius: 90px;
+    
   }
+  
+  .prediccion-card {
+    flex: 2; /* Permite que el texto ocupe más espacio que la imagen */
+    padding: 16px;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    max-width: 600px;
+    margin-top: 8%; /* Limita el ancho máximo del texto */
+  }
+  
+  .custom-font-size {
+    font-size: 18px;
+    line-height: 1.5; /* Mejora la legibilidad */
+  }
+  
