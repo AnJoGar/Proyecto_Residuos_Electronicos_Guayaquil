@@ -58,14 +58,15 @@ header {
   .content-container {
     display: flex;
     align-items: flex-start; /* Alinea los elementos en la parte superior */
-    gap: 100px; /* Espaciado entre la imagen y el texto */
+    gap: 1px; /* Espaciado entre la imagen y el texto */
     padding: 16px;
   }
   
   .image-container {
     flex: 1; /* Permite que la imagen ocupe el espacio necesario */
     max-width: 40%; 
-    margin-left: 2%;/* Limita el ancho máximo de la imagen */
+    margin-left: 5%;
+    margin-top: 2%;/* Limita el ancho máximo de la imagen */
   }
   
   .custom-image {
@@ -76,17 +77,18 @@ header {
   }
   
   .prediccion-card {
-    flex: 2; /* Permite que el texto ocupe más espacio que la imagen */
-    padding: 16px;
+    flex: 1; /* Permite que el texto ocupe más espacio que la imagen */
+    padding: 19px;
     background-color: white;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    max-width: 600px;
-    margin-top: 8%; /* Limita el ancho máximo del texto */
+    max-width: 730px;
+    margin-top: 9%;
+    margin-left: 85px; /* Limita el ancho máximo del texto */
   }
   
   .custom-font-size {
-    font-size: 18px;
+    font-size: 20px;
     line-height: 1.5; /* Mejora la legibilidad */
   }
   
