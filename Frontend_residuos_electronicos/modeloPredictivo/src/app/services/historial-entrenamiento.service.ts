@@ -11,9 +11,6 @@ export class HistorialEntrenamientoService {
   private apiUrl = `${environment.endpoint}/historial/`; 
   constructor(private http: HttpClient) {
 
-
-
-
    }
 
    obtenerHistorial(): Observable<any> {

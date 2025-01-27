@@ -8,43 +8,12 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import pyodbc 
 from datetime import datetime
-
+import os
 # Configuración de la conexión
 server = 'DESKTOP-JEKQ4RF\\SQLEXPRESS'  
 database = 'Residuos_Electronicos' 
 username = 'sa'  # Usuario de la base de datos
 password = 'mbappe2019'  # Contraseña del usuario
-# Conexión a SQL Server
-def conectar_sql_server():
-    return pyodbc.connect(
-       f"DRIVER={{ODBC Driver 17 for SQL Server}};"
-        f"SERVER={server};"
-        f"DATABASE={database};"
-        f"UID={username};"
-        f"PWD={password};"
-    )
-
-# Función para guardar datos en SQL Server
-def guardar_datos_entrenamiento(fecha, mse, rmse, r2):
-    conexion = conectar_sql_server()
-    cursor = conexion.cursor()
-    consulta = """
-    INSERT INTO historial_entrenamientos (fecha_entrenamiento, mse, rmse, r2)
-    VALUES (?, ?, ?, ?)
-    """
-    cursor.execute(consulta, (fecha, mse, rmse, r2))
-    conexion.commit()
-    cursor.close()
-    conexion.close()
-# Función para extraer datos de SQL Server y guardarlos en un CSV
-def exportar_datos_a_csv(nombre_archivo):
-    conexion = conectar_sql_server()
-    consulta = "SELECT * FROM historial_entrenamientos"
-    datos = pd.read_sql(consulta, conexion)  # Leer datos en un DataFrame de pandas
-    datos.to_csv(nombre_archivo, index=False)  # Guardar los datos en un archivo CSV
-    conexion.close()
-    print(f"Datos exportados correctamente a {nombre_archivo}")
-
 
 # Cargar las variables
 X = load('X_variables.joblib')
@@ -94,9 +63,41 @@ np.save('historial_entrenamiento.npy', historial.history)
 # Guardar los resultados en SQL Server
 fecha_entrenamiento =  datetime.now()
 
-guardar_datos_entrenamiento(fecha_entrenamiento, mse, rmse, r2)
-print("Datos de entrenamiento guardados en SQL Server correctamente.")
+def guardar_resultados_en_csv(nombre_archivo, fecha, mse, rmse, r2):
+    try:
+       # fecha =  datetime.now()
+        # Comprobar si el archivo existe
+        if os.path.exists(nombre_archivo):
+            # Leer el archivo existente
+            datos_existentes = pd.read_csv(nombre_archivo)
+            # Obtener el último ID, si existe
+            if 'id' in datos_existentes.columns:
+                ultimo_id = datos_existentes['id'].max()
+            else:
+                ultimo_id = 477
+        else:
+            # Si no existe el archivo, comenzar en 317
+            ultimo_id = 477
 
+        # Calcular el nuevo ID
+        nuevo_id = ultimo_id + 1
 
-# Exportar los datos de la tabla a un archivo CSV
-exportar_datos_a_csv('../data/historial_entrenamientos.csv')
+        # Crear el nuevo registro con el ID
+        datos = pd.DataFrame([{
+
+            'fecha_entrenamiento': fecha,
+            'mse': mse,
+            'rmse': rmse,
+            'r2': r2,
+            'id': nuevo_id
+        }])
+
+        # Guardar el nuevo registro en el archivo CSV
+        datos.to_csv(nombre_archivo, mode='a', index=False, header=not os.path.exists(nombre_archivo))
+        print(f"Datos guardados correctamente en {nombre_archivo}")
+    except Exception as e:
+        print(f"Error al guardar los datos en el archivo CSV: {e}")
+
+guardar_resultados_en_csv('../data/historial_entrenamientos.csv', fecha_entrenamiento, mse, rmse, r2)
+
+print("Datos de entrenamiento guardados correctamente en historial_entrenamientos.csv")

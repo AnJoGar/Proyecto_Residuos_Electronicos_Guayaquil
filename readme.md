@@ -103,14 +103,14 @@ ss
   }
 }
 
-### 3. **Predecir Residuos Electrónicos en Guayaquil**
+### 3. **Obtener datos estadísticos de la muestra recopilada de residuos electrónicos en Guayaquil**
 - **URL**: `http://127.0.0.1:8000/obtener_estadisticas/`
 - **Método**: `GET`
 - **Descripción**: Este endpoint proporciona estadísticas sobre los residuos electrónicos     
 recogidos, incluyendo la cantidad total, tipos de residuos y su evolución a lo largo del tiempo. Ideal para obtener una visión general del impacto del reciclaje.
 
 ### 3. *Mostrar el entrenamiento de la red neuronal**
-- **URL**: `http://127.0.0.1:8000/historialEntrenamiento/`
+- **URL**: `http://127.0.0.1:8000/historial/`
 - **Método**: `GET`
 - **Descripción**: Este endpoint proporciona datos de como se ha estado aprendiendo la red neuronal, en donde para mejor visualización cada entrenamiento se muestra el dia y mes del año 2024 que se entreno 
 # Interfaces del Frontend
@@ -130,7 +130,26 @@ recogidos, incluyendo la cantidad total, tipos de residuos y su evolución a lo 
 - **Descripción**: Esta interfaz se conecta al endpoint para obtener estadísticas, mostrando datos sobre la cantidad total de residuos y su clasificación por tipo, proporcionando una visión clara sobre el impacto del reciclaje.
 
 ## Historial de Entrenamiento del modelo
-- **URL**: http://localhost:4200/historialEntrenamiento
+- **URL**: http://localhost:4200/historial
 - **Descripción**: Esta interfaz se conecta al endpoint para historial de Entrenamiento, mostrando datos sobre como se ha estado entrenando el modelo respecto al R2 mediante un gráfico de lineas.
 
+
+
+## Endpoints configurados en el servidor gestionado desde CloudPanel
+
+
+**Datos estadísticos de la muestra recopilada:** https://pred.craxstore.com/obtener_estadisticas/
+
+**Predecir residuos electrónicos de Guayaquil por año:** https://pred.craxstore.com/predecir_residuos/
+
+**Predecir residuos electrónicos de Guayaquil por año y filtros:** https://pred.craxstore.com/predecir_residuos_guayaquil/
+
+**Obtener información de cada entrenamiento de la red neuronal:** https://pred.craxstore.com/historial/
+
+
+
+
+## Frontend alojado en Netlify 
+
+**Link:** https://proyectoresiduoselectronicos.netlify.app/acercaDe
 
