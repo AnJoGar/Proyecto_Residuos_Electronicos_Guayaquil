@@ -68,7 +68,7 @@ class PredecirResiduosView(APIView):
             mes_proyeccion = int(datos.get('PrediccionMes'))  # Nuevo campo
             meses_desde_base = self.calcular_meses_desde_base(año_proyeccion, mes_proyeccion)
 
-            poblacion_total = 1850000  # se asume que un 70% de la población total de guayaquil genera residuos electrónicos.
+            poblacion_total = 400  # se asume que un 70% de la población total de guayaquil genera residuos electrónicos.
             tasa_crecimiento = 0.55  # 5.5% de aumento anual
             tasa_crecimiento_mensual = tasa_crecimiento / 12
 
@@ -147,7 +147,7 @@ class PrediccionTotalGuayaquilView(APIView):
             meses_desde_base = self.calcular_meses_desde_base(año_proyeccion, mes_proyeccion)
             # Configurar los parámetros
             tasa_crecimiento = 0.055
-            poblacion_total = 1850000  # se asume que un 70% de la población total de guayaquil genera residuos electrónicos.
+            poblacion_total = 400  # se asume que un 70% de la población total de guayaquil genera residuos electrónicos.
             tasa_crecimiento_mensual = tasa_crecimiento / 12
             pesos_dispositivos_kg  = {
                'Televisor_Desechado': 15,  # Peso promedio en kg
