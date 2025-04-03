@@ -15,10 +15,12 @@ ss
     - Abre una terminal y navege hasta la carpeta del proyecto:
         ```bash
             cd /Proyecto_residuos_electronicos
+    - Crea un entorno virtual llamado "venv" (recomendado) aislando las dependencias
+            python -m venv venv
+    -Active el entorno virtual
+            venv\Scripts\activate
     - Instala las dependencias:
         pip install -r requirements.txt
-        Nota: En el caso que salga un error relacionado a la libreria Pandas, instale individualmente esa libreria 
-
     - Crea las migraciones basadas en los modelos:
         python manage.py makemigrations
     - Ejecuta las migraciones para configurar la base de datos:
