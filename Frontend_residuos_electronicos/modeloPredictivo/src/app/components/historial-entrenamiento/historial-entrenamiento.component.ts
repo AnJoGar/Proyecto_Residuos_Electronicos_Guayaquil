@@ -50,10 +50,13 @@ export class HistorialEntrenamientoComponent {
     if (this.chart) {
       this.chart.destroy(); // Destruye el gráfico existente si ya está creado
     }
-  
+    // Limitar a 100 puntos si hay muchos datos
+    const datosMostrar = this.historial.length > 400 ? 
+    this.historial.slice(-100) : 
+    [...this.historial];
     // Extraer datos para el gráfico
-    const fechas = this.historial.map((item) => item.fecha_entrenamiento);
-    const r2Values = this.historial.map((item) => item.r2);
+    const fechas = datosMostrar.map((item) => item.fecha_entrenamiento);
+    const r2Values = datosMostrar.map((item) => item.r2);
   
     // Verificar datos
     if (fechas.length === 0 || r2Values.length === 0) {
